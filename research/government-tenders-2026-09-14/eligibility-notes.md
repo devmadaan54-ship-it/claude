@@ -1,0 +1,17 @@
+KEY FACTS (eligibility agent, 2026-09-14)
+- GeM slabs (GFR 149, OM 10.07.2024): direct ≤50k; 50k–10L L1 among ≥3; >10L GeM bid/RA
+- Perf security (Rule 171, OM 29.12.2023): 3–5% services; NOT waived for MSE/startup
+- DPIIT startup def: GSR 108(E) 4 Feb 2026, turnover cap 200cr, 10yr; Deep Tech 20yr/300cr; proprietorship NOT eligible
+- MSME def from 1 Apr 2025: Micro ≤2.5cr inv & ≤10cr turnover
+- GeM caution money discontinued Feb–Mar 2026 (verify in dashboard)
+- GeM charges: 0 ≤10L; 0.30% 10L–10cr; ₹10k+GST milestone once FY sales >20L
+- PPP-MII revised 19.07.2024: Class-I ≥50% local
+- GFR 173(i): turnover/experience MAY be relaxed for DPIIT startups (buyer discretion; must be in bid doc)
+- GFR 170: EMD 2–5%; MSE/DPIIT startups exempt; bid securing declaration allowed
+- MSE Order 2012: 25% target, 3% women, 4% SC/ST; L1+15% match for 25% share; free tender sets; EMD exempt; PBG not exempt; consortium can't claim
+- DSC: Class 3 Org Combo (sign+encrypt), ₹1.5–3k, same day
+- Bid-ready minimum ≈₹15–40k, 3–5 weeks; +ISO9001+27001 ≈₹2.5–5L, ~4 months
+- CMMI L3 ₹8–30L, 4–12 months; MeitY model RFP baseline 25cr turnover
+- Empanelment routes: NICSI RFE 25 Jun 2026 (20 firms, 10 startup/MSME slots); UPDESCO startup empanelment UPD/Empl/2026/SU (UP-based); KEONICS EoIs; GIL rate contracts; MahaIT; STPI SDA
+- States: Telangana GO 08/2018 (no EMD/turnover/exp, 15% price adv, EoI to startup_cell@telangana.gov.in); Karnataka 2025-30 (no EMD, limited tender ≤50L, Govt-First pilots ≤25L, Startup Inclusion Plan ≥10% of contract); Gujarat GR 11.04.2018; Maharashtra 2018 policy (L1+15%)
+- GePNIC: captcha on search; browse-by-organisation avoids captcha; Freeze Bid; two-cover; common DQ reasons
