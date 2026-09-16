@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R15.pdf"
+SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R16.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open(SRC)
 R_=pymupdf.Rect
 T_GF=pymupdf.Matrix(1,0,0,1,0,0)
@@ -86,43 +86,23 @@ S.labelr("DRESSING",170,500.7,296,663.9,236.0,600.0)
 bed(S,418,511.8,side=False); S.rect(396,511.8,416,531.8); S.rect(520,511.8,540,531.8)
 S.rect(312,560,342,590); S.circle(357,575,8); S.rect(445,634,515,656); S.circle(480,624,6); S.rect(330,650,430,662)
 S.labelr("BEDROOM-01",303.9,500.7,561.4,663.9,362.0,618.0)
-# east side: plot line 7'-0" from the house (survey), new 10' high boundary wall 9" thick inside it -> clear strip 6'-3"
-PL=41.0; XW=PL+11.8
+# east side: 5'-0" clear between the house and the new 10' high boundary wall (9" thick); servant quarters at grade on a separate drawing
+XW=150.5-78.5; PL=XW-11.8
 S.line(PL,195,PL,1000,BLACK,0.48,dashes="[6 2 1 2] 0")
 S.wall(PL,207.0,XW,950.0); S.OL(PL,207,PL,950); S.OL(XW,207,XW,950)
 S.wall(XW,207.0,150.5,213.0); S.OL(XW,207,150.5,207); S.OL(XW,213,150.5,213)
-S.dimline(PL,190,150.5,190); S.dimline(XW,198,150.5,198,size=3.4)
-S.small("PLOT LINE 7'-0\" FROM HOUSE (SURVEY PLAN); NEW 10'-0\" HIGH WALL 9\" THICK INSIDE IT",300,203,2.4)
-# ---- servant quarters at grade (existing room top-left) ----
-S.rect(XW+2,215,148.5,398,BLACK,0.48,dashes="[3 2] 0")
-S.wall(XW,320.0,150.5,325.3); S.OL(XW,320,150.5,320); S.OL(XW,325.3,150.5,325.3)
-S.wall(XW,400.0,150.5,405.3); S.OL(XW,400,150.5,400); S.OL(XW,405.3,150.5,405.3)
-S.wall(100.0,325.3,106.0,400.0); S.OL(100,325.3,100,400); S.OL(106,325.3,106,400)
-S.rect(58,222,96,300,FURN,0.48); S.line(58,242,96,242,FURN,0.48)
-S.rect(104,222,142,300,FURN,0.48); S.line(104,242,142,242,FURN,0.48)
-S.text("SERVANT ROOM",101,256,4.6); S.text(dimstr(XW,213,150.5,320),101,261,3.6); S.small("EXISTING, AT GRADE (+0)",101,266,2.6); S.small("ROOM 2 ABOVE AT +9'-0\"",101,271,2.6)
-toilet_symbols(S, wc=(90,74,350), basin=(90,74,386)); S.text("RESTROOM",76,368,3.4); S.small(dimstr(XW,325.3,100,400),76,373,2.6)
-S.door(100,340,106,370,'y0','right')                                     # restroom from room? no: from entry
-S.door(110,320.0,145,325.3,'x0','up')                                    # entry -> room
-S.door(110,400.0,145,405.3,'x0','up')                                    # yard -> entry
-S.text("ENTRY",128,356,3.6); S.small(dimstr(106,325.3,150.5,400),128,361,2.6); S.small("HE ENTERS HERE",128,366,2.4)
-S.small("SERVANT QUARTERS, ENTRY FROM OUTSIDE ONLY",101,395,2.6)
-# ---- yard north of the block: one open garden court at grade, tiered planters against the house, path along the wall ----
+S.dimline(XW,196,150.5,196,size=3.6); S.small("CLEAR, HOUSE TO NEW WALL",111,203,2.4); S.small("BOUNDARY WALL 10'-0\" HIGH",111,208,2.4)
+# south part of the strip: servant quarters at grade, not shown on this sheet
+S.rect(XW+2,215,148.5,402,BLACK,0.48,dashes="[3 2] 0")
+S.text("SERVANT",111,300,4.6); S.text("QUARTERS",111,306,4.6); S.small("AT GRADE LEVEL",111,311,2.6); S.small("SEE SEPARATE DRAWING",111,316,2.6)
+# north part: ground floor level items only
 S.rect(XW+2,407,148.5,681,BLACK,0.48,dashes="[3 2] 0")
-for gx in range(XW+6 if False else 58,148,8):
-    for gy in range(412,678,8): S.line(gx,gy,gx+1,gy+1,FURN,0.3)
-S.line(90,405.3,90,683.6,FURN,0.48,dashes="[1 3] 0"); S.small("PATH 2'-4\"",72,545,2.4); S.small("ALONG WALL",72,550,2.4)
-# bath deck at +60" outside the bathroom with the outdoor shower (full-height glazing)
-S.rect(118,410,150.5,478,FURN,0.72); toilet_symbols(S, shower=(0,132,438)); S.small("BATH DECK +60\"",134,486,2.4); S.small("OUTDOOR SHOWER",134,491,2.4)
-# steps down from the dressing to the garden (9 risers), landing at the sliding door
+S.rect(118,410,150.5,478,FURN,0.72); toilet_symbols(S, shower=(0,132,438)); S.small("BATH DECK +60\"",134,486,2.4); S.small("OUTDOOR SHOWER",134,491,2.4); S.small("FULL HT. GLAZING",134,496,2.4)
 S.rect(103,611.7,150.5,664,MAG,0); S.stair(103,548,150.5,611.7,9,'up'); S.text("DN 9 R",126,540,3.6,color=MAG)
 S.sliding(150.5,611.7,170.0,663.9)
-for i,yy in enumerate((495,515,535)): S.rect(96,yy,116,yy+14,FURN,0.48)
-for yy in (670,676,682): S.line(96,yy,150.5,yy,FURN,0.48)
-S.circle(118,655,10,FURN,0.48); S.circle(118,655,6,FURN,0.24)
-S.text("GARDEN",70,620,4.6); S.text("COURT",70,626,4.6); S.small(dimstr(XW,405.3,150.5,683.6),70,631,2.8); S.small("AT GRADE, TIERED PLANTERS",70,636,2.4); S.small("FROM DRESSING BY STEPS",70,641,2.4)
-# external stair to room 2 over the servant block, along the boundary wall
-S.stair(XW,405.3,88,500,11,'up'); S.text("UP TO",70,508,3.4,color=MAG); S.text("ROOM 2",70,513,3.4,color=MAG)
+for yy in (500,520,540,560,580): S.rect(80,yy,98,yy+14,FURN,0.48)
+S.circle(90,640,10,FURN,0.48); S.circle(90,640,6,FURN,0.24)
+S.text("PLANTED",111,600,4.0); S.text("STRIP",111,605,4.0); S.small(dimstr(XW,405.3,150.5,683.6),111,610,2.8); S.small("PLANTERS, TIERED TO GRADE",111,615,2.4); S.small("STEPS DOWN FROM DRESSING",111,620,2.4)
 columns(S); S.small("EXTERNAL COLUMNS TO TERRACE",360,942,2.8)
 # porch: existing light well kept as planted sunken court (no stair); entrance landing + straight steps
 S.rect(190.0,683.6,513.0,754.0,BLACK,0.48,dashes="[3 2] 0")
@@ -153,10 +133,10 @@ S.small("ENTRANCE DOOR WIDENED TO 6'-0\" DOUBLE DOOR (NEW LINTEL)",625,678,2.4)
 # notes
 ny=990
 for t in ["NOTES (REVISION R3):",
-          "A. EAST PLOT LINE 7'-0\" FROM THE HOUSE (SURVEY PLAN, TOP-LEFT CORNER), TAKEN STRAIGHT FOR THE FULL LENGTH. NEW 10'-0\" HIGH BOUNDARY WALL 9\" THICK INSIDE IT: CLEAR STRIP 6'-3\". NO OPENINGS TO THE PARK EXCEPT THE EVENT GATE; CAR GATE 10'-0\" AT THE EAST END OF THE NORTH BOUNDARY.",
+          "A. EAST SIDE: 5'-0\" CLEAR BETWEEN THE HOUSE AND THE NEW STRAIGHT 10'-0\" HIGH BOUNDARY WALL (9\" THICK), FULL LENGTH. NO OPENINGS TO THE PARK EXCEPT THE EVENT GATE; CAR GATE 10'-0\" AT THE EAST END OF THE NORTH BOUNDARY.",
           "B. CONCEALED EVENT GATE IN THE EAST BOUNDARY WALL FROM THE HOUSE CORNER TO THE FRONT BOUNDARY: FLUSH WALL-FINISHED PANELS ON CONCEALED PIVOTS, OPENED ONLY FOR EVENTS.",
           "C. COURTYARD-01 IN THE EXISTING STAIRWELL SHAFT, OPEN TO SKY THROUGH ALL FLOORS: THE BRAHMASTHAN (CENTRE OF THE WHOLE-HOUSE GRID) IS KEPT OPEN AND FREE OF STAIRS. ENTRANCE STEPS ARE A COMPACT 6-RISER FLIGHT OUTSIDE THE EXISTING DOOR; BASEMENT STAIR IN THE WEST PART OF THE EXISTING LIGHT WELL. LIFT GIVES THE STEP-FREE ROUTE.",
-          "D. EAST STRIP: SERVANT QUARTERS AT GRADE IN THE SOUTH-EAST (EXISTING ROOM; RESTROOM ON THE EAST, ENTRY ON THE WEST; SECOND ROOM ABOVE AT +9'-0\" BY AN EXTERNAL STAIR ALONG THE WALL), ENTERED FROM OUTSIDE ONLY, NO DOOR INTO THE HOUSE. NORTH OF IT ONE OPEN GARDEN COURT AT GRADE WITH TIERED PLANTERS, THE SERVANT'S PATH ALONG THE WALL, A BATH DECK AT +60\" WITH THE OUTDOOR SHOWER, AND STEPS DOWN FROM THE DRESSING.",
+          "D. EAST STRIP: SERVANT QUARTERS AT GRADE LEVEL ARE COVERED BY A SEPARATE DRAWING AND ARE NOT SHOWN HERE. AT GROUND FLOOR LEVEL THE STRIP CARRIES A BATH DECK AT +60\" WITH THE OUTDOOR SHOWER, TIERED PLANTERS, AND STEPS DOWN FROM THE DRESSING.",
           "E. SERVICE WING ROOFED AT 7'-6\" WITH A PLANTER PARAPET; BATHROOM EAST WINDOW IN OBSCURE GLASS. GRAND ENTRANCE: 10'-0\" FLIGHT CENTRED ON THE WIDENED FRONT DOOR (NORTH PADA 5), BELOW THE BRAHMASTHAN LINE. BASEMENT STAIR IN THE NORTH LIGHT WELL. THE WHOLE BLOCK OVER THE PORCH (LOBBY, LIFT, MAIN STAIR, UPPER LIVING ROOMS) IS DEMOLISHED AND REBUILT ON THE NEW COLUMN GRID; LIFT AND MAIN STAIR STAY IN THE NORTH-WEST.",
           "F. ALL ROOM DIMENSIONS ARE CLEAR INTERNAL SIZES TAKEN FROM THE DRAWN WALLS. SHEET ORIENTATION: TOP = SOUTH, BOTTOM = NORTH, LEFT = EAST, RIGHT = WEST."]:
     S.note(t,150.5,ny,5.0); ny+=8
