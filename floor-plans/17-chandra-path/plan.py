@@ -186,3 +186,23 @@ def vastu_grid(S,x0,y0,x1,y1):
             cx=x0+(x1-x0)*(c+0.5)/3; cy=y0+(y1-y0)*(r+0.5)/3
             S.text(names[r][c],cx,cy,7.0,color=col)
     S.text("VASTU GRID 9 X 9 PADA (ASSESSMENT OVERLAY ONLY)",x0+(x1-x0)/2,y0-6,5.0,color=col)
+
+FT=15.7
+def ftin(pts):
+    inches=round(pts/FT*12)
+    f,i=divmod(inches,12)
+    return f"{f}'-{i}\""
+def dimstr(x0,y0,x1,y1): return f"{ftin(abs(x1-x0))} X {ftin(abs(y1-y0))}"
+def _labelr(self,name,x0,y0,x1,y1,cx,cy,size=8.0):
+    self.text(name,cx,cy,size); self.text(dimstr(x0,y0,x1,y1),cx,cy+size*1.19,size*0.8)
+Sheet.labelr=_labelr
+def _dimline(self,x0,y0,x1,y1,offset=0,size=4.0):
+    """dimension between two points (horizontal or vertical), text in the middle"""
+    horiz=abs(x1-x0)>abs(y1-y0)
+    if horiz:
+        y=y0+offset; self.line(x0,y,x1,y,BLACK,0.48); self.line(x0,y-4,x0,y+4,BLACK,0.48); self.line(x1,y-4,x1,y+4,BLACK,0.48)
+        self.text(ftin(abs(x1-x0)),(x0+x1)/2,y-2,size)
+    else:
+        x=x0+offset; self.line(x,y0,x,y1,BLACK,0.48); self.line(x-4,y0,x+4,y0,BLACK,0.48); self.line(x-4,y1,x+4,y1,BLACK,0.48)
+        self.text(ftin(abs(y1-y0)),x,(y0+y1)/2,size)
+Sheet.dimline=_dimline

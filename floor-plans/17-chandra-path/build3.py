@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R13.pdf"
+SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R14.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open(SRC)
 R_=pymupdf.Rect
 T_GF=pymupdf.Matrix(1,0,0,1,0,0)
@@ -44,15 +44,15 @@ def ne_wing(S, y0, y1, bedname, tdim, gdim, bdim, corr_y1):
     # bedroom furniture: bed head on south (y0 side)
     bed(S,325,y0+10)
     S.hatch(280,yi-70,300,yi-4,horizontal=True)                                       # wardrobe by window? (west wall)
-    S.label(bedname,bdim,373,y0+150,7.0)
+    S.labelr(bedname,278,y0,468,yi,373,y0+150,7.0)
     # toilet
     toilet_symbols(S, wc=(180,513,yi-20), basin=(-90,513,corr_y1+22), shower=(0,500,corr_y1+60))
     S.line(476,corr_y1+40,551,corr_y1+40,FURN,0.48,dashes="[2 2] 0")
-    S.text("TOILET",513,corr_y1+80,5.0); S.text(tdim,513,corr_y1+86,4.0)
+    S.text("TOILET",513,corr_y1+80,5.0); S.text(dimstr(476,corr_y1+6,551,yi),513,corr_y1+86,4.0)
     # garden
     S.circle(216,y0+95,15,FURN,0.48); S.circle(216,y0+95,10,FURN,0.24)
     for pts in ([(180,y0+40),(194,y0+37),(199,y0+48),(186,y0+52)],[(240,y0+150),(252,y0+147),(256,y0+158),(244,y0+162)]): S.poly(pts,FURN,0.48)
-    S.text("N-E GARDEN",216,y0+30,5.0); S.text(gdim,216,y0+36,4.0); S.small("OPEN TERRACE, PLANTED",216,y0+42,3.0)
+    S.text("N-E GARDEN",216,y0+30,5.0); S.text(dimstr(163.8,y0,270,yi),216,y0+36,4.0); S.small("OPEN TERRACE, PLANTED",216,y0+42,3.0)
     S.text("CORRIDOR",513,y0+22,4.0)
 
 # ================= GROUND FLOOR =================
@@ -78,35 +78,36 @@ sx0,sy0=174.0,362.0; S.rrect(sx0,sy0,sx0+24,sy0+34,3,PURPLE,0.24); S.rrect(sx0+3
 S.rect(384.4,262.0,420.4,298.0); S.line(384.4,280,420.4,280,FURN,0.48); S.line(414.4,262,414.4,298,FURN,0.48)
 S.rect(250.0,300.0,344.0,347.0); S.line(250,300,344,347,FURN,0.24); S.line(250,347,344,300,FURN,0.24)
 for cy in (312,335): S.circle(353,cy,5.5)
-S.label("KITCHEN",'15\'-11" X 11\'-0"',300.0,378.0); S.small("BREAKFAST ISLAND",297,325,3.2)
+S.labelr("KITCHEN",170,230.4,420.4,402.8,300.0,378.0); S.small("BREAKFAST ISLAND",297,325,3.2)
 S.line(232.0,410.7,232.0,492.9,FURN,0.48,dashes="[2 2] 0")
 S.wall(296.0,560.0,303.9,663.9); S.OL(296,560,296,663.9); S.OL(303.9,560,303.9,663.9); S.OL(296,560,303.9,560)
 S.hatch(170.0,500.7,252.0,527.0); S.hatch(270.0,560.0,296.0,663.9); S.rect(170.0,545.0,190.0,605.0); S.circle(200,575,6)
-S.label("DRESSING",'8\'-0" X 10\'-4"',236.0,600.0)
+S.labelr("DRESSING",170,500.7,296,663.9,236.0,600.0)
 bed(S,418,511.8,side=False); S.rect(396,511.8,416,531.8); S.rect(520,511.8,540,531.8)
 S.rect(312,560,342,590); S.circle(357,575,8); S.rect(445,634,515,656); S.circle(480,624,6); S.rect(330,650,430,662)
-S.label("BEDROOM-01",'16\'-5" X 10\'-6"',362.0,618.0)
+S.labelr("BEDROOM-01",303.9,500.7,561.4,663.9,362.0,618.0)
 # east boundary rebuilt straight on the south-end line (x=41), taking the slanted strip from the park side: 7'-0" strip
 XW=41.0
 S.wall(XW-6,207.0,XW,950.0); S.OL(XW-6,207,XW-6,950); S.OL(XW,207,XW,950)
 S.line(XW-6,195,XW-6,1000,BLACK,0.48,dashes="[6 2 1 2] 0"); S.small("PLOT LINE = NEW STRAIGHT WALL",XW+40,200,2.4)
 S.small("STRIP 7'-0\" CONSTANT, AS DIMENSIONED AT THE SOUTH END ON THE SURVEY PLAN; CONFIRM ON SITE",XW+95,197,2.2)
 S.wall(XW,207.0,150.5,213.0); S.OL(XW,207,150.5,207); S.OL(XW,213,150.5,213)
+S.dimline(XW,190,150.5,190); S.dimline(41,214,41,320,offset=-20); S.dimline(150.5,214,150.5,402.8,offset=12)
 # servant quarters at grade (second ground), existing room at the south-east corner + roofed extension; second room above at +9'-0"
 S.wall(XW,320.0,150.5,325.3); S.OL(XW,320,150.5,320); S.OL(XW,325.3,150.5,325.3)
 S.wall(XW,400.0,150.5,405.3); S.OL(XW,400,150.5,400); S.OL(XW,405.3,150.5,405.3)
 S.wall(88.0,325.3,94.0,400.0); S.OL(88,325.3,88,400); S.OL(94,325.3,94,400)
 S.rect(48,220,90,300,FURN,0.48); S.line(48,240,90,240,FURN,0.48)          # existing bed
 S.rect(100,220,142,300,FURN,0.48); S.line(100,240,142,240,FURN,0.48)      # second bed (extension)
-S.text("SERVANT ROOM",96,262,4.6); S.small("EXISTING, AT GRADE (+0), 2 BEDS",96,267,2.6); S.small("ROOM 2 ABOVE AT +9'-0\" (LADDER STAIR)",96,272,2.6); S.small("ENTRY FROM OUTSIDE ONLY, NO DOOR TO THE HOUSE",96,277,2.4)
+S.text("SERVANT ROOM",96,258,4.6); S.text(dimstr(41,213,150.5,320),96,263,3.6); S.small("EXISTING, AT GRADE (+0), 2 BEDS",96,268,2.6); S.small("ROOM 2 ABOVE AT +9'-0\" (LADDER STAIR)",96,273,2.6); S.small("ENTRY FROM OUTSIDE ONLY, NO DOOR TO THE HOUSE",96,278,2.4)
 toilet_symbols(S, wc=(90,66,350), basin=(90,66,385))
-S.text("WC",66,368,3.6); S.door(88,335,94,365,'y0','right')
-S.rect(100,330,142,396,FURN,0.48,dashes="[2 2] 0"); S.small("KITCHENETTE /",121,360,2.6); S.small("STORE",121,365,2.6)
+S.text("WC",66,366,3.6); S.text(dimstr(41,325.3,88,400),66,371,2.8); S.door(88,335,94,365,'y0','right')
+S.rect(100,330,142,396,FURN,0.48,dashes="[2 2] 0"); S.small("KITCHENETTE /",121,358,2.6); S.small("STORE",121,363,2.6); S.small(dimstr(94,325.3,150.5,400),121,368,2.6)
 S.door(100,400.0,135,405.3,'x0','up')                                      # servants' door from the lane
 # raised paved court at ground floor level outside the toilet and dressing; servants' lane at grade along the boundary wall
 S.wall(88.0,405.3,94.0,683.6); S.OL(88,405.3,88,683.6); S.OL(94,405.3,94,683.6)
 S.small("RETAINING WALL 5'-0\" + GREEN SCREEN",122,600,2.2)
-S.text("LANE",65,540,4.0); S.small("SERVANTS' ENTRY",65,545,2.4); S.small("AT GRADE, 3'-0\"",65,550,2.4); S.small("FROM PORCH",65,555,2.4)
+S.text("LANE",65,538,4.0); S.small(dimstr(41,405.3,88,683.6),65,543,2.6); S.small("SERVANTS' ENTRY",65,548,2.4); S.small("AT GRADE, FROM PORCH",65,553,2.4)
 S.wall(XW,683.6,88.0,689.0)  # lane gate post line at the porch
 S.door(60,683.6,85,689.0,'x0','down')
 for gx in range(100,148,7):
@@ -115,7 +116,7 @@ toilet_symbols(S, shower=(0,104,438)); S.small("OUTDOOR SHOWER",122,428,2.6); S.
 S.line(94,483,150.5,483,FURN,0.48,dashes="[2 2] 0")
 for yy in (500,540,580,620): S.rect(97,yy,112,yy+28,FURN,0.48)
 S.circle(132,655,11,FURN,0.48); S.circle(132,655,7,FURN,0.24)
-S.text("PAVED",122,560,4.6); S.text("COURT",122,566,4.6); S.small("AT +60\", PLANTERS,",122,571,2.6); S.small("FROM BATH + DRESSING",122,576,2.6)
+S.text("PAVED",122,558,4.6); S.text("COURT",122,564,4.6); S.small(dimstr(94,405.3,150.5,683.6),122,569,2.8); S.small("AT +60\", PLANTERS,",122,574,2.6); S.small("FROM BATH + DRESSING",122,579,2.6)
 S.sliding(150.5,611.7,170.0,663.9)                                          # dressing opens to the court
 for i,yy in enumerate((676,679,682)): S.line(94,yy,150.5,yy,FURN,0.48)
 S.small("TIERED PLANTER EDGE TO PORCH",122,672,2.4)
@@ -125,7 +126,7 @@ columns(S); S.small("EXTERNAL COLUMNS TO TERRACE",360,942,2.8)
 S.rect(190.0,683.6,513.0,754.0,BLACK,0.48,dashes="[3 2] 0")
 S.stair(395.0,704.0,513.0,750.0,10,'left'); S.rect(345.0,704.0,395.0,750.0,MAG,0); S.rect(345.0,683.6,391.0,689.0,BLACK,0.48,dashes="[2 1] 0")
 S.text("DN",454,748,5.0,color=MAG); S.small("11 R TO BASEMENT, LANDING AT DOOR BELOW",454,754,2.6,color=MAG)
-S.circle(240,720,14,FURN,0.48); S.circle(240,720,9,FURN,0.24); S.text("SUNKEN GARDEN COURT",268,760,5.0); S.small("EXISTING LIGHT WELL, PLANTED (NORTH-EAST KEPT OPEN); EXTENDED WEST FOR THE STAIR",268,766,2.6)
+S.circle(240,720,14,FURN,0.48); S.circle(240,720,9,FURN,0.24); S.text("SUNKEN GARDEN COURT",268,760,5.0); S.text(dimstr(190,683.6,513,754),268,772,3.6); S.small("EXISTING LIGHT WELL, PLANTED (NORTH-EAST KEPT OPEN); EXTENDED WEST FOR THE STAIR",268,766,2.6)
 # concealed event gate on east boundary (porch length)
 S.line(XW,683.6,XW,940,RED,1.6,dashes="[6 3] 0")
 S.text("CONCEALED EVENT GATE",100,880,4.6,color=RED); S.text("FLUSH WALL PANELS, PARK SIDE",100,886,3.4,color=RED)
@@ -139,13 +140,13 @@ S.rect(655,512,743,655,FURN,0.48); S.rect(658,515,740,652,FURN,0.24)
 S.circle(699,583,22,FURN,0.48); S.circle(699,583,15,FURN,0.24); S.circle(699,583,3,FURN,0.48)
 for gx in range(662,740,9):
     for gy in range(519,652,9): S.line(gx,gy,gx+1,gy+1,FURN,0.3)
-S.text("COURTYARD-01",699,630,6.0); S.text('5\'-7" X 9\'-1"',699,637,4.6); S.small("OPEN TO SKY THROUGH ALL FLOORS",699,643,3.0); S.small("TREE IN 3'-0\" DEEP PLANTER, WATERPROOFED",699,648,3.0)
-S.text("ENTRANCE",612,585,5.0); S.text("FOYER",612,591,5.0); S.text('5\'-6" WIDE',612,597,4.0)
+S.text("COURTYARD-01",699,630,6.0); S.text(dimstr(655,512,743,655),699,637,4.6); S.small("OPEN TO SKY THROUGH ALL FLOORS",699,643,3.0); S.small("TREE IN 3'-0\" DEEP PLANTER, WATERPROOFED",699,648,3.0)
+S.text("ENTRANCE",612,585,5.0); S.text("FOYER",612,591,5.0); S.text(dimstr(569.3,512,655,668.4),612,597,3.8)
 # entrance steps: compact flight directly outside the existing door, north pada 5, outside the Brahmasthan
 S.rect(560,683.6,717,745,MAG,0); S.stair(560,745,717,810,6,'up'); S.text("UP 6 R",638,818,4.6,color=MAG)
 S.rect(520,683.6,556,810,FURN,0.48); S.rect(721,683.6,757,810,FURN,0.48)
 for yy in range(690,805,24): S.circle(538,yy+10,8,FURN,0.24); S.circle(739,yy+10,8,FURN,0.24)
-S.text("GRAND ENTRANCE",638,828,5.0); S.small("10'-0\" WIDE FLIGHT + LANDING, PLANTERS BOTH SIDES, DOUBLE-HEIGHT PORTE-COCHERE UNDER THE NEW NORTH WING",638,833,2.6)
+S.text("GRAND ENTRANCE",638,828,5.0); S.text("LANDING "+dimstr(560,683.6,717,745)+", FLIGHT "+dimstr(560,745,717,810),638,838,3.4); S.small("10'-0\" WIDE FLIGHT + LANDING, PLANTERS BOTH SIDES, DOUBLE-HEIGHT PORTE-COCHERE UNDER THE NEW NORTH WING",638,833,2.6)
 S.small("ENTRANCE DOOR WIDENED TO 6'-0\" DOUBLE DOOR (NEW LINTEL)",625,678,2.4)
 # notes
 ny=990
@@ -155,9 +156,8 @@ for t in ["NOTES (REVISION R3):",
           "C. COURTYARD-01 IN THE EXISTING STAIRWELL SHAFT, OPEN TO SKY THROUGH ALL FLOORS: THE BRAHMASTHAN (CENTRE OF THE WHOLE-HOUSE GRID) IS KEPT OPEN AND FREE OF STAIRS. ENTRANCE STEPS ARE A COMPACT 6-RISER FLIGHT OUTSIDE THE EXISTING DOOR; BASEMENT STAIR IN THE WEST PART OF THE EXISTING LIGHT WELL. LIFT GIVES THE STEP-FREE ROUTE.",
           "D. EAST STRIP: SERVANT QUARTERS AT GRADE IN THE SOUTH-EAST (EXISTING ROOM + ROOFED EXTENSION TO THE KITCHEN LINE, WC, SECOND ROOM ABOVE AT +9'-0\"), ENTERED FROM OUTSIDE ONLY BY A 3'-0\" LANE AT GRADE ALONG THE BOUNDARY WALL FROM THE PORCH; NO DOOR INTO THE HOUSE. NORTH OF THE KITCHEN LINE A RAISED PAVED COURT AT +60\" WITH PLANTERS AND THE OUTDOOR SHOWER, OPENING FROM THE BATHROOM (FULL-HEIGHT GLAZING) AND THE DRESSING (SLIDING DOOR), TIERED PLANTER EDGE STEPPING DOWN TO THE PORCH.",
           "E. SERVICE WING ROOFED AT 7'-6\" WITH A PLANTER PARAPET; BATHROOM EAST WINDOW IN OBSCURE GLASS. GRAND ENTRANCE: 10'-0\" FLIGHT CENTRED ON THE WIDENED FRONT DOOR (NORTH PADA 5), BELOW THE BRAHMASTHAN LINE. BASEMENT STAIR IN THE NORTH LIGHT WELL. THE WHOLE BLOCK OVER THE PORCH (LOBBY, LIFT, MAIN STAIR, UPPER LIVING ROOMS) IS DEMOLISHED AND REBUILT ON THE NEW COLUMN GRID; LIFT AND MAIN STAIR STAY IN THE NORTH-WEST.",
-          "F. VASTU GRID (RED) COVERS THE WHOLE BUILT HOUSE INCLUDING THE PORCH LEVEL UNDER THE UPPER FLOORS; ASSESSMENT OVERLAY ONLY. SHEET ORIENTATION: TOP = SOUTH, BOTTOM = NORTH, LEFT = EAST, RIGHT = WEST."]:
+          "F. ALL ROOM DIMENSIONS ARE CLEAR INTERNAL SIZES TAKEN FROM THE DRAWN WALLS. SHEET ORIENTATION: TOP = SOUTH, BOTTOM = NORTH, LEFT = EAST, RIGHT = WEST."]:
     S.note(t,150.5,ny,5.0); ny+=8
-vastu_grid(S,150.1,210.9,1099,947.3)
 S.commit()
 
 # ================= FIRST FLOOR (page 1) =================
@@ -172,16 +172,16 @@ F.wall(163.8,640,252,646); F.wall(252,646,258,720.2)
 for a in [(163.8,640,258,640),(163.8,646,252,646),(252,646,252,720.2),(258,640,258,720.2)]: F.OL(*a)
 F.door(252,660,258,695,'y0','right')
 F.rect(166,662,178,700,FURN,0.48); F.small("ALTAR",172,706,2.8)
-F.text("PUJA",210,680,5.0); F.text('5\'-7" X 4\'-8"',210,686,4.0)
+F.text("PUJA",210,680,5.0); F.text(dimstr(163.8,646,252,720.2),210,686,4.0)
 F.rect(300,560,362,592); F.circle(331,604,6); F.hatch(270,700,425,720.2)           # desk, chair, book wall
 F.rrect(180,540,240,570,4); F.circle(258,555,8)                                       # cosy sofa + table
 F.rect(380,510,425,528,FURN,0.48); F.small("MEMENTO SHELVES",402,536,2.8)
-F.label("STUDY / MEMENTO ROOM",'17\'-0" X 13\'-10½"',300.0,640.0)
+F.labelr("STUDY / MEMENTO ROOM",163.8,502.8,430.9,720.2,300.0,640.0)
 F.small("VIDEO-CALL WALL: EAST FACING",300,660,3.0)
 # master walk-in closet in former west terrace
 F.hatch(930,505,1057,528); F.hatch(930,644,1057,667); F.rect(972,570,1015,600); F.small("ISLAND",993,606,2.8)
 F.door(920.7,560,928.5,600,'y0','left')                                             # closet -> bathroom
-F.label("WALK-IN CLOSET",'8\'-3" X 10\'-5"',993.0,588.0,7.0)
+F.labelr("WALK-IN CLOSET",928.5,502.8,1058.5,669.9,993.0,588.0,7.0)
 # north-east wing over porch
 columns(F)
 ne_wing(F,728.1,935.8,"BEDROOM-03",'4\'-9" X 8\'-10"','6\'-9" X 12\'-5"','12\'-1" X 12\'-5"',779)
@@ -192,9 +192,8 @@ for gx0,gx1 in ((344.7,399.6),(438.8,516.8)):
 ny=1000
 for t in ["NOTES (FIRST FLOOR, R3):","1. THE BLOCK OVER THE PORCH IS REBUILT FROM SCRATCH ON RCC COLUMNS FROM FOUNDATION TO TERRACE (THREE ON THE PORCH LINE, THREE AT THE BACK AGAINST THE NORTH WALL, NONE WITHIN THE 10'-0\" CAR GATE OR THE DRIVE LINE), INDEPENDENT OF THE STONE WALLS; TO STRUCTURAL DESIGN.",
           "2. FORMER WEST TERRACE ENCLOSED AS MASTER WALK-IN CLOSET (LIGHT PARTITIONS ON EXISTING SLAB). 3. NORTH-EAST ROOM RE-PURPOSED AS STUDY WITH PUJA IN ITS NORTH-EAST CORNER.",
-          "4. COURTYARD VOID WITHIN THE EXISTING STAIRWELL SHAFT; GLASS BALUSTRADE. 5. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY."]:
+          "4. COURTYARD VOID WITHIN THE EXISTING STAIRWELL SHAFT; GLASS BALUSTRADE. 5. ROOM DIMENSIONS ARE CLEAR INTERNAL SIZES FROM THE DRAWN WALLS."]:
     F.note(t,150.1,ny,5.0); ny+=8
-vastu_grid(F,150.1,210.9,1099,947.3)
 F.commit()
 
 # ================= SECOND FLOOR (page 2) =================
@@ -210,22 +209,22 @@ G.OL(444.8,398.3,444.8,404.2)
 G.rrect(300,470,420,505,5); G.rrect(300,515,332,585,5); G.circle(370,545,18); G.rrect(430,560,470,600,5)
 G.rect(470,300,700,330,FURN,0.48); G.small("BAR / PANTRY",585,340,3.2)
 G.rrect(500,380,640,415,5); G.circle(560,445,16)
-G.label("LOUNGE / COMMON AREA",'17\'-0" X 22\'-3"',300.0,660.0)
+G.labelr("LOUNGE / COMMON AREA",162.2,404.2,433.1,747.6,300.0,660.0)
 G.rrect(120,250,250,285,5); G.rrect(120,300,152,370,5); G.circle(200,330,18); G.rrect(300,300,340,340,5)
-G.label("LIVING (BEST VIEW)",'21\'-6" X 11\'-6"',270.0,380.0,7.0); G.small("SEMI-OPEN: SLIDING GLASS + SCREENS TO THE EAST BALCONY",270,396,2.8)
-G.label("COMMON LOUNGE",'18\'-0" X 17\'-3"',585.0,470.0,7.0)
+G.labelr("LIVING (BEST VIEW)",101.5,222.7,433.1,398.3,270.0,380.0,7.0); G.small("SEMI-OPEN: SLIDING GLASS + SCREENS TO THE EAST BALCONY",270,396,2.8)
+G.labelr("COMMON LOUNGE",444.8,222.7,723.3,495,585.0,470.0,7.0)
 # north wall junctions: former windows -> glazed door to garden, bedroom door from lounge, infill by corridor
 G.door(165,753.5,215,759.4,'x0','down')
 G.door(350,753.5,392,759.4,'x1','down')
 G.wall(444.8,753.5,557.5,759.4); G.OL(444.8,753.5,557.5,753.5); G.OL(444.8,759.4,557.5,759.4)
 G.wall(150.4,747.6,163.8,759.4)
 G.small("EXISTING PIER LINE RETAINED, WIDE OPENING WITH LINTEL",438,470,2.6)
-G.text("LUGGAGE /",504,620,5.0); G.text("STORE",504,626,5.0)
+G.text("LUGGAGE /",504,620,5.0); G.text("STORE",504,626,5.0); G.text(dimstr(444.8,506.7,563.3,753.5),504,632,4.0)
 # open view deck on external columns (no walls), railing on the north and east edges
 G.rect(150.1,759.4,557.3,935.6,FURN,0.48); G.rect(150.1,930,557.3,935.6,BLACK,0.48); G.rect(150.1,759.4,155.7,935.6,BLACK,0.48)
 columns(G)
 G.rrect(200,800,330,834,5); G.rrect(200,845,232,915,5); G.circle(300,880,18); G.rrect(400,800,520,834,5)
-G.label("VIEW DECK",'26\'-0" X 11\'-3"',353.0,890.0); G.small("OPEN, ON EXTERNAL COLUMNS; RAILING 3'-6\"; TERRACE SLAB OVER",353,906,3.0)
+G.labelr("VIEW DECK",150.1,759.4,557.3,935.6,353.0,890.0); G.small("OPEN, ON EXTERNAL COLUMNS; RAILING 3'-6\"; TERRACE SLAB OVER",353,906,3.0)
 G.wall(557.5,690.8,569.2,935.6); G.OL(557.5,690.8,557.5,935.6)
 # bedroom-02 with en-suite in the former living over the porch (north-west)
 G.wall(569.2,683.6,723.3,689.0); G.OL(569.2,689,723.3,689)
@@ -234,15 +233,14 @@ G.wall(734,846,740,935.6); G.wall(740,846,818.2,852)
 for a in [(734,846,734,935.6),(740,852,740,935.6),(740,846,818.2,846),(740,852,818.2,852)]: G.OL(*a)
 G.door(740,858,818.2,864,'x0','down') if False else G.door(734,870,740,905,'y0','left')
 toilet_symbols(G, wc=(90,800,925), basin=(90,760,925), shower=(0,750,870))
-G.text("EN-SUITE",779,905,4.0); G.text('5\'-0" X 5\'-4"',779,910,3.4)
+G.text("EN-SUITE",779,905,4.0); G.text(dimstr(740,852,818.2,935.6),779,910,3.4)
 bed(G,640,700); G.hatch(572,700,592,840)
-G.label("BEDROOM-02",'15\'-10" X 16\'-0"',690.0,900.0,7.0)
+G.labelr("BEDROOM-02",569.2,689,818.2,935.6,690.0,900.0,7.0)
 ny=1000
 for t in ["NOTES (SECOND FLOOR, R3):","1. SOUTH-EAST TOILET, WALK-IN CLOSET AND BEDROOM-02 REMOVED; THE SOUTH-EAST CORNER WITH THE BEST VIEW BECOMES THE LIVING ROOM, THE REST A COMMON LOUNGE. FORMER NORTH WINDOWS BECOME DOORS TO THE GARDEN AND BEDROOM-02, OR ARE INFILLED.",
           "2. BEDROOM-02 WITH EN-SUITE IN THE FORMER LIVING OVER THE PORCH (NORTH-WEST); THE NEW EAST WING AT THIS LEVEL IS AN OPEN VIEW DECK ON EXTERNAL COLUMNS, NO WALLS. 3. STRUCTURAL WALL LINES RETAINED AS PIERS; OPENINGS WITH LINTELS.",
-          "4. FAMILY GALLERY ALONG THE COURTYARD VOID. 5. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY."]:
+          "4. FAMILY GALLERY ALONG THE COURTYARD VOID. 5. ROOM DIMENSIONS ARE CLEAR INTERNAL SIZES FROM THE DRAWN WALLS."]:
     G.note(t,150.4,ny,5.0); ny+=8
-vastu_grid(G,150.1,210.9,1099,947.3)
 G.commit()
 
 # ================= BASEMENT (copy of GF template) =================
@@ -255,7 +253,6 @@ def template(title1,title2,drg):
     return pg,Sx
 bf,B=template("BASEMENT -","RENOVATION LAYOUT","BF-PP-01")
 exec(open("basement_layout.py").read())
-vastu_grid(B,150.1,210.9,1099,947.3)
 B.commit()
 
 # ================= TERRACE FLOOR =================
@@ -275,7 +272,7 @@ Tt.door(830,850,842,890,'y0','left')
 Tt.door(760,826,800,832,'x0','down')
 toilet_symbols(Tt, wc=(-90,810,804), basin=(-90,740,804))
 Tt.text("STAFF WC",772,815,3.6)
-Tt.rect(726,840,768,924,FURN,0.48); Tt.line(726,858,768,858,FURN,0.48); Tt.text("STAFF ROOM",800,880,5.0); Tt.text('7\'-0" X 7\'-0"',800,886,4.0)
+Tt.rect(726,840,768,924,FURN,0.48); Tt.line(726,858,768,858,FURN,0.48); Tt.text("STAFF ROOM",800,880,5.0); Tt.text(dimstr(720,832,830,941.3),800,886,4.0)
 
 columns(Tt,dashed=True)
 courtyard_void(Tt,label=False); Tt.text("COURTYARD VOID",699,578,6.0); Tt.text("OPEN SKYLIGHT OPENING",699,585,4.6); Tt.small("SAFETY RAILING 3'-6\" HIGH",699,591,3.0)
@@ -285,7 +282,7 @@ Tt.rect(985,240,1068,300,FURN,0.48); Tt.line(985,240,1068,300,FURN,0.24); Tt.lin
 Tt.rect(905,240,975,300,FURN,0.48); Tt.circle(940,270,20); Tt.circle(940,270,6); Tt.text("CENTRAL",940,312,4.6); Tt.text("WATER HEATER",940,318,4.6); Tt.small("HEAT PUMP + SOLAR THERMAL",940,323,2.6)
 for i in range(3): Tt.rect(848+i*18,244,862+i*18,270,FURN,0.48)
 Tt.text("AC ODUs",876,282,4.0); Tt.small("+ PUMPS",876,287,2.6)
-Tt.text("SERVICES ENCLOSURE",957,344,5.0); Tt.small("LOUVRED SCREEN, SOUTH-WEST",957,349,2.8)
+Tt.text("SERVICES ENCLOSURE",957,344,5.0); Tt.text(dimstr(840,232,1075,336),957,354,4.0); Tt.small("LOUVRED SCREEN, SOUTH-WEST",957,349,2.8)
 # ---- solar array along the south edge ----
 for i in range(10): Tt.rect(330+i*50,236,374+i*50,296,FURN,0.48); Tt.line(330+i*50,266,374+i*50,266,FURN,0.24)
 Tt.text("SOLAR PV ARRAY, SOUTH EDGE (10 PANELS SHOWN, EXTEND AS REQUIRED)",580,306,4.6)
@@ -303,24 +300,23 @@ Tt.small("DINING 8",px0+240,py0+90,3.0)
 Tt.rrect(px0+30,py0+150,px0+170,py0+184,5); Tt.rrect(px0+30,py0+200,px0+64,py0+280,5); Tt.circle(px0+120,py0+235,18); Tt.rrect(px0+180,py0+200,px0+230,py0+250,5)
 Tt.rrect(px0+250,py0+150,px0+370,py0+184,5); Tt.rrect(px0+330,py0+200,px0+370,py0+280,5)
 Tt.rect(px1-60,py1-50,px1-10,py1-10,FURN,0.48); Tt.small("AV / DJ",px1-35,py1-28,2.8)
-Tt.text("SKY PAVILION",375,660,8.0); Tt.text('24\'-9" X 21\'-0"',375,669,6.0)
+Tt.text("SKY PAVILION",375,660,8.0); Tt.text(dimstr(180,375,570,705),375,669,6.0)
 Tt.small("SEMI-CLOSED: RETRACTABLE LOUVRE ROOF, SLIDING GLASS + INSECT SCREENS, HEATERS",375,676,3.0)
 Tt.small("OPENS ONTO THE OPEN TERRACE AND THE NORTH-EAST DECK",375,681,3.0)
 # ---- guest wc by the drying yard (north-west) ----
 Tt.wall(626,776,632,834); Tt.wall(632,828,708,834); Tt.wall(702,776,708,828)
 for a in [(626,776,626,834),(632,776,632,828),(632,828,702,828),(632,834,708,834),(702,776,702,828),(708,776,708,834)]: Tt.OL(*a)
-Tt.door(650,828,690,834,'x0','down'); toilet_symbols(Tt, wc=(-90,690,800), basin=(-90,648,800)); Tt.text("GUEST WC",667,846,3.8)
+Tt.door(650,828,690,834,'x0','down'); toilet_symbols(Tt, wc=(-90,690,800), basin=(-90,648,800)); Tt.text("GUEST WC",667,846,3.8); Tt.text(dimstr(632,776,702,828),667,851,3.0)
 Tt.rect(600,856,708,941.3,FURN,0.48,dashes="[2 2] 0"); Tt.text("CLOTHES DRYING",654,900,4.6); Tt.small("(SCREENED, NORTH-WEST)",654,906,2.8)
 # ---- open terrace / north-east deck ----
 Tt.rect(X0+6,Y1-40,600,Y1-6,FURN,0.48,dashes="[2 2] 0"); Tt.text("PLANTER STRIP ALONG NORTH EDGE",380,Y1-20,4.6)
-Tt.rect(180,720,560,900,FURN,0.48,dashes="[3 2] 0"); Tt.text("NORTH-EAST DECK",370,810,6.0); Tt.text("OPEN, LOW PLANTING, EVENT OVERFLOW",370,818,4.0)
+Tt.rect(180,720,560,900,FURN,0.48,dashes="[3 2] 0"); Tt.text("NORTH-EAST DECK",370,810,6.0); Tt.text(dimstr(180,720,560,900),370,817,4.6); Tt.text("OPEN, LOW PLANTING, EVENT OVERFLOW",370,818,4.0)
 Tt.text("OPEN TERRACE",930,520,8.0); Tt.text("PAVED, WITH THE COURTYARD VOID RAILED",930,529,4.6)
 ny=1000
 for t in ["NOTES (TERRACE, R5):","1. PARAPET 3'-6\" HIGH ALL ROUND; COURTYARD VOID RAILED. 2. WATER TANKS, CENTRAL WATER HEATER, AC OUTDOOR UNITS AND PUMPS IN A LOUVRED SERVICES ENCLOSURE IN THE SOUTH-WEST; SOLAR PV ALONG THE SOUTH PARAPET; NORTH-EAST KEPT OPEN AND LOW (VASTU).",
           "3. SKY PAVILION ON THE EAST: STEEL FRAME, RETRACTABLE LOUVRE ROOF, SLIDING GLASS WITH INSECT SCREENS, BAR, DINING AND LOUNGE; POWER AND WATER TO THE BAR. 4. STAFF ROOM, WC, GUEST WC AND SCREENED DRYING YARD BESIDE THE MUMTY (NORTH-WEST).",
-          "5. TERRACE SLAB OVER THE NORTH WING CARRIED ON THE EXTERNAL COLUMNS (DASHED); PAVILION AND SERVICES LOADS TO BE CHECKED BY THE STRUCTURAL ENGINEER. 6. WATERPROOFING AND SLOPES TO NORTH-EAST DRAIN POINTS. 7. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY."]:
+          "5. TERRACE SLAB OVER THE NORTH WING CARRIED ON THE EXTERNAL COLUMNS (DASHED); PAVILION AND SERVICES LOADS TO BE CHECKED BY THE STRUCTURAL ENGINEER. 6. WATERPROOFING AND SLOPES TO NORTH-EAST DRAIN POINTS."]:
     Tt.note(t,150.1,ny,5.0); ny+=8
-vastu_grid(Tt,150.1,210.9,1099,947.3)
 Tt.commit()
 
 # order: BF, GF, FF, SF, TF

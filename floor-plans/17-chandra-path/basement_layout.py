@@ -36,20 +36,20 @@ for cy in (275,300,322): B.circle(212,cy,5.5)
 B.rect(262,si,420,262,FURN,0.48); B.small("WINE / DISPLAY WALL",341,251,3.0)
 B.rrect(200,540,330,572,4); B.rrect(200,580,232,650,4); B.circle(300,612,18)   # sofas + round table
 B.rrect(340,590,395,640,4)
-B.label("LOUNGE + BAR",'15\'-10" X 26\'-8"',300.0,440.0); B.small("BAR",219,254,3.2)
+B.labelr("LOUNGE + BAR",176,236,425,658,300.0,440.0); B.small("BAR",219,254,3.2)
 # --- HOME THEATER (west half, south part) ---
 B.rect(450,si+2,672,si+8,FURN,0.48); B.small("SCREEN",561,si+16,3.2)
 for ry in (330,400):
     for i in range(4): B.rrect(462+i*54,ry,506+i*54,ry+34,4)
-B.label("HOME THEATER",'15\'-6" X 16\'-10"',561.0,470.0)
+B.labelr("HOME THEATER",439,236,683,501,561.0,470.0)
 # --- GYM / WELLNESS, SHOWER-WC, STORE ---
 B.rect(450,520,470,600); B.rect(490,600,545,640)
-B.label("GYM",'8\'-1" X 9\'-7"',502.0,560.0,7.0)
+B.labelr("GYM",439,507,566,658,502.0,560.0,7.0)
 
 B.hatch(650,515,738,530); B.hatch(650,640,738,655)
-B.label("STORE / AV",'7\'-8" X 9\'-6"',683.0,585.0,7.0); B.small("(EXISTING STAIRWELL, FLOORED OVER AT GF; COURTYARD PLANTER ABOVE)",683,603,2.6)
+B.labelr("STORE / AV",623,509,743,658,683.0,585.0,7.0); B.small("(EXISTING STAIRWELL, FLOORED OVER AT GF; COURTYARD PLANTER ABOVE)",683,603,2.6)
 B.door(630.0,501.0,670.0,509.0,'x0','down')
-B.text("SHOWER",594,600,4.2); B.text("/ WC",594,606,4.2); B.text('2\'-10" X 9\'-7"',594,612,3.6)
+B.text("SHOWER",594,600,4.2); B.text("/ WC",594,606,4.2); B.text(dimstr(572,507,617,658),594,612,3.6)
 B.replay(lambda it: R_(240,411.2,300,458).contains(it["drect"]) and purple(it), rot(270,430,180,594,640))
 B.replay(lambda it: R_(298,411.2,331,470).contains(it["drect"]) and purple(it), rot(316,452,-90,594,522))
 B.line(572,560,617,560,FURN,0.48,dashes="[2 2] 0")
