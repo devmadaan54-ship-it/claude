@@ -17,14 +17,11 @@ B.wall(566.0,507.0,572.0,ni); B.OL(566,507,566,ni); B.OL(572,507,572,ni)
 # doors
 B.door(425.0,420.0,439.0,467.0,'y0','right')     # theater
 B.door(425.0,560.0,439.0,607.0,'y0','right')     # gym
-B.door(566.0,520.0,572.0,560.0,'y0','right')     # shower/wc off gym
-B.door(630.0,501.0,670.0,509.0,'x0','down')     # store from theater (AV / store)
+B.door(566.0,520.0,572.0,560.0,'y1','left')     # gym from basement lobby
+
 # windows + glazed door to sunken court
-B.window(E,586.0,ei,636.0)
-B.door(E,545.0,ei,580.0,'y0','right')
-B.rect(92,405.3,147,425,MAG,0); B.stair(92,425,147,540,8,'up'); B.rect(92,540,147,586,MAG,0); B.text("UP",115,565,5.0,color=MAG); B.small("TO GF SERVICE WING",115,571,2.8)
-B.wall(74,207,80,690); B.wall(80,207,150.5,213); B.wall(80,683.6,150.5,689); B.wall(80,586,150.5,591.3); B.wall(80,400,150.5,405.3)
-B.small("GLAZED DOOR IN EXISTING EAST",213,560,2.8); B.small("WINDOW OPENING, LINTEL RETAINED",213,564,2.8)
+B.window(E,536.0,ei,636.0)
+B.small("EXISTING SERVANT ROOM AREA ON THE EAST SIDE (VERIFY ON SITE)",60,300,2.8); B.small("KEEPS ITS OWN ENTRY FROM THE EAST",60,305,2.8)
 B.window(195.0,ni,391.0,No)
 # sunken court + stair outside north wall
 B.rect(190.0,No,395.0,754.0,BLACK,0.48,dashes="[3 2] 0"); B.text("EXISTING LIGHT WELL",292,725,5.0); B.text("PLANTED SUNKEN COURT",292,731,4.0)
@@ -44,16 +41,19 @@ B.label("HOME THEATER",'15\'-6" X 16\'-10"',561.0,470.0)
 # --- GYM / WELLNESS, SHOWER-WC, STORE ---
 B.rect(450,520,470,600); B.rect(490,600,545,640)
 B.label("GYM",'8\'-1" X 9\'-7"',502.0,560.0,7.0)
-B.text("SHOWER",594,600,4.2); B.text("/ WC",594,606,4.2); B.text('2\'-10" X 9\'-7"',594,612,3.6)
-B.replay(lambda it: R_(240,411.2,300,458).contains(it["drect"]) and purple(it), rot(270,430,180,594,640))   # WC at far end
-B.replay(lambda it: R_(298,411.2,331,470).contains(it["drect"]) and purple(it), rot(316,452,-90,594,522))   # basin
-B.line(572,560,617,560,FURN,0.48,dashes="[2 2] 0")
-B.hatch(650,515,738,530); B.hatch(650,640,738,655)
-B.label("STORE / AV",'7\'-8" X 9\'-6"',683.0,585.0,7.0); B.small("(EXISTING STAIRWELL, FLOORED OVER AT GF)",683,603,2.8)
+
+B.rect(653,545,707,615,FURN,0.72); B.circle(680,580,17,FURN,0.48); B.circle(680,580,11,FURN,0.24)
+B.stair(707,512,743,615,11,'down'); B.text("UP",725,608,4.0,color=MAG); B.small("11 R TO ENTRANCE",725,613,2.6,color=MAG)
+B.rect(617,509,743,545,MAG,0); B.text("LANDING",680,530,4.0,color=MAG)
+B.line(617,545,653,545,FURN,0.48,dashes="[2 2] 0"); B.small("GF FLIGHT OVER",635,580,2.6)
+B.text("ENTRANCE ATRIUM",680,632,5.0); B.small("TREE PIT, SKYLIT VOID ABOVE",680,637,2.8)
+B.door(617,515,623,545,'y0','left')
+B.text("BASEMENT",594,600,4.6); B.text("LOBBY",594,606,4.6); B.text('2\'-10" X 9\'-7"',594,612,3.6)
+B.door(575,501,610,509,'x0','up')
 ny=790
-for t in ["NOTES (BASEMENT):","1. Existing stairwell floored over at ground floor level; the well below becomes the store / AV room; the courtyard planter above it is waterproofed.",
-          "2. Basement entry from the ground floor service wing on the east side (existing east-side entry): east window opening converted to a door, sill masonry removed, lintel retained; 8-riser external stair inside the enclosed wing.",
-          "3. Existing north light well kept as a planted sunken court; north window unchanged. Existing servant room at basement level on the east side to be verified on site and connected to the new stair landing.",
+for t in ["NOTES (BASEMENT):","1. Existing stairwell re-used as the entrance atrium: entrance door at porch level, 6 risers up to the ground floor and 11 down to this level, tree pit between the flights, basement lobby with doors to the gym and theater.",
+          "2. No external basement stair; the light well on the north stays a planted sunken court with its window unchanged.",
+          "3. Existing servant room area on the east side keeps its own entry; position to be verified on site.",
           "4. Existing ceiling height 8'-6\". Existing RCC columns and hidden beam on the centre line are retained; theater partition is non-load-bearing.",
           "5. No new opening in the ground floor slab. Existing basement windows and walls otherwise unchanged."]:
     B.note(t,150.5,ny,5.2); ny+=9

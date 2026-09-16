@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R8.pdf"
+SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R9.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open(SRC)
 R_=pymupdf.Rect
 T_GF=pymupdf.Matrix(1,0,0,1,0,0)
@@ -27,7 +27,7 @@ def courtyard_void(S, label=True):
     S.rect(655,512,743,655,BLACK,0.72)                    # slab edge of the void
     S.line(655,512,743,655,FURN,0.24); S.line(655,655,743,512,FURN,0.24)
     S.rect(652,509,746,658,FURN,0.48)                     # glass balustrade line
-    if label: S.text("COURTYARD VOID",699,578,6.0); S.text("OPEN TO SKY",699,585,4.6); S.small("GLASS BALUSTRADE",699,591,3.0)
+    if label: S.text("ATRIUM VOID",699,578,6.0); S.text("SKYLIT, TREE BELOW",699,585,4.6); S.small("GLASS BALUSTRADE",699,591,3.0)
 def ne_wing(S, y0, y1, bedname, tdim, gdim, bdim, corr_y1):
     """north extension rooms east of the living: NE garden, bedroom, toilet, corridor. y0=wall line (start), y1=outer face."""
     yi=y1-11.7                                            # inner face of north wall
@@ -63,6 +63,7 @@ DEL=[R_(*r) for r in [
     (70.0,378.0,148.0,404.0),(45.0,468.0,150.4,473.0),
     (582.0,513.0,746.5,636.0),(655.0,636.0,746.5,667.5),          # foyer contents -> courtyard
     (662.0,684.5,830.0,766.0),(500.0,684.5,585.0,766.0),          # verandah middle + old steps
+    (592.0,636.0,655.5,684.0),                                    # old entrance door (infilled)
 ]]
 PRED=[lambda r,op,n: n==2 and r.height<0.6 and r.x0<82 and r.width>60 and 205<r.y0<1100,     # porch / side-yard paving lines
       lambda r,op,n: n==2 and r.height>300 and r.x1<110 and r.x0>20]                            # slanted boundary lines
@@ -101,11 +102,11 @@ S.rect(84,292,110,318,FURN,0.48); S.circle(97,305,9); S.small("WM",97,326,3.0)
 S.rect(84,330,110,360,FURN,0.48); S.rrect(88,334,106,356,2,PURPLE,0.24)
 S.rect(84,364,110,396,FURN,0.48); S.small("SHELVES",97,392,2.6)
 S.text("UTILITY",125,346,4.6); S.text('4\'-6" X 7\'-2"',125,352,3.8); S.small("COVERED, INTERNAL ACCESS ONLY",125,357,2.6)
-# basement stair from the utility: landing, 8 risers down northwards, lower landing at basement east door
+# covered laundry / drying beyond the utility (door from utility); no external access
 S.door(105.0,400.0,140.0,405.3,'x0','down')
-S.rect(92,405.3,147,425,MAG,0); S.stair(92,425,147,540,8,'down'); S.rect(92,540,147,586,MAG,0)
-S.text("DN",115,565,5.0,color=MAG); S.small("8 R TO BASEMENT",115,571,2.8); S.small("EXISTING E-SIDE ENTRY",115,576,2.6)
-S.rect(150.5,545,170,580,BLACK,0.48,dashes="[2 1] 0"); S.small("BASEMENT DOOR BELOW",125,596,2.6)
+for yy in (420,470,520): S.line(88,yy,146,yy,FURN,0.48,dashes="[1 2] 0")
+S.rect(84,540,110,570,FURN,0.48); S.circle(97,555,9); S.small("DRYER",97,578,2.8)
+S.text("LAUNDRY /",122,485,4.6); S.text("DRYING",122,491,4.6); S.text('4\'-6" X 11\'-6"',122,497,3.8); S.small("COVERED, INTERNAL ONLY",122,502,2.6)
 # green court at the north end: covered by pergola / skylight, planters, seen from dressing
 for yy in (600,618,636,654): S.rect(84,yy,100,yy+12,FURN,0.48)
 S.circle(125,660,13,FURN,0.48); S.circle(125,660,9,FURN,0.24)
@@ -114,8 +115,6 @@ S.small("SERVICE WING ROOF 7'-6\" WITH PLANTER PARAPET",115,203,2.6)
 columns(S); S.small("EXTERNAL COLUMNS TO TERRACE",360,942,2.8)
 # porch: existing light well kept as planted sunken court (no stair); entrance landing + straight steps
 S.rect(190.0,683.6,395.0,754.0,BLACK,0.48,dashes="[3 2] 0"); S.text("EXISTING LIGHT WELL",292,725,5.0); S.text("PLANTED SUNKEN COURT",292,731,4.0)
-S.rect(585.0,683.6,665.0,745.0,MAG,0); S.stair(505.0,690.0,585.0,740.0,7,'left'); S.text("UP",545,748,5.0,color=MAG)
-S.text("ENTRANCE LANDING",625,752,4.0); S.small("VERANDAH REMOVED; PORCH GAINED",625,757,2.6)
 # concealed event gate on east boundary (porch length)
 S.line(XW,683.6,XW,940,RED,1.6,dashes="[6 3] 0")
 S.text("CONCEALED EVENT GATE",135,905,4.6,color=RED); S.text("FLUSH WALL PANELS",135,911,3.8,color=RED); S.text("PARK SIDE",135,917,3.8,color=RED)
@@ -123,21 +122,24 @@ S.text("CONCEALED EVENT GATE",135,905,4.6,color=RED); S.text("FLUSH WALL PANELS"
 x0,y0,x1,y1=1026,245,1102,382; S.rect(x0,y0,x1,y1,FURN,0.48); x=x0+5
 while x<x1: S.line(x,y0,x,y1,FURN,0.24); x+=5
 S.text("PERGOLA",1064,395,5.0); S.text("LOUNGE",1064,401,5.0)
-# courtyard-01 in foyer
-S.rect(655,512,743,655,FURN,0.48); S.rect(658,515,740,652,FURN,0.24)
-S.circle(699,583,22,FURN,0.48); S.circle(699,583,15,FURN,0.24); S.circle(699,583,3,FURN,0.48)
-for gx in range(662,740,9):
-    for gy in range(519,652,9): S.line(gx,gy,gx+1,gy+1,FURN,0.3)
-S.text("COURTYARD-01",699,630,6.0); S.text('5\'-7" X 9\'-1"',699,637,4.6); S.small("OPEN TO SKY THROUGH ALL FLOORS",699,643,3.0); S.small("TREE IN 3'-0\" DEEP PLANTER, WATERPROOFED",699,648,3.0)
-S.text("ENTRANCE",612,585,5.0); S.text("FOYER",612,591,5.0); S.text('5\'-6" WIDE',612,597,4.0)
+# entrance atrium in the old stair shaft: door at porch level, up-flight to GF on the west, down-flight to basement on the east, planted pit between
+S.wall(594.0,668.4,653.0,683.6); S.OL(594,668.4,653,668.4); S.OL(594,683.6,653,683.6)        # old door infilled
+S.door(660.0,668.4,705.0,683.6,'x0','up')                                                       # new entrance door (lintel)
+S.rect(617,615,743,668.4,MAG,0); S.text("VESTIBULE +18\"",680,645,4.0,color=MAG)
+S.stair(617,550,653,615,6,'up'); S.rect(617,512,653,550,MAG,0); S.text("UP",635,542,4.0,color=MAG); S.small("6 R TO GF +60\"",635,547,2.6,color=MAG)
+S.stair(707,512,743,615,11,'up'); S.text("DN",725,608,4.0,color=MAG); S.small("11 R TO BASEMENT",725,613,2.6,color=MAG)
+S.rect(653,545,707,615,FURN,0.72); S.circle(680,580,17,FURN,0.48); S.circle(680,580,11,FURN,0.24); S.circle(680,580,2.5,FURN,0.48)
+S.rect(655,512,743,655,FURN,0.48,dashes="[3 2] 0")
+S.text("ENTRANCE ATRIUM",699,500,6.0); S.small("TREE PIT AT BASEMENT LEVEL, SKYLIGHT AT TERRACE, GLASS RAILS",699,506,2.8)
+S.text("ENTRANCE",593,585,5.0); S.text("GALLERY",593,591,5.0); S.text('3\'-0" WIDE',593,597,4.0)
 # notes
 ny=990
 for t in ["NOTES (REVISION R3):",
           "A. EAST BOUNDARY WALL REBUILT STRAIGHT AND PARALLEL TO THE HOUSE (DRAWN AT THE WIDEST EXISTING OFFSET, TO BE CONFIRMED BY SURVEY). NO OPENINGS TO THE PARK SIDE EXCEPT THE EVENT GATE.",
           "B. CONCEALED EVENT GATE IN THE EAST BOUNDARY WALL FROM THE HOUSE CORNER TO THE FRONT BOUNDARY: FLUSH WALL-FINISHED PANELS ON CONCEALED PIVOTS, OPENED ONLY FOR EVENTS.",
-          "C. COURTYARD-01: OPEN TO SKY THROUGH FIRST, SECOND AND TERRACE FLOORS WITHIN THE EXISTING STAIRWELL SHAFT; NO NEW SLAB OPENINGS. GLASS BALUSTRADE AT EACH FLOOR.",
-          "D. ENCLOSED SERVICE WING ALONG THE EAST SIDE, ENTERED ONLY FROM THE KITCHEN: STORE (DOOR FROM UTILITY), UTILITY, STAIR DOWN TO THE BASEMENT ON THE EXISTING EAST-SIDE ENTRY, GREEN COURT FOR THE DRESSING. KITCHEN-UTILITY DOOR CUT BELOW THE EXISTING WINDOW, LINTEL RETAINED.",
-          "E. SERVICE WING ROOFED AT 7'-6\" WITH A PLANTER PARAPET; BATHROOM EAST WINDOW IN OBSCURE GLASS. VERANDAH REDUCED TO AN ENTRANCE LANDING AND STEPS; PORCH PAVING PATTERN REMOVED. STAFF ROOM ON THE TERRACE (TF-PP-01); EXISTING SERVANT ROOM AT BASEMENT LEVEL REACHED BY THE NEW EAST STAIR.",
+          "C. ENTRANCE ATRIUM IN THE EXISTING STAIRWELL SHAFT: NEW DOOR AT PORCH LEVEL (NEW LINTEL, OLD DOOR OPENING INFILLED), 6 RISERS UP TO THE GROUND FLOOR AND 11 DOWN TO THE BASEMENT INSIDE THE HOUSE, PLANTED PIT BETWEEN THEM, VOID THROUGH ALL FLOORS UNDER A GLAZED SKYLIGHT. NO NEW SLAB OPENINGS; NO STEPS IN THE PORCH.",
+          "D. ENCLOSED SERVICE WING ALONG THE EAST SIDE AT GROUND FLOOR LEVEL, ENTERED ONLY FROM THE KITCHEN: STORE (DOOR FROM UTILITY), UTILITY, COVERED LAUNDRY, GREEN COURT FOR THE DRESSING. KITCHEN-UTILITY DOOR CUT BELOW THE EXISTING WINDOW, LINTEL RETAINED.",
+          "E. SERVICE WING ROOFED AT 7'-6\" WITH A PLANTER PARAPET; BATHROOM EAST WINDOW IN OBSCURE GLASS. VERANDAH REMOVED, PORCH PAVING PATTERN REMOVED. STAFF ROOM ON THE TERRACE (TF-PP-01); EXISTING SERVANT ROOM AREA ON THE EAST SIDE KEEPS ITS OWN ENTRY (VERIFY ON SITE).",
           "F. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY. SHEET ORIENTATION: TOP = SOUTH, BOTTOM = NORTH, LEFT = EAST, RIGHT = WEST."]:
     S.note(t,150.5,ny,5.0); ny+=8
 vastu_grid(S,150.5,210.9,1099,683.6)
@@ -261,7 +263,7 @@ Tt.text("STAFF WC",772,815,3.6)
 Tt.rect(726,840,768,924,FURN,0.48); Tt.line(726,858,768,858,FURN,0.48); Tt.text("STAFF ROOM",800,880,5.0); Tt.text('7\'-0" X 7\'-0"',800,886,4.0)
 
 columns(Tt,dashed=True)
-courtyard_void(Tt,label=False); Tt.text("COURTYARD VOID",699,578,6.0); Tt.text("SKYLIGHT OPENING",699,585,4.6); Tt.small("SAFETY RAILING 3'-6\" HIGH",699,591,3.0)
+courtyard_void(Tt,label=False); Tt.text("ATRIUM SKYLIGHT",699,578,6.0); Tt.text("GLAZED, OPENABLE VENTS",699,585,4.6); Tt.small("OVER ENTRANCE ATRIUM",699,591,3.0)
 # ---- services enclosure, south-west (heavy, louvred screen) ----
 Tt.rect(840,232,1075,336,FURN,0.72,dashes="[3 2] 0")
 Tt.rect(985,240,1068,300,FURN,0.48); Tt.line(985,240,1068,300,FURN,0.24); Tt.line(985,300,1068,240,FURN,0.24); Tt.text("WATER TANKS",1026,312,4.6); Tt.small("2 X 2000 L",1026,317,2.8)

@@ -150,7 +150,7 @@ class Sheet:
     def label(self,name,dims,cx,cy,size=8.0):
         self.text(name,cx,cy,size)
         if dims: self.text(dims,cx,cy+9.5,6.4)
-    def small(self,s,cx,cy,size=3.2): self.text(s,cx,cy,size)
+    def small(self,s,cx,cy,size=3.2,color=BLACK): self.text(s,cx,cy,size,color=color)
     def note(self,s,x,cy,size=5.0): self.text(s,x,cy,size,align="left")
     # replay original drawings with a transform in displayed space
     def replay(self,sel,mat):
