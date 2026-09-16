@@ -49,6 +49,9 @@ def parse(data):
     return objs, texts
 
 BASE=(0.12,0.0,0.0,0.12,14.0,28.0)
+def detect_base(data):
+    m=re.search(rb"([\d.]+) 0 0 ([\d.]+) ([\d.]+) ([\d.]+) cm", data[:400])
+    return (float(m.group(1)),0.0,0.0,float(m.group(2)),float(m.group(3)),float(m.group(4))) if m else BASE
 def disp_bbox(bb):
     x0,y0,x1,y1=bb
     pts=[(1684-y, 1191-x) for x,y in ((x0,y0),(x1,y1))]
@@ -70,21 +73,21 @@ def clip_seg(p0,p1,z):
     if t0>0.001: res.append((p0,(p0[0]+dx*t0,p0[1]+dy*t0)))
     if t1<0.999: res.append(((p0[0]+dx*t1,p0[1]+dy*t1),p1))
     return res
-def to_content(x,y): return ((1177-y)/0.12, (1656-x)/0.12)
+def to_content(x,y,base=BASE): return ((1191-y-base[4])/base[0], (1684-x-base[5])/base[3])
 
 def edit_page(doc, page, DEL, DELEXACT=(), KEEP=(), TEXTDEL=()):
     """delete path objects contained in DEL rects (displayed coords), clip straight lines crossing them,
     delete text objects whose origin lies in TEXTDEL rects."""
     xrefs=page.get_contents()
     data=b"".join(doc.xref_stream(x) for x in xrefs)
-    objs,texts=parse(data)
+    objs,texts=parse(data); base=detect_base(data)
     edits=[]; ndel=nclip=ntxt=0
     for o in objs:
         r=disp_bbox(o[2])
         if any(abs(r.x0-k.x0)<0.3 and abs(r.y0-k.y0)<0.3 and abs(r.x1-k.x1)<0.3 and abs(r.y1-k.y1)<0.3 for k in KEEP): continue
-        if any(contained(r,z) for z in DEL) or any(abs(r.x0-k.x0)<0.3 and abs(r.y0-k.y0)<0.3 and abs(r.x1-k.x1)<0.3 and abs(r.y1-k.y1)<0.3 for k in DELEXACT):
+        if any(contained(r,z) for z in DEL) or any(abs(r.x0-k.x0)<1.0 and abs(r.y0-k.y0)<1.0 and abs(r.x1-k.x1)<1.0 and abs(r.y1-k.y1)<1.0 for k in DELEXACT):
             edits.append((o[0],o[1],b"")); ndel+=1; continue
-        if o[3]==b"S" and len(o[6])==2 and all(abs(a-b)<1e-6 for a,b in zip(o[5],BASE)) and any(overlaps(r,z) for z in DEL):
+        if o[3]==b"S" and len(o[6])==2 and all(abs(a-b)<1e-6 for a,b in zip(o[5],base)) and any(overlaps(r,z) for z in DEL):
             pts=[(1684-y, 1191-x) for x,y in o[6]]
             segs=[(pts[0],pts[1])]
             for z in DEL:
@@ -94,7 +97,7 @@ def edit_page(doc, page, DEL, DELEXACT=(), KEEP=(), TEXTDEL=()):
             if len(segs)==1 and segs[0]==(pts[0],pts[1]): continue
             rep=b""
             for s0,s1 in segs:
-                a=to_content(*s0); b=to_content(*s1)
+                a=to_content(*s0,base=base); b=to_content(*s1,base=base)
                 rep+=b"%.1f %.1f m\n%.1f %.1f l\nS\n"%(a[0],a[1],b[0],b[1])
             edits.append((o[0],o[1],rep)); nclip+=1
     for t in texts:

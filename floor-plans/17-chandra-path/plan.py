@@ -12,15 +12,18 @@ DIDACT="DidactGothicRegular.ttf"; ARIALB="/usr/share/fonts/truetype/liberation/L
 
 class Sheet:
     """draw on a rotated page using displayed (sheet) coordinates"""
-    def __init__(self, page, src_page=None):
+    def __init__(self, page, src_page=None, T=None):
         self.page=page; self.D=page.derotation_matrix; self.M=page.rotation_matrix
+        self.T=T or pymupdf.Matrix(1,0,0,1,0,0)
         self.sh=page.new_shape()
         self.ODR=None
         if src_page is not None:
             self.ODR=src_page.get_drawings()
             for it in self.ODR:
                 r=pymupdf.Rect(it["rect"])*self.M; r.normalize(); it["drect"]=r
-    def P(self,x,y): return pymupdf.Point(x,y)*self.D
+    def P(self,x,y): return pymupdf.Point(x,y)*self.T*self.D
+    def G(self,x0,y0,x1,y1):
+        a=pymupdf.Point(x0,y0)*self.T; b=pymupdf.Point(x1,y1)*self.T; return pymupdf.Rect(min(a.x,b.x),min(a.y,b.y),max(a.x,b.x),max(a.y,b.y))
     def R(self,x0,y0,x1,y1):
         a=self.P(x0,y0); b=self.P(x1,y1); return pymupdf.Rect(min(a.x,b.x),min(a.y,b.y),max(a.x,b.x),max(a.y,b.y))
     def commit(self): self.sh.commit(overlay=True)
@@ -37,7 +40,7 @@ class Sheet:
     def poly(self,pts,color=FURN,width=0.48,fill=None,close=True):
         self.sh.draw_polyline([self.P(*p) for p in pts]+([self.P(*pts[0])] if close else [])); self.sh.finish(color=color,width=width,fill=fill,closePath=close)
     def circle(self,cx,cy,r,color=FURN,width=0.48,fill=None):
-        self.sh.draw_circle(self.P(cx,cy),r); self.sh.finish(color=color,width=width,fill=fill)
+        self.sh.draw_circle(self.P(cx,cy),r*self.T.a); self.sh.finish(color=color,width=width,fill=fill)
     def arc(self,cx,cy,px,py,angle,color=BLACK,width=0):
         width=width or 0.1
         self.sh.draw_sector(self.P(cx,cy),self.P(px,py),angle,fullSector=False); self.sh.finish(color=color,width=width,closePath=False)
@@ -151,7 +154,7 @@ class Sheet:
     def note(self,s,x,cy,size=5.0): self.text(s,x,cy,size,align="left")
     # replay original drawings with a transform in displayed space
     def replay(self,sel,mat):
-        T=self.M*mat*self.D; n=0; sh=self.sh
+        T=self.M*mat*self.T*self.D; n=0; sh=self.sh
         for it in self.ODR:
             if not sel(it): continue
             n+=1
@@ -169,3 +172,17 @@ def rot(cx,cy,deg,tx,ty): return pymupdf.Matrix(1,0,0,1,-cx,-cy)*pymupdf.Matrix(
 def inside(z):
     z=pymupdf.Rect(z); return lambda it: z.contains(it["drect"])
 def purple(it): return bool(it.get("color")) and abs(it["color"][0]-0.35294)<0.01
+
+def vastu_grid(S,x0,y0,x1,y1):
+    """9x9 pada grid with zone labels, light red, dashed"""
+    col=(0.96,0.15,0.04)
+    for i in range(10):
+        x=x0+(x1-x0)*i/9; S.line(x,y0,x,y1,col,0.3 if i%3 else 0.7,dashes=None if i%3==0 else "[2 3] 0")
+        y=y0+(y1-y0)*i/9; S.line(x0,y,x1,y,col,0.3 if i%3 else 0.7,dashes=None if i%3==0 else "[2 3] 0")
+    # sheet orientation: top=S, bottom=N, left=E, right=W
+    names=[["SE","S","SW"],["E","BRAHMASTHAN","W"],["NE","N","NW"]]
+    for r in range(3):
+        for c in range(3):
+            cx=x0+(x1-x0)*(c+0.5)/3; cy=y0+(y1-y0)*(r+0.5)/3
+            S.text(names[r][c],cx,cy,7.0,color=col)
+    S.text("VASTU GRID 9 X 9 PADA (ASSESSMENT OVERLAY ONLY)",x0+(x1-x0)/2,y0-6,5.0,color=col)
