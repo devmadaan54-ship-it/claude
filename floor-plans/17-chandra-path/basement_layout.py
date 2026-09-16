@@ -21,7 +21,7 @@ B.door(566.0,520.0,572.0,560.0,'y1','left')     # gym from basement lobby
 
 # windows + glazed door to sunken court
 B.window(E,536.0,ei,636.0)
-B.small("EXISTING SERVANT ROOM AREA ON THE EAST SIDE (VERIFY ON SITE)",60,300,2.8); B.small("KEEPS ITS OWN ENTRY FROM THE EAST",60,305,2.8)
+
 B.window(195.0,ni,391.0,No)
 # sunken court + stair outside north wall
 B.rect(190.0,No,395.0,754.0,BLACK,0.48,dashes="[3 2] 0"); B.text("EXISTING LIGHT WELL",292,725,5.0); B.text("PLANTED SUNKEN COURT",292,731,4.0)
@@ -53,7 +53,7 @@ B.door(575,501,610,509,'x0','up')
 ny=790
 for t in ["NOTES (BASEMENT):","1. Existing stairwell re-used as the entrance atrium: entrance door at porch level, 6 risers up to the ground floor and 11 down to this level, tree pit between the flights, basement lobby with doors to the gym and theater.",
           "2. No external basement stair; the light well on the north stays a planted sunken court with its window unchanged.",
-          "3. Existing servant room area on the east side keeps its own entry; position to be verified on site.",
+          "3. The servant room is at grade on the east side (see GF-PP-01), not at this level.",
           "4. Existing ceiling height 8'-6\". Existing RCC columns and hidden beam on the centre line are retained; theater partition is non-load-bearing.",
           "5. No new opening in the ground floor slab. Existing basement windows and walls otherwise unchanged."]:
     B.note(t,150.5,ny,5.2); ny+=9
