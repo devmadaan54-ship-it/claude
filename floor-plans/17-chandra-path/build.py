@@ -18,15 +18,13 @@ def disp_bbox(bb):
 DEL=[pymupdf.Rect(*r) for r in [
     (170.5,230.3,421.0,352.3),   # bedroom-01 interior (upper part incl. wardrobe hatch)
     (170.5,352.3,394.0,402.3),   # bedroom-01 interior lower part (keeps pillar-3 stub + its door)
-    (170.5,411.2,330.5,501.0),   # old toilet interior + its door
     (170.5,501.0,340.0,663.5),   # bedroom-02 interior (label)
     (340.0,546.0,394.0,663.5),
     (394.0,511.5,561.0,664.2),   # kitchen interior + partition wall
     (437.0,492.5,484.7,512.0),   # old kitchen door jambs
     (439.0,496.0,482.5,539.0),   # old kitchen door arc
-    (220.0,402.5,259.5,411.0),   # new utility door gap (clips partition face lines)
 ]]
-DELEXACT=[pymupdf.Rect(150.5,402.8,345.4,410.7)]  # partition between kitchen and utility: redrawn with door gap
+DELEXACT=[]
 KEEP=[pymupdf.Rect(402.1,511.8,437.4,511.8)]  # wall face line
 xrefs=page.get_contents()
 data=b"".join(doc.xref_stream(x) for x in xrefs)
