@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R4.pdf"
+SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R5.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open(SRC)
 R_=pymupdf.Rect
 T_GF=pymupdf.Matrix(1,0,0,1,0,0)
@@ -222,23 +222,48 @@ Tt.door(760,826,800,832,'x0','down')
 toilet_symbols(Tt, wc=(-90,810,804), basin=(-90,740,804))
 Tt.text("STAFF WC",772,815,3.6)
 Tt.rect(726,840,768,924,FURN,0.48); Tt.line(726,858,768,858,FURN,0.48); Tt.text("STAFF ROOM",800,880,5.0); Tt.text('7\'-0" X 7\'-0"',800,886,4.0)
-Tt.rect(600,800,708,941.3,FURN,0.48,dashes="[2 2] 0"); Tt.text("CLOTHES DRYING",654,860,4.6); Tt.small("(SCREENED, NORTH-WEST)",654,866,2.8)
+
 courtyard_void(Tt,label=False); Tt.text("COURTYARD VOID",699,578,6.0); Tt.text("SKYLIGHT OPENING",699,585,4.6); Tt.small("SAFETY RAILING 3'-6\" HIGH",699,591,3.0)
-# zones
-Tt.rect(1000,232,1075,300,FURN,0.48); Tt.line(1000,232,1075,300,FURN,0.24); Tt.text("WATER TANKS",1037,312,4.6); Tt.small("(SOUTH-WEST, HEAVY)",1037,317,2.8)
-for i in range(10): Tt.rect(470+i*50,236,514+i*50,296,FURN,0.48)
-Tt.text("SOLAR PANELS ON SOUTH EDGE",720,306,4.6)
-x0,y0,x1,y1=180,400,430,640; Tt.rect(x0,y0,x1,y1,FURN,0.48); x=x0+5
-while x<x1: Tt.line(x,y0,x,y1,FURN,0.24); x+=5
-Tt.rrect(200,560,330,592,4); Tt.rrect(200,600,232,632,4); Tt.circle(290,615,18)
-Tt.text("PERGOLA SKY LOUNGE",305,520,6.0); Tt.text('16\'-0" X 15\'-3"',305,527,4.6)
-Tt.rect(180,240,300,270,FURN,0.48); Tt.text("BAR / PANTRY",240,282,4.6); Tt.small("(SOUTH-EAST)",240,287,2.8)
-Tt.rect(X0+6,Y1-40,830,Y1-6,FURN,0.48,dashes="[2 2] 0"); Tt.text("PLANTER STRIP ALONG NORTH EDGE",480,Y1-20,4.6)
-Tt.rect(X0+6,Y0+6,300,240,FURN,0.48,dashes="[2 2] 0")
-Tt.text("OPEN TERRACE",620,470,8.0); Tt.text("FAMILY / EVENT SPACE, NORTH-EAST KEPT OPEN AND LOW",620,479,4.6)
+# ---- services enclosure, south-west (heavy, louvred screen) ----
+Tt.rect(840,232,1075,336,FURN,0.72,dashes="[3 2] 0")
+Tt.rect(985,240,1068,300,FURN,0.48); Tt.line(985,240,1068,300,FURN,0.24); Tt.line(985,300,1068,240,FURN,0.24); Tt.text("WATER TANKS",1026,312,4.6); Tt.small("2 X 2000 L",1026,317,2.8)
+Tt.rect(905,240,975,300,FURN,0.48); Tt.circle(940,270,20); Tt.circle(940,270,6); Tt.text("CENTRAL",940,312,4.6); Tt.text("WATER HEATER",940,318,4.6); Tt.small("HEAT PUMP + SOLAR THERMAL",940,323,2.6)
+for i in range(3): Tt.rect(848+i*18,244,862+i*18,270,FURN,0.48)
+Tt.text("AC ODUs",876,282,4.0); Tt.small("+ PUMPS",876,287,2.6)
+Tt.text("SERVICES ENCLOSURE",957,344,5.0); Tt.small("LOUVRED SCREEN, SOUTH-WEST",957,349,2.8)
+# ---- solar array along the south edge ----
+for i in range(10): Tt.rect(330+i*50,236,374+i*50,296,FURN,0.48); Tt.line(330+i*50,266,374+i*50,266,FURN,0.24)
+Tt.text("SOLAR PV ARRAY, SOUTH EDGE (10 PANELS SHOWN, EXTEND AS REQUIRED)",580,306,4.6)
+# ---- sky pavilion, semi-closed party space on the east ----
+px0,py0,px1,py1=180,375,570,705
+Tt.rect(px0,py0,px1,py1,BLACK,0.72)
+Tt.rect(px0+3,py0+3,px1-3,py1-3,FURN,0.48)                       # sliding glass line
+x=px0+8
+while x<px1: Tt.line(x,py0,x,py1,FURN,0.24); x+=6                  # louvre roof
+Tt.rect(px0+10,py0+12,px0+120,py0+38); Tt.text("BAR",px0+65,py0+30,4.0)
+for cy in (py0+48,py0+72,py0+96): Tt.circle(px0+30,cy,5.5)
+Tt.rect(px0+150,py0+20,px0+330,py0+70,FURN,0.48)
+for i in range(4): Tt.circle(px0+172+i*45,py0+8,6); Tt.circle(px0+172+i*45,py0+82,6)
+Tt.small("DINING 8",px0+240,py0+90,3.0)
+Tt.rrect(px0+30,py0+150,px0+170,py0+184,5); Tt.rrect(px0+30,py0+200,px0+64,py0+280,5); Tt.circle(px0+120,py0+235,18); Tt.rrect(px0+180,py0+200,px0+230,py0+250,5)
+Tt.rrect(px0+250,py0+150,px0+370,py0+184,5); Tt.rrect(px0+330,py0+200,px0+370,py0+280,5)
+Tt.rect(px1-60,py1-50,px1-10,py1-10,FURN,0.48); Tt.small("AV / DJ",px1-35,py1-28,2.8)
+Tt.text("SKY PAVILION",375,660,8.0); Tt.text('24\'-9" X 21\'-0"',375,669,6.0)
+Tt.small("SEMI-CLOSED: RETRACTABLE LOUVRE ROOF, SLIDING GLASS + INSECT SCREENS, HEATERS",375,676,3.0)
+Tt.small("OPENS ONTO THE OPEN TERRACE AND THE NORTH-EAST DECK",375,681,3.0)
+# ---- guest wc by the drying yard (north-west) ----
+Tt.wall(626,776,632,834); Tt.wall(632,828,708,834); Tt.wall(702,776,708,828)
+for a in [(626,776,626,834),(632,776,632,828),(632,828,702,828),(632,834,708,834),(702,776,702,828),(708,776,708,834)]: Tt.OL(*a)
+Tt.door(650,828,690,834,'x0','down'); toilet_symbols(Tt, wc=(-90,690,800), basin=(-90,648,800)); Tt.text("GUEST WC",667,846,3.8)
+Tt.rect(600,856,708,941.3,FURN,0.48,dashes="[2 2] 0"); Tt.text("CLOTHES DRYING",654,900,4.6); Tt.small("(SCREENED, NORTH-WEST)",654,906,2.8)
+# ---- open terrace / north-east deck ----
+Tt.rect(X0+6,Y1-40,600,Y1-6,FURN,0.48,dashes="[2 2] 0"); Tt.text("PLANTER STRIP ALONG NORTH EDGE",380,Y1-20,4.6)
+Tt.rect(180,720,560,900,FURN,0.48,dashes="[3 2] 0"); Tt.text("NORTH-EAST DECK",370,810,6.0); Tt.text("OPEN, LOW PLANTING, EVENT OVERFLOW",370,818,4.0)
+Tt.text("OPEN TERRACE",930,520,8.0); Tt.text("PAVED, WITH THE COURTYARD VOID RAILED",930,529,4.6)
 ny=1000
-for t in ["NOTES (TERRACE, R3):","1. PARAPET 3'-6\" HIGH ALL ROUND; COURTYARD VOID RAILED. 2. WATER TANKS AND PLANT IN THE SOUTH-WEST; SOLAR ARRAY ALONG THE SOUTH PARAPET; NORTH-EAST KEPT OPEN AND LOW (VASTU).",
-          "3. PERGOLA LOUNGE ON THE EAST; BAR AT THE SOUTH-EAST. 4. STAFF ROOM, WC AND SCREENED DRYING YARD BESIDE THE MUMTY (NORTH-WEST). 5. WATERPROOFING AND SLOPES TO NORTH-EAST DRAIN POINTS. 6. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY."]:
+for t in ["NOTES (TERRACE, R5):","1. PARAPET 3'-6\" HIGH ALL ROUND; COURTYARD VOID RAILED. 2. WATER TANKS, CENTRAL WATER HEATER, AC OUTDOOR UNITS AND PUMPS IN A LOUVRED SERVICES ENCLOSURE IN THE SOUTH-WEST; SOLAR PV ALONG THE SOUTH PARAPET; NORTH-EAST KEPT OPEN AND LOW (VASTU).",
+          "3. SKY PAVILION ON THE EAST: STEEL FRAME, RETRACTABLE LOUVRE ROOF, SLIDING GLASS WITH INSECT SCREENS, BAR, DINING AND LOUNGE; POWER AND WATER TO THE BAR. 4. STAFF ROOM, WC, GUEST WC AND SCREENED DRYING YARD BESIDE THE MUMTY (NORTH-WEST).",
+          "5. PAVILION AND SERVICES LOADS TO BE CHECKED BY THE STRUCTURAL ENGINEER OVER THE EXISTING STONE WALLS AND THE NEW NORTH-WING SLAB. 6. WATERPROOFING AND SLOPES TO NORTH-EAST DRAIN POINTS. 7. VASTU GRID (RED) IS AN ASSESSMENT OVERLAY ONLY."]:
     Tt.note(t,150.1,ny,5.0); ny+=8
 vastu_grid(Tt,150.1,210.9,1084.6,947.3)
 Tt.commit()
