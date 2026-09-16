@@ -102,7 +102,7 @@ S.rect(103,611.7,150.5,664,MAG,0); S.stair(103,548,150.5,611.7,9,'up'); S.text("
 S.sliding(150.5,611.7,170.0,663.9)
 for yy in (500,520,540,560,580): S.rect(80,yy,98,yy+14,FURN,0.48)
 S.circle(90,640,10,FURN,0.48); S.circle(90,640,6,FURN,0.24)
-S.text("PLANTED",111,600,4.0); S.text("STRIP",111,605,4.0); S.small(dimstr(XW,405.3,150.5,683.6),111,610,2.8); S.small("PLANTERS, TIERED TO GRADE",111,615,2.4); S.small("STEPS DOWN FROM DRESSING",111,620,2.4)
+S.text("PLANTED",92,420,4.0); S.text("STRIP",92,425,4.0); S.small(dimstr(XW,405.3,150.5,683.6),92,430,2.8); S.small("PLANTERS, TIERED",92,435,2.4); S.small("TO GRADE; STEPS",92,440,2.4); S.small("DOWN FROM DRESSING",92,445,2.4)
 columns(S); S.small("EXTERNAL COLUMNS TO TERRACE",360,942,2.8)
 # porch: existing light well kept as planted sunken court (no stair); entrance landing + straight steps
 S.rect(190.0,683.6,513.0,754.0,BLACK,0.48,dashes="[3 2] 0")
