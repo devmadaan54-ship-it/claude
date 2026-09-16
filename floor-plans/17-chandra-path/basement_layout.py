@@ -17,14 +17,18 @@ B.wall(566.0,507.0,572.0,ni); B.OL(566,507,566,ni); B.OL(572,507,572,ni)
 # doors
 B.door(425.0,420.0,439.0,467.0,'y0','right')     # theater
 B.door(425.0,560.0,439.0,607.0,'y0','right')     # gym
-B.door(566.0,520.0,572.0,560.0,'y1','left')     # gym from basement lobby
+B.door(566.0,520.0,572.0,560.0,'y0','right')     # shower/wc off gym
 
 # windows + glazed door to sunken court
 B.window(E,536.0,ei,636.0)
 
-B.window(195.0,ni,391.0,No)
+B.window(195.0,ni,340.0,No)
+B.door(345.0,ni,391.0,No,'x1','up')
+B.small("GLAZED DOOR IN EXISTING",368,652,2.8); B.small("WINDOW OPENING, LINTEL RETAINED",368,656,2.8)
 # sunken court + stair outside north wall
-B.rect(190.0,No,395.0,754.0,BLACK,0.48,dashes="[3 2] 0"); B.text("EXISTING LIGHT WELL",292,725,5.0); B.text("PLANTED SUNKEN COURT",292,731,4.0)
+B.rect(190.0,No,513.0,754.0,BLACK,0.48,dashes="[3 2] 0")
+B.stair(395.0,704.0,513.0,750.0,10,'right'); B.rect(345.0,704.0,395.0,750.0,MAG,0)
+B.text("UP",454,748,5.0,color=MAG); B.text("SUNKEN GARDEN COURT",268,760,5.0); B.text("EXISTING LIGHT WELL, PLANTED",268,766,4.2)
 B.line(120,No,1000,No,FURN,0.48,dashes="[4 2] 0"); B.text("PORCH ABOVE",560,700,5.0)
 # --- LOUNGE + BAR (east half, by the windows) ---
 B.rect(ei,si,262,262); B.rect(ei,262,202,330)                  # L bar counter
@@ -42,17 +46,16 @@ B.label("HOME THEATER",'15\'-6" X 16\'-10"',561.0,470.0)
 B.rect(450,520,470,600); B.rect(490,600,545,640)
 B.label("GYM",'8\'-1" X 9\'-7"',502.0,560.0,7.0)
 
-B.rect(653,545,707,615,FURN,0.72); B.circle(680,580,17,FURN,0.48); B.circle(680,580,11,FURN,0.24)
-B.stair(707,512,743,615,11,'down'); B.text("UP",725,608,4.0,color=MAG); B.small("11 R TO ENTRANCE",725,613,2.6,color=MAG)
-B.rect(617,509,743,545,MAG,0); B.text("LANDING",680,530,4.0,color=MAG)
-B.line(617,545,653,545,FURN,0.48,dashes="[2 2] 0"); B.small("GF FLIGHT OVER",635,580,2.6)
-B.text("ENTRANCE ATRIUM",680,632,5.0); B.small("TREE PIT, SKYLIT VOID ABOVE",680,637,2.8)
-B.door(617,515,623,545,'y0','left')
-B.text("BASEMENT",594,600,4.6); B.text("LOBBY",594,606,4.6); B.text('2\'-10" X 9\'-7"',594,612,3.6)
-B.door(575,501,610,509,'x0','up')
+B.hatch(650,515,738,530); B.hatch(650,640,738,655)
+B.label("STORE / AV",'7\'-8" X 9\'-6"',683.0,585.0,7.0); B.small("(EXISTING STAIRWELL, FLOORED OVER AT GF; COURTYARD PLANTER ABOVE)",683,603,2.6)
+B.door(630.0,501.0,670.0,509.0,'x0','down')
+B.text("SHOWER",594,600,4.2); B.text("/ WC",594,606,4.2); B.text('2\'-10" X 9\'-7"',594,612,3.6)
+B.replay(lambda it: R_(240,411.2,300,458).contains(it["drect"]) and purple(it), rot(270,430,180,594,640))
+B.replay(lambda it: R_(298,411.2,331,470).contains(it["drect"]) and purple(it), rot(316,452,-90,594,522))
+B.line(572,560,617,560,FURN,0.48,dashes="[2 2] 0")
 ny=790
-for t in ["NOTES (BASEMENT):","1. Existing stairwell re-used as the entrance atrium: entrance door at porch level, 6 risers up to the ground floor and 11 down to this level, tree pit between the flights, basement lobby with doors to the gym and theater.",
-          "2. No external basement stair; the light well on the north stays a planted sunken court with its window unchanged.",
+for t in ["NOTES (BASEMENT):","1. Existing stairwell floored over at ground floor level; the well below is the store / AV room; the courtyard planter above it is waterproofed. The Brahmasthan above stays open.",
+          "2. Basement entry by the stair in the west part of the existing north light well (north padas 3-4, outside the Brahmasthan and the north-east): north window opening converted to a glazed door, sill masonry removed, lintel retained.",
           "3. The servant room is at grade on the east side (see GF-PP-01), not at this level.",
           "4. Existing ceiling height 8'-6\". Existing RCC columns and hidden beam on the centre line are retained; theater partition is non-load-bearing.",
           "5. No new opening in the ground floor slab. Existing basement windows and walls otherwise unchanged."]:
