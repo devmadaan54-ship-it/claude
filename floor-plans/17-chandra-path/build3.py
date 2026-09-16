@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R14.pdf"
+SRC="proposed.pdf"; OUT="Proposed_Floor_Plan-20260916-R15.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open(SRC)
 R_=pymupdf.Rect
 T_GF=pymupdf.Matrix(1,0,0,1,0,0)
@@ -86,41 +86,43 @@ S.labelr("DRESSING",170,500.7,296,663.9,236.0,600.0)
 bed(S,418,511.8,side=False); S.rect(396,511.8,416,531.8); S.rect(520,511.8,540,531.8)
 S.rect(312,560,342,590); S.circle(357,575,8); S.rect(445,634,515,656); S.circle(480,624,6); S.rect(330,650,430,662)
 S.labelr("BEDROOM-01",303.9,500.7,561.4,663.9,362.0,618.0)
-# east boundary rebuilt straight on the south-end line (x=41), taking the slanted strip from the park side: 7'-0" strip
-XW=41.0
-S.wall(XW-6,207.0,XW,950.0); S.OL(XW-6,207,XW-6,950); S.OL(XW,207,XW,950)
-S.line(XW-6,195,XW-6,1000,BLACK,0.48,dashes="[6 2 1 2] 0"); S.small("PLOT LINE = NEW STRAIGHT WALL",XW+40,200,2.4)
-S.small("STRIP 7'-0\" CONSTANT, AS DIMENSIONED AT THE SOUTH END ON THE SURVEY PLAN; CONFIRM ON SITE",XW+95,197,2.2)
+# east side: plot line 7'-0" from the house (survey), new 10' high boundary wall 9" thick inside it -> clear strip 6'-3"
+PL=41.0; XW=PL+11.8
+S.line(PL,195,PL,1000,BLACK,0.48,dashes="[6 2 1 2] 0")
+S.wall(PL,207.0,XW,950.0); S.OL(PL,207,PL,950); S.OL(XW,207,XW,950)
 S.wall(XW,207.0,150.5,213.0); S.OL(XW,207,150.5,207); S.OL(XW,213,150.5,213)
-S.dimline(XW,190,150.5,190); S.dimline(41,214,41,320,offset=-20); S.dimline(150.5,214,150.5,402.8,offset=12)
-# servant quarters at grade (second ground), existing room at the south-east corner + roofed extension; second room above at +9'-0"
+S.dimline(PL,190,150.5,190); S.dimline(XW,198,150.5,198,size=3.4)
+S.small("PLOT LINE 7'-0\" FROM HOUSE (SURVEY PLAN); NEW 10'-0\" HIGH WALL 9\" THICK INSIDE IT",300,203,2.4)
+# ---- servant quarters at grade (existing room top-left) ----
+S.rect(XW+2,215,148.5,398,BLACK,0.48,dashes="[3 2] 0")
 S.wall(XW,320.0,150.5,325.3); S.OL(XW,320,150.5,320); S.OL(XW,325.3,150.5,325.3)
 S.wall(XW,400.0,150.5,405.3); S.OL(XW,400,150.5,400); S.OL(XW,405.3,150.5,405.3)
-S.wall(88.0,325.3,94.0,400.0); S.OL(88,325.3,88,400); S.OL(94,325.3,94,400)
-S.rect(48,220,90,300,FURN,0.48); S.line(48,240,90,240,FURN,0.48)          # existing bed
-S.rect(100,220,142,300,FURN,0.48); S.line(100,240,142,240,FURN,0.48)      # second bed (extension)
-S.text("SERVANT ROOM",96,258,4.6); S.text(dimstr(41,213,150.5,320),96,263,3.6); S.small("EXISTING, AT GRADE (+0), 2 BEDS",96,268,2.6); S.small("ROOM 2 ABOVE AT +9'-0\" (LADDER STAIR)",96,273,2.6); S.small("ENTRY FROM OUTSIDE ONLY, NO DOOR TO THE HOUSE",96,278,2.4)
-toilet_symbols(S, wc=(90,66,350), basin=(90,66,385))
-S.text("WC",66,366,3.6); S.text(dimstr(41,325.3,88,400),66,371,2.8); S.door(88,335,94,365,'y0','right')
-S.rect(100,330,142,396,FURN,0.48,dashes="[2 2] 0"); S.small("KITCHENETTE /",121,358,2.6); S.small("STORE",121,363,2.6); S.small(dimstr(94,325.3,150.5,400),121,368,2.6)
-S.door(100,400.0,135,405.3,'x0','up')                                      # servants' door from the lane
-# raised paved court at ground floor level outside the toilet and dressing; servants' lane at grade along the boundary wall
-S.wall(88.0,405.3,94.0,683.6); S.OL(88,405.3,88,683.6); S.OL(94,405.3,94,683.6)
-S.small("RETAINING WALL 5'-0\" + GREEN SCREEN",122,600,2.2)
-S.text("LANE",65,538,4.0); S.small(dimstr(41,405.3,88,683.6),65,543,2.6); S.small("SERVANTS' ENTRY",65,548,2.4); S.small("AT GRADE, FROM PORCH",65,553,2.4)
-S.wall(XW,683.6,88.0,689.0)  # lane gate post line at the porch
-S.door(60,683.6,85,689.0,'x0','down')
-for gx in range(100,148,7):
-    for gy in range(412,676,7): S.line(gx,gy,gx+1,gy+1,FURN,0.3)
-toilet_symbols(S, shower=(0,104,438)); S.small("OUTDOOR SHOWER",122,428,2.6); S.small("FULL HT. GLAZING",132,470,2.6)
-S.line(94,483,150.5,483,FURN,0.48,dashes="[2 2] 0")
-for yy in (500,540,580,620): S.rect(97,yy,112,yy+28,FURN,0.48)
-S.circle(132,655,11,FURN,0.48); S.circle(132,655,7,FURN,0.24)
-S.text("PAVED",122,558,4.6); S.text("COURT",122,564,4.6); S.small(dimstr(94,405.3,150.5,683.6),122,569,2.8); S.small("AT +60\", PLANTERS,",122,574,2.6); S.small("FROM BATH + DRESSING",122,579,2.6)
-S.sliding(150.5,611.7,170.0,663.9)                                          # dressing opens to the court
-for i,yy in enumerate((676,679,682)): S.line(94,yy,150.5,yy,FURN,0.48)
-S.small("TIERED PLANTER EDGE TO PORCH",122,672,2.4)
-S.small("SERVICE WING: UTILITY IN KITCHEN (WM CABINET), LAUNDRY ON TERRACE",300,203,2.4)
+S.wall(100.0,325.3,106.0,400.0); S.OL(100,325.3,100,400); S.OL(106,325.3,106,400)
+S.rect(58,222,96,300,FURN,0.48); S.line(58,242,96,242,FURN,0.48)
+S.rect(104,222,142,300,FURN,0.48); S.line(104,242,142,242,FURN,0.48)
+S.text("SERVANT ROOM",101,256,4.6); S.text(dimstr(XW,213,150.5,320),101,261,3.6); S.small("EXISTING, AT GRADE (+0)",101,266,2.6); S.small("ROOM 2 ABOVE AT +9'-0\"",101,271,2.6)
+toilet_symbols(S, wc=(90,74,350), basin=(90,74,386)); S.text("RESTROOM",76,368,3.4); S.small(dimstr(XW,325.3,100,400),76,373,2.6)
+S.door(100,340,106,370,'y0','right')                                     # restroom from room? no: from entry
+S.door(110,320.0,145,325.3,'x0','up')                                    # entry -> room
+S.door(110,400.0,145,405.3,'x0','up')                                    # yard -> entry
+S.text("ENTRY",128,356,3.6); S.small(dimstr(106,325.3,150.5,400),128,361,2.6); S.small("HE ENTERS HERE",128,366,2.4)
+S.small("SERVANT QUARTERS, ENTRY FROM OUTSIDE ONLY",101,395,2.6)
+# ---- yard north of the block: one open garden court at grade, tiered planters against the house, path along the wall ----
+S.rect(XW+2,407,148.5,681,BLACK,0.48,dashes="[3 2] 0")
+for gx in range(XW+6 if False else 58,148,8):
+    for gy in range(412,678,8): S.line(gx,gy,gx+1,gy+1,FURN,0.3)
+S.line(90,405.3,90,683.6,FURN,0.48,dashes="[1 3] 0"); S.small("PATH 2'-4\"",72,545,2.4); S.small("ALONG WALL",72,550,2.4)
+# bath deck at +60" outside the bathroom with the outdoor shower (full-height glazing)
+S.rect(118,410,150.5,478,FURN,0.72); toilet_symbols(S, shower=(0,132,438)); S.small("BATH DECK +60\"",134,486,2.4); S.small("OUTDOOR SHOWER",134,491,2.4)
+# steps down from the dressing to the garden (9 risers), landing at the sliding door
+S.rect(103,611.7,150.5,664,MAG,0); S.stair(103,548,150.5,611.7,9,'up'); S.text("DN 9 R",126,540,3.6,color=MAG)
+S.sliding(150.5,611.7,170.0,663.9)
+for i,yy in enumerate((495,515,535)): S.rect(96,yy,116,yy+14,FURN,0.48)
+for yy in (670,676,682): S.line(96,yy,150.5,yy,FURN,0.48)
+S.circle(118,655,10,FURN,0.48); S.circle(118,655,6,FURN,0.24)
+S.text("GARDEN",70,620,4.6); S.text("COURT",70,626,4.6); S.small(dimstr(XW,405.3,150.5,683.6),70,631,2.8); S.small("AT GRADE, TIERED PLANTERS",70,636,2.4); S.small("FROM DRESSING BY STEPS",70,641,2.4)
+# external stair to room 2 over the servant block, along the boundary wall
+S.stair(XW,405.3,88,500,11,'up'); S.text("UP TO",70,508,3.4,color=MAG); S.text("ROOM 2",70,513,3.4,color=MAG)
 columns(S); S.small("EXTERNAL COLUMNS TO TERRACE",360,942,2.8)
 # porch: existing light well kept as planted sunken court (no stair); entrance landing + straight steps
 S.rect(190.0,683.6,513.0,754.0,BLACK,0.48,dashes="[3 2] 0")
@@ -129,7 +131,7 @@ S.text("DN",454,748,5.0,color=MAG); S.small("11 R TO BASEMENT, LANDING AT DOOR B
 S.circle(240,720,14,FURN,0.48); S.circle(240,720,9,FURN,0.24); S.text("SUNKEN GARDEN COURT",268,760,5.0); S.text(dimstr(190,683.6,513,754),268,772,3.6); S.small("EXISTING LIGHT WELL, PLANTED (NORTH-EAST KEPT OPEN); EXTENDED WEST FOR THE STAIR",268,766,2.6)
 # concealed event gate on east boundary (porch length)
 S.line(XW,683.6,XW,940,RED,1.6,dashes="[6 3] 0")
-S.text("CONCEALED EVENT GATE",100,880,4.6,color=RED); S.text("FLUSH WALL PANELS, PARK SIDE",100,886,3.4,color=RED)
+S.text("CONCEALED EVENT GATE",100,880,4.6,color=RED); S.text("FLUSH WALL PANELS, PARK SIDE",100,886,3.4,color=RED); S.small("BOUNDARY WALL 10'-0\" HIGH",100,891,2.6,color=RED)
 S.rect(XW,942,XW+157,950,MAG,0); S.text("CAR GATE 10'-0\"",120,960,4.6,color=MAG); S.small("NO COLUMN WITHIN THE GATE OR THE DRIVE LINE",120,965,2.6,color=MAG)
 # pergola in west garden
 x0,y0,x1,y1=1026,245,1102,382; S.rect(x0,y0,x1,y1,FURN,0.48); x=x0+5
@@ -151,10 +153,10 @@ S.small("ENTRANCE DOOR WIDENED TO 6'-0\" DOUBLE DOOR (NEW LINTEL)",625,678,2.4)
 # notes
 ny=990
 for t in ["NOTES (REVISION R3):",
-          "A. EAST BOUNDARY WALL REBUILT STRAIGHT ON THE SOUTH-END LINE, TAKING THE SLANTED STRIP FROM THE PARK SIDE: 7'-0\" STRIP FULL LENGTH. NO OPENINGS TO THE PARK EXCEPT THE EVENT GATE; CAR GATE 10'-0\" AT THE EAST END OF THE NORTH BOUNDARY.",
+          "A. EAST PLOT LINE 7'-0\" FROM THE HOUSE (SURVEY PLAN, TOP-LEFT CORNER), TAKEN STRAIGHT FOR THE FULL LENGTH. NEW 10'-0\" HIGH BOUNDARY WALL 9\" THICK INSIDE IT: CLEAR STRIP 6'-3\". NO OPENINGS TO THE PARK EXCEPT THE EVENT GATE; CAR GATE 10'-0\" AT THE EAST END OF THE NORTH BOUNDARY.",
           "B. CONCEALED EVENT GATE IN THE EAST BOUNDARY WALL FROM THE HOUSE CORNER TO THE FRONT BOUNDARY: FLUSH WALL-FINISHED PANELS ON CONCEALED PIVOTS, OPENED ONLY FOR EVENTS.",
           "C. COURTYARD-01 IN THE EXISTING STAIRWELL SHAFT, OPEN TO SKY THROUGH ALL FLOORS: THE BRAHMASTHAN (CENTRE OF THE WHOLE-HOUSE GRID) IS KEPT OPEN AND FREE OF STAIRS. ENTRANCE STEPS ARE A COMPACT 6-RISER FLIGHT OUTSIDE THE EXISTING DOOR; BASEMENT STAIR IN THE WEST PART OF THE EXISTING LIGHT WELL. LIFT GIVES THE STEP-FREE ROUTE.",
-          "D. EAST STRIP: SERVANT QUARTERS AT GRADE IN THE SOUTH-EAST (EXISTING ROOM + ROOFED EXTENSION TO THE KITCHEN LINE, WC, SECOND ROOM ABOVE AT +9'-0\"), ENTERED FROM OUTSIDE ONLY BY A 3'-0\" LANE AT GRADE ALONG THE BOUNDARY WALL FROM THE PORCH; NO DOOR INTO THE HOUSE. NORTH OF THE KITCHEN LINE A RAISED PAVED COURT AT +60\" WITH PLANTERS AND THE OUTDOOR SHOWER, OPENING FROM THE BATHROOM (FULL-HEIGHT GLAZING) AND THE DRESSING (SLIDING DOOR), TIERED PLANTER EDGE STEPPING DOWN TO THE PORCH.",
+          "D. EAST STRIP: SERVANT QUARTERS AT GRADE IN THE SOUTH-EAST (EXISTING ROOM; RESTROOM ON THE EAST, ENTRY ON THE WEST; SECOND ROOM ABOVE AT +9'-0\" BY AN EXTERNAL STAIR ALONG THE WALL), ENTERED FROM OUTSIDE ONLY, NO DOOR INTO THE HOUSE. NORTH OF IT ONE OPEN GARDEN COURT AT GRADE WITH TIERED PLANTERS, THE SERVANT'S PATH ALONG THE WALL, A BATH DECK AT +60\" WITH THE OUTDOOR SHOWER, AND STEPS DOWN FROM THE DRESSING.",
           "E. SERVICE WING ROOFED AT 7'-6\" WITH A PLANTER PARAPET; BATHROOM EAST WINDOW IN OBSCURE GLASS. GRAND ENTRANCE: 10'-0\" FLIGHT CENTRED ON THE WIDENED FRONT DOOR (NORTH PADA 5), BELOW THE BRAHMASTHAN LINE. BASEMENT STAIR IN THE NORTH LIGHT WELL. THE WHOLE BLOCK OVER THE PORCH (LOBBY, LIFT, MAIN STAIR, UPPER LIVING ROOMS) IS DEMOLISHED AND REBUILT ON THE NEW COLUMN GRID; LIFT AND MAIN STAIR STAY IN THE NORTH-WEST.",
           "F. ALL ROOM DIMENSIONS ARE CLEAR INTERNAL SIZES TAKEN FROM THE DRAWN WALLS. SHEET ORIENTATION: TOP = SOUTH, BOTTOM = NORTH, LEFT = EAST, RIGHT = WEST."]:
     S.note(t,150.5,ny,5.0); ny+=8
