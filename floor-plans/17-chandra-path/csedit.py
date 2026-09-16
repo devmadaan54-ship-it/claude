@@ -75,7 +75,7 @@ def clip_seg(p0,p1,z):
     return res
 def to_content(x,y,base=BASE): return ((1191-y-base[4])/base[0], (1684-x-base[5])/base[3])
 
-def edit_page(doc, page, DEL, DELEXACT=(), KEEP=(), TEXTDEL=()):
+def edit_page(doc, page, DEL, DELEXACT=(), KEEP=(), TEXTDEL=(), PRED=()):
     """delete path objects contained in DEL rects (displayed coords), clip straight lines crossing them,
     delete text objects whose origin lies in TEXTDEL rects."""
     xrefs=page.get_contents()
@@ -85,6 +85,8 @@ def edit_page(doc, page, DEL, DELEXACT=(), KEEP=(), TEXTDEL=()):
     for o in objs:
         r=disp_bbox(o[2])
         if any(abs(r.x0-k.x0)<0.3 and abs(r.y0-k.y0)<0.3 and abs(r.x1-k.x1)<0.3 and abs(r.y1-k.y1)<0.3 for k in KEEP): continue
+        if any(f(r,o[3],len(o[6])) for f in PRED):
+            edits.append((o[0],o[1],b"")); ndel+=1; continue
         if any(contained(r,z) for z in DEL) or any(abs(r.x0-k.x0)<1.0 and abs(r.y0-k.y0)<1.0 and abs(r.x1-k.x1)<1.0 and abs(r.y1-k.y1)<1.0 for k in DELEXACT):
             edits.append((o[0],o[1],b"")); ndel+=1; continue
         if o[3]==b"S" and len(o[6])==2 and all(abs(a-b)<1e-6 for a,b in zip(o[5],base)) and any(overlaps(r,z) for z in DEL):

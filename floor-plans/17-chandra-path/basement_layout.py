@@ -20,14 +20,14 @@ B.door(425.0,560.0,439.0,607.0,'y0','right')     # gym
 B.door(566.0,520.0,572.0,560.0,'y0','right')     # shower/wc off gym
 B.door(630.0,501.0,670.0,509.0,'x0','down')     # store from theater (AV / store)
 # windows + glazed door to sunken court
-B.window(E,536.0,ei,636.0)
-B.window(195.0,ni,340.0,No)
-B.door(345.0,ni,391.0,No,'x1','up')
-B.small("GLAZED DOOR IN EXISTING",368,652,2.8); B.small("WINDOW OPENING, LINTEL RETAINED",368,656,2.8)
+B.window(E,586.0,ei,636.0)
+B.door(E,545.0,ei,580.0,'y0','right')
+B.rect(92,405.3,147,425,MAG,0); B.stair(92,425,147,540,8,'up'); B.rect(92,540,147,586,MAG,0); B.text("UP",115,565,5.0,color=MAG); B.small("TO GF SERVICE WING",115,571,2.8)
+B.wall(74,207,80,690); B.wall(80,207,150.5,213); B.wall(80,683.6,150.5,689); B.wall(80,586,150.5,591.3); B.wall(80,400,150.5,405.3)
+B.small("GLAZED DOOR IN EXISTING EAST",213,560,2.8); B.small("WINDOW OPENING, LINTEL RETAINED",213,564,2.8)
+B.window(195.0,ni,391.0,No)
 # sunken court + stair outside north wall
-B.rect(190.0,No,395.0,754.0,BLACK,0.48,dashes="[3 2] 0")
-B.stair(200.0,692.0,331.0,742.0,10,'left'); B.rect(331.0,692.0,395.0,742.0,MAG,0)
-B.text("UP",265,748,5.0,color=MAG); B.text("SUNKEN GARDEN COURT",292,764,5.0); B.text("EXISTING LIGHT WELL, PLANTED",292,770,4.2)
+B.rect(190.0,No,395.0,754.0,BLACK,0.48,dashes="[3 2] 0"); B.text("EXISTING LIGHT WELL",292,725,5.0); B.text("PLANTED SUNKEN COURT",292,731,4.0)
 B.line(120,No,1000,No,FURN,0.48,dashes="[4 2] 0"); B.text("PORCH ABOVE",560,700,5.0)
 # --- LOUNGE + BAR (east half, by the windows) ---
 B.rect(ei,si,262,262); B.rect(ei,262,202,330)                  # L bar counter
@@ -52,8 +52,8 @@ B.hatch(650,515,738,530); B.hatch(650,640,738,655)
 B.label("STORE / AV",'7\'-8" X 9\'-6"',683.0,585.0,7.0); B.small("(EXISTING STAIRWELL, FLOORED OVER AT GF)",683,603,2.8)
 ny=790
 for t in ["NOTES (BASEMENT):","1. Existing stairwell floored over at ground floor level; the well below becomes the store / AV room; the courtyard planter above it is waterproofed.",
-          "2. Existing north window converted to a glazed door: sill masonry removed, existing lintel retained.",
-          "3. New external stair inside the existing sunken light well, approx. 10 risers, 3'-6\" wide, with canopy and floor trap.",
+          "2. Basement entry from the ground floor service wing on the east side (existing east-side entry): east window opening converted to a door, sill masonry removed, lintel retained; 8-riser external stair inside the enclosed wing.",
+          "3. Existing north light well kept as a planted sunken court; north window unchanged. Existing servant room at basement level on the east side to be verified on site and connected to the new stair landing.",
           "4. Existing ceiling height 8'-6\". Existing RCC columns and hidden beam on the centre line are retained; theater partition is non-load-bearing.",
           "5. No new opening in the ground floor slab. Existing basement windows and walls otherwise unchanged."]:
     B.note(t,150.5,ny,5.2); ny+=9
