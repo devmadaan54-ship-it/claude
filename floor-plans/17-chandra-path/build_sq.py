@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="Proposed_Floor_Plan-20260916-R17.pdf"; OUT="Servant_Quarters-SQ-PP-01.pdf"
+SRC="Proposed_Floor_Plan-20260916-R17.pdf"; OUT="Servant_Quarters-SQ-PP-02.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open("proposed.pdf")
 R_=pymupdf.Rect
 def toilet_symbols(S, wc=None, basin=None, shower=None):
@@ -12,13 +12,13 @@ def toilet_symbols(S, wc=None, basin=None, shower=None):
 doc.fullcopy_page(1); pg=doc[len(doc)-1]
 edit_page(doc,pg,[R_(34,26,1640,1166)],TEXTDEL=[R_(34,26,1640,1166),R_(1390,630,1600,675),R_(1396,828,1470,846)])
 S=Sheet(pg,orig[0])
-S.text("SERVANT QUARTERS -",1392.8,648.0,17.09,align="left",fontpath=ARIALB); S.text("GRADE LEVEL LAYOUT",1392.4,668.5,17.09,align="left",fontpath=ARIALB); S.text("SQ-PP-01",1398.1,840.5,14.12,align="left",fontpath=ARIAL)
+S.text("SERVANT QUARTERS -",1392.8,648.0,17.09,align="left",fontpath=ARIALB); S.text("GRADE LEVEL LAYOUT",1392.4,668.5,17.09,align="left",fontpath=ARIALB); S.text("SQ-PP-02",1398.1,840.5,14.12,align="left",fontpath=ARIAL)
 # ---- context: house east wall (reference) ----
 XW=150.5-109.9; PL=XW-11.8
 S.wall(150.5,207,170,683.6); S.OL(150.5,207,150.5,683.6); S.OL(170,207,170,683.6)
 S.wall(150.5,207,420,230.4); S.OL(150.5,230.4,420,230.4)
 S.wall(150.5,663.9,600,683.6); S.OL(150.5,663.9,600,663.9)
-S.text("HOUSE (GROUND FLOOR AT +5'-0\")",300,300,6.0); S.text("KITCHEN OVER THIS STRETCH: NO SLAB ABOVE THE SERVANT ROOM UNTIL THE FIRST-FLOOR BAY",300,309,3.6)
+S.text("HOUSE (GROUND FLOOR AT +5'-0\")",300,300,6.0); S.text("KITCHEN OVER THIS STRETCH: SERVANT ROOF AT +7'-0\" (PLANTED) SITS BELOW",300,309,3.6); S.text("THE KITCHEN EAST WINDOW SILL AT +8'-0\" (3'-0\" ABOVE THE KITCHEN FLOOR);",300,315,3.6); S.text("WINDOW, CHIMNEY FLUE AND EXHAUST STAY CLEAR",300,321,3.6)
 S.text("TOILET + DRESSING OVER THIS STRETCH: BATH DECK AND PLANTED STRIP AT +5'-0\" ABOVE THE RESTROOM AND KITCHENETTE",300,520,3.6)
 S.text("PORCH (+1'-6\")",300,720,6.0)
 S.line(PL,195,PL,760,BLACK,0.48,dashes="[6 2 1 2] 0")
@@ -52,14 +52,16 @@ S.text("RESTROOM",117,440,4.2); S.small(dimstr(85,405,150.5,483),117,445,2.6); S
 S.text("PATH",60,445,3.6); S.small(dimstr(XW,405,80,483),60,450,2.4)
 S.door(90,483,125,488,'x0','up')                                    # kitchenette band -> path/restroom band
 S.door(45,400,80,405,'x0','up')                                     # path -> sleeping room
-# south room: sleeping room, double height with mezzanine
-S.rect(52,216,99,314,FURN,0.48); S.line(52,236,99,236,FURN,0.48)
-S.rect(103,216,150,314,FURN,0.48); S.line(103,236,150,236,FURN,0.48)
-S.hatch(XW,380,110,400)
-S.rect(114,340,150.5,398,MAG,0); S.stair(114,340,150.5,398,8,'down'); S.text("UP TO",132,328,3.0,color=MAG); S.text("MEZZANINE",132,333,3.0,color=MAG)
-S.rect(XW+3,300,148,398,BLACK,0.48,dashes="[3 2] 0"); S.small("MEZZANINE OVER, 2 BEDS, FLOOR +7'-0\"",95,308,2.4)
-S.text("SLEEPING ROOM",96,262,4.6); S.small(dimstr(XW,213,150.5,400),96,267,2.8); S.small("2 BEDS + 2 ON MEZZANINE = 4",96,272,2.4); S.small("FLOOR -3'-0\", DOUBLE HEIGHT TO +15'-0\"",96,277,2.2)
-S.window(PL,240,XW,300); S.small("WINDOW TO PARK",34,320,2.4)
+# south room: sleeping room, single height (roof +7'-0" below the kitchen window), one double bed + one bunk bed
+S.rect(46,216,144,286.7,FURN,0.48); S.line(66,216,66,286.7,FURN,0.48); S.line(46,251.3,66,251.3,FURN,0.48)   # double bed across the room, head to the east (boundary wall)
+S.small("DOUBLE BED 6'-3\" x 4'-6\"",100,266,2.4); S.small("HEAD TO EAST",100,271,2.2)
+S.rect(103.5,298,150.5,396,FURN,0.48); S.line(103.5,318,150.5,318,FURN,0.48); S.line(103.5,298,150.5,396,FURN,0.24); S.line(103.5,396,150.5,298,FURN,0.24)
+S.small("BUNK BED",127,343,2.4); S.small("3'-0\" x 6'-3\"",127,348,2.2); S.small("2 TIERS",127,353,2.2)
+S.rect(XW,300,58,370,FURN,0.48); S.line(XW,335,58,335,FURN,0.48); S.small("LOCKERS",49,378,2.2)
+S.circle(80,235,4,BLACK,0.3); S.small("TURBO VENT OVER",80,245-16,2.0)
+S.text("SLEEPING ROOM",80,308,4.6); S.small(dimstr(XW,213,150.5,400),80,313,2.8); S.small("1 DOUBLE + 1 BUNK = 4 SLEEPERS",80,318,2.4); S.small("FLOOR -3'-0\", ROOF SLAB +7'-0\" (9'-6\" CLEAR)",80,323,2.2)
+S.small("PASSAGE 2'-11\" BESIDE LOCKERS, 4'-0\" BEYOND",80,330,2.2)
+S.window(PL,300,XW,370); S.small("PARK WINDOW SILL +2'-0\",",80,337,2.2); S.small("OBSCURE GLASS + GRILLE",80,342,2.2)
 # ---- sections (schematic), 15.7 units per foot ----
 def section(x0,ybase,title,deck):
     s=15.7
@@ -69,16 +71,19 @@ def section(x0,ybase,title,deck):
     S.wall(x0,L(10),x0+12,L(-3.5)); S.small("BOUNDARY WALL 10'",x0+6,L(10)-4,2.4)
     S.wall(x0+12+110,L(-3.5),x0+12+110+20,L(16)); S.small("HOUSE",x0+132,L(16)-4,2.6)
     S.line(x0+12,L(-3),x0+122,L(-3),BLACK,0.96); S.small("SERVANT FLOOR -3'-0\"",x0+67,L(-3)+6,2.4)
-    S.line(x0+122,L(5),x0+200,L(5),BLACK,0.96); S.small("GROUND FLOOR +5'-0\"",x0+180,L(5)-3,2.4)
+    S.line(x0+122,L(5),x0+200,L(5),BLACK,0.96)
+    if deck: S.small("GROUND FLOOR +5'-0\"",x0+180,L(5)-3,2.4)
     if deck:
         S.wall(x0+12,L(4.5),x0+122,L(5)); S.small("DECK / PLANTED STRIP +5'-0\"",x0+67,L(5)-4,2.4)
         S.line(x0+67,L(-3),x0+67,L(4.5),BLACK,0.3); S.small("7'-6\" CLEAR",x0+75,L(1),2.4)
     else:
-        S.line(x0+40,L(7),x0+122,L(7),BLACK,0.96); S.small("MEZZANINE +7'-0\"",x0+81,L(7)-3,2.4)
-        S.wall(x0+12,L(15),x0+122,L(15.5)); S.small("ROOF +15'-0\" (BELOW FIRST-FLOOR BAY)",x0+67,L(15)-4,2.4)
-        S.line(x0+26,L(-3),x0+26,L(15),BLACK,0.3); S.small("18'-0\"",x0+34,L(6),2.4)
-        S.line(x0+81,L(7),x0+81,L(15),BLACK,0.3); S.small("8'-0\"",x0+89,L(11),2.4)
-        S.line(x0+81,L(-3),x0+81,L(7),BLACK,0.3); S.small("10'-0\"",x0+89,L(2),2.4)
+        S.wall(x0+12,L(7),x0+122,L(7.5)); S.small("ROOF SLAB +7'-0\", PLANTED 9\" OVER",x0+67,L(7.75)-5,2.4)
+        S.line(x0+12,L(7.75),x0+122,L(7.75),BLACK,0.3); S.hatch(x0+12,L(7.75),x0+122,L(7))
+        S.rect(x0+18,L(-1.5),x0+116,L(-3),FURN,0.48); S.small("DOUBLE BED",x0+67,L(-2)-1,2.2)
+        S.line(x0+26,L(-3),x0+26,L(6.5),BLACK,0.3); S.small("9'-6\" CLEAR",x0+34,L(2),2.4)
+        S.window(x0+122,L(12),x0+142,L(8)); S.small("KITCHEN WINDOW",x0+160,L(10)+1,2.4); S.small("SILL +8'-0\", HEAD +12'-0\"",x0+160,L(10)+5,2.2)
+        S.line(x0+142,L(8),x0+200,L(8),BLACK,0.3,dashes="[2 2] 0")
+        S.small("KITCHEN FLOOR +5'-0\"",x0+180,L(5)-3,2.4)
     S.wall(x0+122,L(15.5),x0+200,L(16)); S.small("FIRST-FLOOR BAY",x0+160,L(16)-4,2.4)
 section(760,560,"SECTION A-A THROUGH SLEEPING ROOM",False)
 section(1100,560,"SECTION B-B THROUGH KITCHENETTE / RESTROOM",True)
@@ -87,9 +92,9 @@ S.line(XW-8,540,150.5+8,540,BLACK,0.48,dashes="[4 2] 0"); S.text("B",XW-14,542,4
 ny=800
 for t in ["NOTES (SERVANT QUARTERS):","1. EXISTING SERVANT ROOM AND RESTROOM DEMOLISHED; STRIP REBUILT WITH ITS FLOOR AT -3'-0\" THROUGHOUT (RETAINING WALLS, WATERPROOFED, SUMP + PUMP FOR DRAINAGE).",
           "2. ENTRY FROM THE PORCH END ONLY, 9 RISERS DOWN INSIDE THE DOOR; NO DOOR INTO THE HOUSE.",
-          "3. SLEEPING ROOM IS DOUBLE HEIGHT (NO SLAB ABOVE UNTIL THE FIRST-FLOOR BAY): 2 BEDS BELOW, MEZZANINE AT +7'-0\" WITH 2 MORE BEDS, LADDER STAIR IN THE CORNER. ROOF AT +15'-0\" WITH A LOUVRED VENT.",
+          "3. SLEEPING ROOM: ONE DOUBLE BED ACROSS THE SOUTH WALL AND ONE TWO-TIER BUNK ALONG THE HOUSE WALL (4 SLEEPERS), 4'-0\" PASSAGE WITH LOCKERS UNDER THE PARK WINDOW. SINGLE HEIGHT: FLOOR -3'-0\", ROOF SLAB AT +7'-0\" (9'-6\" CLEAR) PLANTED OVER, KEPT BELOW THE KITCHEN EAST WINDOW SILL AT +8'-0\" SO THE KITCHEN KEEPS ITS WINDOW, CHIMNEY FLUE AND EXHAUST. TURBO VENT IN THE ROOF.",
           "4. RESTROOM AND KITCHENETTE SIT UNDER THE GROUND-FLOOR BATH DECK AND PLANTED STRIP (+5'-0\"), 7'-6\" CLEAR; RESTROOM ON THE EXISTING DRAIN, HIGH-LEVEL VENT TO THE PATH.",
-          "5. PATH 2'-6\" ALONG THE BOUNDARY WALL, OPEN ABOVE WHERE NO DECK; WINDOW TO THE PARK IN THE SLEEPING ROOM AS EXISTING. ALL DIMENSIONS ARE CLEAR INTERNAL SIZES."]:
+          "5. PATH 2'-6\" ALONG THE BOUNDARY WALL, OPEN ABOVE WHERE NO DECK; WINDOW TO THE PARK IN THE SLEEPING ROOM AS EXISTING, SILL +2'-0\" (5'-0\" ABOVE THE SERVANT FLOOR), OBSCURE GLASS WITH A GRILLE. ALL DIMENSIONS ARE CLEAR INTERNAL SIZES."]:
     S.note(t,300,ny,5.0); ny+=8
 S.commit()
 out=pymupdf.open(); out.insert_pdf(doc,from_page=len(doc)-1,to_page=len(doc)-1); out.save(OUT); print("saved",OUT)
