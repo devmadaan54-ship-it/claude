@@ -92,7 +92,7 @@ S.text("WALK-THROUGH",503,556,4.6); S.text("CLOSET",503,562,4.6); S.small(dimstr
 S.line(439,511.8,439,663.9,FURN,0.72); S.line(442,511.8,442,663.9,FURN,0.72); S.rect(439,560,442,612,BLACK,0.48)
 S.text("SLIDING GLASS SCREEN",436,590,2.4,vertical=True)
 # garden bedroom 170-437: bed on the south wall, glazed east wall between piers 1 and 2
-bed(S,205,511.8); S.rect(340,640,420,662); S.circle(430,625,6); S.small("DAYBED",380,668,2.2)
+bed(S,205,511.8); S.small("BATH DOOR 3'-0\" FROM THE BED",370,548,2.2); S.rect(340,640,420,662); S.circle(430,625,6); S.small("DAYBED",380,668,2.2)
 S.rect(215,660,295,663.9,FURN,0.48); S.small("ART / TV WALL",255,657,2.2)
 S.rect(150.6,520,169.9,611.7,(1,1,1),0,(1,1,1)); S.window(150.5,520,170,611.7)
 S.small("FULL-HEIGHT GLAZING, NEW LINTEL BEAM ON PIERS 1-2",160,515,2.2)
