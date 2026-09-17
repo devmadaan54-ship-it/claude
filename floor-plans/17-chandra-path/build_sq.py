@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="Proposed_Floor_Plan-20260916-R21.pdf"; OUT="Servant_Quarters-SQ-PP-04.pdf"
+SRC="Proposed_Floor_Plan-20260916-R21.pdf"; OUT="Servant_Quarters-SQ-PP-05.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open("proposed.pdf")
 R_=pymupdf.Rect
 def toilet_symbols(S, wc=None, basin=None, shower=None):
@@ -12,7 +12,7 @@ def toilet_symbols(S, wc=None, basin=None, shower=None):
 doc.fullcopy_page(1); pg=doc[len(doc)-1]
 edit_page(doc,pg,[R_(34,26,1640,1166)],TEXTDEL=[R_(34,26,1640,1166),R_(1390,630,1600,675),R_(1396,828,1470,846)])
 S=Sheet(pg,orig[0])
-S.text("SERVANT QUARTERS -",1392.8,648.0,17.09,align="left",fontpath=ARIALB); S.text("GRADE LEVEL LAYOUT",1392.4,668.5,17.09,align="left",fontpath=ARIALB); S.text("SQ-PP-04",1398.1,840.5,14.12,align="left",fontpath=ARIAL)
+S.text("SERVANT QUARTERS -",1392.8,648.0,17.09,align="left",fontpath=ARIALB); S.text("GRADE LEVEL LAYOUT",1392.4,668.5,17.09,align="left",fontpath=ARIALB); S.text("SQ-PP-05",1398.1,840.5,14.12,align="left",fontpath=ARIAL)
 # ---- context: house east wall (reference) ----
 XW=150.5-109.9; PL=XW-11.8
 S.wall(150.5,207,170,683.6); S.OL(150.5,207,150.5,683.6); S.OL(170,207,170,683.6)
@@ -44,14 +44,13 @@ S.text("KITCHENETTE",91,505,4.6); S.text("+ DINING",91,511,4.6); S.small(dimstr(
 # middle band: restroom beside the house, path along the wall
 S.wall(XW,483,150.5,488); S.OL(XW,483,150.5,483); S.OL(XW,488,150.5,488)
 S.wall(80,405,85,483); S.OL(80,405,80,483); S.OL(85,405,85,483)
-S.wall(XW,400,150.5,405); S.OL(XW,400,150.5,400); S.OL(XW,405,150.5,405)
+S.wall(80,400,150.5,405); S.OL(80,400,150.5,400); S.OL(80,405,150.5,405); S.OL(80,400,80,405)
 S.door(80,420,85,452,'y0','right')
 toilet_symbols(S, wc=(90,125,420), basin=(90,100,470), shower=(0,132,470))
 S.line(85,452,150.5,452,FURN,0.48,dashes="[2 2] 0")
 S.text("RESTROOM",117,440,4.2); S.small(dimstr(85,405,150.5,483),117,445,2.6); S.small("WC + SHOWER, EXISTING DRAIN",117,450,2.2)
-S.text("LOBBY",60,443,3.6); S.small(dimstr(XW,405,80,483),60,448,2.4); S.small("ENCLOSED",60,453,2.2)
+S.text("EN-SUITE",60,440,3.2); S.text("LOBBY",60,445,3.2); S.small("OPEN TO THE",60,450,2.2); S.small("SLEEPING ROOM",60,455,2.2)
 S.door(90,483,125,488,'x0','up')                                    # kitchenette band -> path/restroom band
-S.door(45,400,80,405,'x0','up')                                     # path -> sleeping room
 # south room: sleeping room, single height (roof +7'-0" below the kitchen window), one double bed + one bunk bed
 S.rect(46,216,144,286.7,FURN,0.48); S.line(66,216,66,286.7,FURN,0.48); S.line(46,251.3,66,251.3,FURN,0.48)   # double bed across the room, head to the east (boundary wall)
 S.small("DOUBLE BED 6'-3\" x 4'-6\"",100,266,2.4); S.small("HEAD TO EAST",100,271,2.2)
@@ -59,7 +58,7 @@ S.rect(103.5,298,150.5,396,FURN,0.48); S.line(103.5,318,150.5,318,FURN,0.48); S.
 S.small("BUNK BED",127,343,2.4); S.small("3'-0\" x 6'-3\"",127,348,2.2); S.small("2 TIERS",127,353,2.2)
 S.rect(XW,300,58,370,FURN,0.48); S.line(XW,335,58,335,FURN,0.48); S.small("LOCKERS",49,378,2.2)
 S.rect(PL+1,225,XW-1,245,BLACK,0.48,(1,1,1)); S.small("LOUVRED VENT HIGH IN THE PARK WALL",80,229,2.0)
-S.text("SLEEPING ROOM",80,308,4.6); S.small(dimstr(XW,213,150.5,400),80,313,2.8); S.small("1 DOUBLE + 1 BUNK = 4 SLEEPERS",80,318,2.4); S.small("FLOOR -3'-0\", ROOF SLAB +5'-6\" (8'-0\" CLEAR)",80,323,2.2)
+S.text("SLEEPING ROOM",80,308,4.6); S.small(dimstr(XW,213,150.5,400),80,313,2.8); S.small("1 DOUBLE + 1 BUNK = 4 SLEEPERS; RESTROOM EN-SUITE",80,318,2.4); S.small("FLOOR -3'-0\", ROOF SLAB +5'-6\" (8'-0\" CLEAR)",80,323,2.2)
 S.small("PASSAGE 2'-11\" BESIDE LOCKERS, 4'-0\" BEYOND",80,330,2.2)
 S.window(PL,300,XW,370); S.small("PARK WINDOW SILL +2'-0\",",80,337,2.2); S.small("OBSCURE GLASS + GRILLE",80,342,2.2)
 # ---- sections (schematic), 15.7 units per foot ----
@@ -97,7 +96,7 @@ for t in ["NOTES (SERVANT QUARTERS):","1. EXISTING SERVANT ROOM AND RESTROOM DEM
           "2. ENTRY FROM THE PORCH END ONLY, 9 RISERS DOWN INSIDE THE DOOR; NO DOOR INTO THE HOUSE.",
           "3. SLEEPING ROOM: ONE DOUBLE BED ACROSS THE SOUTH WALL AND ONE TWO-TIER BUNK ALONG THE HOUSE WALL (4 SLEEPERS), 4'-0\" PASSAGE WITH LOCKERS UNDER THE PARK WINDOW. SINGLE HEIGHT: FLOOR -3'-0\", ROOF SLAB AT +5'-6\" (8'-0\" CLEAR); THE ROOF CARRIES THE GLAZED BREAKFAST BAY OFF THE KITCHEN (FLOOR +5'-6\", CEILING +12'-6\"), DESIGNED FOR THAT LOAD, WATERPROOFED. LOUVRED VENT HIGH IN THE PARK WALL FOR CROSS-VENTILATION WITH THE DOOR.",
           "4. ONE CONTINUOUS ROOF SLAB AT +5'-6\" OVER THE WHOLE QUARTER (8'-0\" CLEAR THROUGHOUT); THE BEDROOM GARDEN COURT AND BATH DECK SIT ON IT; RESTROOM ON THE EXISTING DRAIN, HIGH-LEVEL VENT TO THE PATH.",
-          "5. THE QUARTER IS ONE ENCLOSED UNIT: SLEEPING ROOM, RESTROOM, KITCHENETTE AND ENTRY ALL CONNECT THROUGH THE 2'-6\" INTERNAL LOBBY, NO OUTDOOR ROUTE BETWEEN ROOMS; WINDOW TO THE PARK IN THE SLEEPING ROOM AS EXISTING, SILL +2'-0\" (5'-0\" ABOVE THE SERVANT FLOOR), OBSCURE GLASS WITH A GRILLE. ALL DIMENSIONS ARE CLEAR INTERNAL SIZES."]:
+          "5. THE QUARTER IS ONE ENCLOSED UNIT. THE RESTROOM IS EN-SUITE: ITS DOOR OPENS OFF A 2'-6\" LOBBY THAT IS PART OF THE SLEEPING ROOM; THE KITCHENETTE CONNECTS THROUGH THE SAME LOBBY. NO OUTDOOR ROUTE BETWEEN ANY ROOMS; WINDOW TO THE PARK IN THE SLEEPING ROOM AS EXISTING, SILL +2'-0\" (5'-0\" ABOVE THE SERVANT FLOOR), OBSCURE GLASS WITH A GRILLE. ALL DIMENSIONS ARE CLEAR INTERNAL SIZES."]:
     S.note(t,300,ny,5.0); ny+=8
 S.commit()
 out=pymupdf.open(); out.insert_pdf(doc,from_page=len(doc)-1,to_page=len(doc)-1); out.save(OUT); print("saved",OUT)
