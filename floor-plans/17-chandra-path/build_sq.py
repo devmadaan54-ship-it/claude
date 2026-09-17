@@ -1,7 +1,7 @@
 import pymupdf
 from csedit import edit_page
 from plan import *
-SRC="Proposed_Floor_Plan-20260916-R24.pdf"; OUT="Servant_Quarters-SQ-PP-05.pdf"
+SRC="Proposed_Floor_Plan-20260916-R25.pdf"; OUT="Servant_Quarters-SQ-PP-05.pdf"
 doc=pymupdf.open(SRC); orig=pymupdf.open("proposed.pdf")
 R_=pymupdf.Rect
 def toilet_symbols(S, wc=None, basin=None, shower=None):

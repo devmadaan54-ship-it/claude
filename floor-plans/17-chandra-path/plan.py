@@ -77,7 +77,7 @@ class Sheet:
             dirn=-1 if swing=='up' else 1; yw=y0 if swing=='up' else y1
             lx0=hx if hinge=='x0' else hx-1.3
             rect(lx0,min(yw,yw+dirn*L),lx0+1.3,max(yw,yw+dirn*L),BLACK,0)
-            self.arc(hx,yw,hx,yw+dirn*L, 90 if (hinge=='x0')==(swing=='up') else -90)
+            self.arc(hx,yw,hx,yw+dirn*L, -90 if (hinge=='x0')==(swing=='up') else 90)
             line(x0+3,yw,x1-3,yw,BLACK,0)
         else:
             line(x0,y0,x1,y0,BLACK,0.96); line(x0,y1,x1,y1,BLACK,0.96)
