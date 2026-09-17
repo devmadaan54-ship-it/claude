@@ -62,10 +62,10 @@ opts=[(1,"OPTION 1  -  TURNED ARRIVAL STAIR (RECOMMENDED)","Gate and door stay. 
       (3,"OPTION 3  -  AXIAL ARRIVAL","The car gate moves to the middle of the north boundary, on the axis of the straight stair and the door; reflecting pools flank the flight. Most formal; costs the east-end gate position.",R_(20,640,900,1000)),
       (4,"OPTION 4  -  WALLED ENTRY COURT","A 17'-5\" x 6'-8\" forecourt centred on the door, 7' walls, a pivot gate on the axis, a tree and a water bowl inside, the stair within the court. Cars pass in a 9'-3\" lane along the gate line; drop-off at the pivot gate.",R_(20,640,900,1000))]
 for i,(n,t,desc,clip) in enumerate(opts):
-    doc,pg=make(n); pix=pg.get_pixmap(matrix=pymupdf.Matrix(3,3),clip=clip)
+    doc,pg=make(n); pix=pg.get_pixmap(matrix=pymupdf.Matrix(2.5,2.5),clip=clip); img=pix.tobytes("jpeg",jpg_quality=80)
     cx=40+(i%2)*822; cy=95+(i//2)*520; W=800; H=W*clip.height/clip.width
     if H>400: H=400; W=H*clip.width/clip.height
-    page.insert_image(R_(cx,cy+22,cx+W,cy+22+H),pixmap=pix); page.draw_rect(R_(cx,cy+22,cx+W,cy+22+H),color=(0,0,0),width=0.5)
+    page.insert_image(R_(cx,cy+22,cx+W,cy+22+H),stream=img); page.draw_rect(R_(cx,cy+22,cx+W,cy+22+H),color=(0,0,0),width=0.5)
     title(cx,cy+14,t,12)
     page.insert_textbox(R_(cx,cy+H+30,cx+800,cy+H+100),desc,fontsize=8.5,fontfile=ARIAL,fontname="Fd")
 sheet.save(OUT); print("saved",OUT)
