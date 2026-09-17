@@ -65,7 +65,7 @@ DEL=[R_(*r) for r in [
     (4.0,195.0,84.0,1000.0),                                      # old slanted plot line (dash-dot) along the east side
     (662.0,684.5,830.0,766.0),(500.0,684.5,585.0,766.0),          # verandah middle + old steps
     (250.0,446.0,297.0,501.0),                                    # toilet door
-    (569.3,588.0,592.0,662.0),                                    # foyer console table (moved north, clear of the new closet door)
+    (569.3,540.0,592.0,662.0),                                    # foyer console table (moved north, clear of the new closet door)
     (345.0,352.0,396.0,410.0),                                    # old kitchen north door leaf (opening absorbed into the bath lobby) from the dressing (closed)
     (150.3,262.0,170.3,360.0),                                    # kitchen east window -> glazed door to the terrace
 ]]
