@@ -65,7 +65,7 @@ DEL=[R_(*r) for r in [
     (4.0,195.0,84.0,1000.0),                                      # old slanted plot line (dash-dot) along the east side
     (662.0,684.5,830.0,766.0),(500.0,684.5,585.0,766.0),          # verandah middle + old steps
     (250.0,446.0,297.0,501.0),                                    # toilet door
-    (346.0,353.0,395.0,404.5),                                    # old kitchen north door leaf (opening absorbed into the bath lobby) from the dressing (closed)
+    (345.0,352.0,396.0,410.0),                                    # old kitchen north door leaf (opening absorbed into the bath lobby) from the dressing (closed)
     (150.3,262.0,170.3,360.0),                                    # kitchen east window -> glazed door to the terrace
 ]]
 PRED=[lambda r,op,n: n==2 and r.height<0.6 and r.x0<82 and r.width>60 and 205<r.y0<1100,     # porch / side-yard paving lines
@@ -94,7 +94,7 @@ S.text("WALK-THROUGH",503,556,4.6); S.text("CLOSET",503,562,4.6); S.small(dimstr
 S.line(439,511.8,439,663.9,FURN,0.72); S.line(442,511.8,442,663.9,FURN,0.72); S.rect(439,560,442,612,BLACK,0.48)
 S.text("SLIDING GLASS SCREEN",436,590,2.4,vertical=True)
 # garden bedroom 170-437: bed on the south wall, glazed east wall between piers 1 and 2
-bed(S,205,511.8); S.small("BATH LOBBY DOOR 3'-0\" FROM THE BED",370,548,2.2); S.wall(346,402.8,393,410.7); S.OL(346,402.8,393,402.8); S.OL(346,410.7,393,410.7); S.rect(331.3,412,346.7,448,(1,1,1),0,(1,1,1)); S.door(331,412,347,448,'y0','left'); S.wall(440,410.7,448,492.9); S.OL(440,410.7,440,492.9); S.OL(448,410.7,448,492.9); S.rect(349,411,425,427,FURN,0.48); S.circle(387,419,5,PURPLE,0.24); S.small("VANITY",387,432,2.0); S.rect(424,432,440,490,FURN,0.48); S.small("LINEN",432,461,1.8); S.text("BATH",385,455,3.4); S.text("LOBBY",385,460,3.4); S.small(dimstr(347,410.7,440,492.9),385,465,2.4); S.small("NICHE CLOSED FROM THE GREAT ROOM",385,470,2.0); S.rect(340,640,420,662); S.circle(430,625,6); S.small("DAYBED",380,668,2.2)
+bed(S,205,511.8); S.small("BATH LOBBY DOOR 3'-0\" FROM THE BED",370,548,2.2); S.wall(346,402.8,393.3,410.7); S.OL(346,402.8,393.3,402.8); S.OL(346,410.7,393.3,410.7); S.OL(393.3,352,393.3,402.8); S.rect(331.3,412,346.7,448,(1,1,1),0,(1,1,1)); S.door(331,412,347,448,'y0','left'); S.wall(440,410.7,448,492.9); S.OL(440,410.7,440,492.9); S.OL(448,410.7,448,492.9); S.rect(349,411,425,427,FURN,0.48); S.circle(387,419,5,PURPLE,0.24); S.small("VANITY",387,432,2.0); S.rect(424,432,440,490,FURN,0.48); S.small("LINEN",432,461,1.8); S.text("BATH",385,455,3.4); S.text("LOBBY",385,460,3.4); S.small(dimstr(347,410.7,440,492.9),385,465,2.4); S.small("NICHE CLOSED FROM THE GREAT ROOM",385,470,2.0); S.rect(340,640,420,662); S.circle(430,625,6); S.small("DAYBED",380,668,2.2)
 S.rect(215,660,295,663.9,FURN,0.48); S.small("ART / TV WALL",255,657,2.2)
 S.rect(150.6,520,169.9,611.7,(1,1,1),0,(1,1,1)); S.window(150.5,520,170,611.7)
 S.small("FULL-HEIGHT GLAZING, NEW LINTEL BEAM ON PIERS 1-2",160,515,2.2)
