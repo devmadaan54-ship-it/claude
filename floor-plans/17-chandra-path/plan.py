@@ -99,16 +99,22 @@ class Sheet:
             self.line(x0,y0,x1,y0,BLACK,0.96); self.line(x0,y1,x1,y1,BLACK,0.96)
             m=(y0+y1)/2; t=(x1-x0)
             self.rect(x0+t*0.25,y0+1,x0+t*0.45,m+3,BLACK,0.48); self.rect(x0+t*0.55,m-3,x0+t*0.75,y1-1,BLACK,0.48)
-    def stair(self,x0,y0,x1,y1,n,direction,color=MAG):
+    def stair(self,x0,y0,x1,y1,n,direction,color=MAG,dashes=None,arrow=True):
         """flight rect with n treads, direction 'left'/'right'/'up'/'down' = direction of travel (arrow)"""
-        self.rect(x0,y0,x1,y1,color,0)
+        self.rect(x0,y0,x1,y1,color,0,dashes=dashes)
+        if not arrow:
+            if direction in ('left','right'):
+                for i in range(1,n): self.line(x0+(x1-x0)*i/n,y0,x0+(x1-x0)*i/n,y1,color,0,dashes=dashes)
+            else:
+                for i in range(1,n): self.line(x0,y0+(y1-y0)*i/n,x1,y0+(y1-y0)*i/n,color,0,dashes=dashes)
+            return
         if direction in ('left','right'):
-            for i in range(1,n): self.line(x0+(x1-x0)*i/n,y0,x0+(x1-x0)*i/n,y1,color,0)
+            for i in range(1,n): self.line(x0+(x1-x0)*i/n,y0,x0+(x1-x0)*i/n,y1,color,0,dashes=dashes)
             cy=(y0+y1)/2
             if direction=='right': self.line(x0+4,cy,x1-8,cy,color,0.48); self.poly([(x1-8,cy-3),(x1-2,cy),(x1-8,cy+3)],color,0,color)
             else: self.line(x1-4,cy,x0+8,cy,color,0.48); self.poly([(x0+8,cy-3),(x0+2,cy),(x0+8,cy+3)],color,0,color)
         else:
-            for i in range(1,n): self.line(x0,y0+(y1-y0)*i/n,x1,y0+(y1-y0)*i/n,color,0)
+            for i in range(1,n): self.line(x0,y0+(y1-y0)*i/n,x1,y0+(y1-y0)*i/n,color,0,dashes=dashes)
             cx=(x0+x1)/2
             if direction=='down': self.line(cx,y0+4,cx,y1-8,color,0.48); self.poly([(cx-3,y1-8),(cx,y1-2),(cx+3,y1-8)],color,0,color)
             else: self.line(cx,y1-4,cx,y0+8,color,0.48); self.poly([(cx-3,y0+8),(cx,y0+2),(cx+3,y0+8)],color,0,color)
@@ -152,6 +158,21 @@ class Sheet:
         if dims: self.text(dims,cx,cy+9.5,6.4)
     def small(self,s,cx,cy,size=3.2,color=BLACK): self.text(s,cx,cy,size,color=color)
     def note(self,s,x,cy,size=5.0): self.text(s,x,cy,size,align="left")
+    def textw(self,s,size,fontpath=DIDACT):
+        f,gs,cmap,upm=font(fontpath); sc=size/upm
+        return sum(f["hmtx"][cmap[ord(ch)]][0] for ch in s if ord(ch) in cmap)*sc
+    def notes(self,lines,x,y0,size=5.0,maxw=1200.0,lh=8.0):
+        """left-aligned note block, wrapped to maxw sheet units, continuation lines indented"""
+        for t in lines:
+            cur=""; ind=x
+            for w in t.split(" "):
+                trial=(cur+" "+w).strip()
+                if cur and self.textw(trial,size)>(maxw-(ind-x)):
+                    self.note(cur,ind,y0,size); y0+=size*1.32; ind=x+size*1.6; cur=w
+                else: cur=trial
+            if cur: self.note(cur,ind,y0,size)
+            y0+=lh
+        return y0
     # replay original drawings with a transform in displayed space
     def replay(self,sel,mat):
         T=self.M*mat*self.T*self.D; n=0; sh=self.sh
