@@ -170,3 +170,62 @@ class HealthResponse(BaseModel):
     status: str = "healthy"
     version: str
     mock_mode: bool
+
+
+# ============== Tracxn Data API ==============
+
+class TracxnDataset(str, Enum):
+    """Tracxn datasets available through the API."""
+    COMPANIES = "companies"
+    INVESTORS = "investors"
+    FUNDINGS = "fundings"
+    ACQUISITIONS = "acquisitions"
+
+
+class TracxnSearchRequest(BaseModel):
+    """Search request for a Tracxn dataset."""
+    dataset: TracxnDataset = Field(default=TracxnDataset.COMPANIES)
+    name: Optional[str] = Field(default=None, description="Shorthand name filter")
+    filters: dict = Field(default_factory=dict, description="Raw Tracxn filter object")
+    offset: int = Field(default=0, ge=0, description="Pagination offset")
+    size: int = Field(default=20, ge=1, le=20, description="Records per page (max 20)")
+    sort: Optional[dict] = Field(default=None, description="Raw Tracxn sort object")
+
+
+class TracxnSearchResponse(BaseModel):
+    """One page of Tracxn results."""
+    dataset: TracxnDataset
+    rows: list[dict]
+    total_count: int
+    offset: int
+    size: int
+    has_more: bool
+    mock_mode: bool
+
+
+class TracxnCollectRequest(BaseModel):
+    """Paginated collection request across a Tracxn dataset."""
+    dataset: TracxnDataset = Field(default=TracxnDataset.COMPANIES)
+    filters: dict = Field(default_factory=dict)
+    limit: int = Field(default=100, ge=1, le=1000, description="Hard cap on records fetched")
+    sort: Optional[dict] = Field(default=None)
+
+
+class TracxnStatusResponse(BaseModel):
+    """Connection diagnostics for the Tracxn API."""
+    connected: bool
+    mock_mode: bool
+    base_url: str
+    configured: bool
+    auth_header: Optional[str] = None
+    rows_returned: Optional[int] = None
+    total_count: Optional[int] = None
+    error: Optional[str] = None
+
+
+class TracxnConfigUpdate(BaseModel):
+    """Runtime update for Tracxn API credentials and settings."""
+    access_token: Optional[str] = Field(default=None)
+    base_url: Optional[str] = Field(default=None)
+    auth_header: Optional[str] = Field(default=None)
+    mock_mode: Optional[bool] = Field(default=None)

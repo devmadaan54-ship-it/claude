@@ -5,6 +5,7 @@ from .synthesis import router as synthesis_router
 from .debate import router as debate_router
 from .hub import router as hub_router
 from .vote import router as vote_router
+from .tracxn import router as tracxn_router
 
 __all__ = [
     "router_router",
@@ -12,4 +13,5 @@ __all__ = [
     "debate_router",
     "hub_router",
     "vote_router",
+    "tracxn_router",
 ]

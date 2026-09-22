@@ -44,11 +44,17 @@ polymind/
 │   │   ├── synthesis.py     # Mode B: Synthesizer
 │   │   ├── debate.py        # Mode C: Council
 │   │   ├── hub.py           # Mode D: Hub
-│   │   └── vote.py          # Mode E: Voting
+│   │   ├── vote.py          # Mode E: Voting
+│   │   └── tracxn.py        # Tracxn data API routes
 │   ├── models/
 │   │   └── schemas.py       # Pydantic models
-│   └── utils/
-│       └── llm_client.py    # LiteLLM wrapper with mock mode
+│   ├── utils/
+│   │   ├── llm_client.py    # LiteLLM wrapper with mock mode
+│   │   └── tracxn_client.py # Tracxn API client with mock mode
+│   ├── scripts/
+│   │   └── check_tracxn.py  # Tracxn connection checker
+│   └── tests/
+│       └── test_tracxn.py   # Tracxn client and route tests
 │
 └── frontend/
     ├── src/
@@ -150,6 +156,12 @@ POST /query
 - `POST /hub/stream` - Hub with parallel streaming
 - `POST /vote/stream` - Voting with streaming
 
+### Tracxn Data API
+- `GET /tracxn/status` - Verify the Tracxn connection
+- `POST /tracxn/search` - Search one page of a dataset (max 20 records)
+- `POST /tracxn/collect` - Page through a dataset up to a record limit
+- `POST /tracxn/config` - Update the Tracxn token at runtime
+
 ### Settings
 - `GET /settings` - Get current settings
 - `POST /settings` - Update API keys and mock mode
@@ -157,6 +169,106 @@ POST /query
 ### Health
 - `GET /health` - Health check
 - `GET /` - API information
+
+## Connecting to Tracxn
+
+Tracxn is a **REST API, not a SQL database** - there is no host, port or
+connection string. You authenticate with an access token and POST JSON filter
+bodies to `https://platform.tracxn.com/api/2.2`.
+
+### 1. Get an access token
+
+Generate one from the API Token page in your Tracxn account:
+<https://platform.tracxn.com/a/api/apitoken>
+
+API access is a paid add-on. If the token page is unavailable, your plan does
+not include API access - contact <support@tracxn.com>.
+
+### 2. Configure the backend
+
+Add to `backend/.env`:
+
+```bash
+TRACXN_ACCESS_TOKEN=your-token-here
+TRACXN_MOCK_MODE=False        # True serves mock rows and spends no credits
+```
+
+Optional overrides (defaults shown):
+
+```bash
+TRACXN_BASE_URL=https://platform.tracxn.com/api/2.2
+TRACXN_AUTH_HEADER=accessToken
+TRACXN_TIMEOUT=30
+TRACXN_MAX_RETRIES=3
+```
+
+### 3. Verify the connection
+
+```bash
+cd backend
+python scripts/check_tracxn.py
+```
+
+The checker pings the API, then runs a one-record sample query against each
+dataset so you can see which ones your plan includes.
+
+If it fails, find out why:
+
+```bash
+python scripts/check_tracxn.py --probe-headers
+```
+
+Tracxn separates the two failure modes cleanly, and the probe reads that signal:
+
+| Response | Meaning | Fix |
+|---|---|---|
+| `401 Token was not recognised` | Header was read; the **token** is wrong or expired | Regenerate the token |
+| `403 Invalid web session access. No user.` | Header was **ignored** | Wrong header name, or no API access on your plan |
+
+Trial-account tokens are revoked automatically when the trial ends, so a token
+that worked last week can start returning 401.
+
+### 4. Query it
+
+```bash
+curl -X POST http://localhost:8000/tracxn/search \
+  -H 'Content-Type: application/json' \
+  -d '{"dataset": "companies", "name": "Stripe"}'
+```
+
+Datasets: `companies`, `investors`, `fundings`, `acquisitions`. Availability
+depends on your plan.
+
+From Python:
+
+```python
+from utils.tracxn_client import TracxnClient
+
+async with TracxnClient() as client:
+    page = await client.search("companies", {"companyName": ["Stripe"]})
+    print(page.total_count, page.rows)
+
+    # Paginate past the 20-record cap; `limit` is a hard stop on credits spent.
+    rows = await client.collect("fundings", {"round": ["Series A"]}, limit=100)
+```
+
+`filters` is passed to the API untouched, so any filter your plan supports
+works without changing the client.
+
+### Notes on cost and limits
+
+- A single call returns at most **20 records**; use `collect()` to paginate.
+- Every call consumes account credits. Calls returning empty results do not.
+- Rate limits (429) are retried with exponential backoff, honouring `Retry-After`.
+- Keep `TRACXN_MOCK_MODE=True` during UI work to avoid spending credits.
+
+### If you wanted an actual database
+
+Tracxn also offers scheduled SFTP dumps and Snowflake / BigQuery data shares on
+some plans. Those *are* real database connections and would need a warehouse
+driver instead of this client - ask your Tracxn account manager whether your
+plan includes them.
+
 
 ## Development
 

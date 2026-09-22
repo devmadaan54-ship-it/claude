@@ -25,6 +25,7 @@ from routers import (
     debate_router,
     hub_router,
     vote_router,
+    tracxn_router,
 )
 from utils.llm_client import get_llm_client
 
@@ -36,6 +37,12 @@ async def lifespan(app: FastAPI):
     print(f"🚀 Starting {settings.APP_NAME} v{settings.APP_VERSION}")
     print(f"📡 Mock Mode: {'Enabled' if settings.MOCK_MODE else 'Disabled'}")
     print(f"🌐 CORS Origins: {settings.CORS_ORIGINS}")
+    if settings.TRACXN_MOCK_MODE:
+        print("🔎 Tracxn: mock mode (no API credits spent)")
+    elif settings.TRACXN_ACCESS_TOKEN:
+        print(f"🔎 Tracxn: live at {settings.TRACXN_BASE_URL}")
+    else:
+        print("🔎 Tracxn: no TRACXN_ACCESS_TOKEN set - /tracxn routes will return 401")
 
     yield
 
@@ -66,6 +73,7 @@ app.include_router(synthesis_router)
 app.include_router(debate_router)
 app.include_router(hub_router)
 app.include_router(vote_router)
+app.include_router(tracxn_router)
 
 
 # ============== Unified Query Endpoint ==============
@@ -186,6 +194,7 @@ async def root():
             "debate": "POST /debate/stream, POST /debate/query",
             "hub": "POST /hub/stream, POST /hub/query",
             "vote": "POST /vote/stream, POST /vote/query",
+            "tracxn": "GET /tracxn/status, POST /tracxn/search, POST /tracxn/collect, POST /tracxn/config",
             "settings": "GET/POST /settings",
             "health": "GET /health"
         }

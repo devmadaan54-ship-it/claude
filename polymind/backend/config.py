@@ -27,6 +27,18 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: Optional[str] = Field(default=None)
     GROQ_API_KEY: Optional[str] = Field(default=None)
 
+    # Tracxn API (company/investor intelligence data)
+    # Tracxn is a REST API, not a SQL database: generate an access token at
+    # https://platform.tracxn.com/a/api/apitoken and set TRACXN_ACCESS_TOKEN.
+    TRACXN_ACCESS_TOKEN: Optional[str] = Field(default=None)
+    TRACXN_BASE_URL: str = Field(default="https://platform.tracxn.com/api/2.2")
+    # Header name carrying the token. Confirm against your account's API docs;
+    # override here if your plan expects a different header.
+    TRACXN_AUTH_HEADER: str = Field(default="accessToken")
+    TRACXN_TIMEOUT: int = Field(default=30)  # seconds
+    TRACXN_MAX_RETRIES: int = Field(default=3)  # retries on 429/5xx
+    TRACXN_MOCK_MODE: bool = Field(default=True)  # serve mock rows, spend no credits
+
     # Model Defaults
     DEFAULT_ROUTER_MODEL: str = "gpt-4o-mini"
     DEFAULT_CODING_MODEL: str = "claude-3-5-sonnet-20241022"
@@ -111,3 +123,22 @@ def update_api_keys(
     if groq_key:
         settings.GROQ_API_KEY = groq_key
         os.environ["GROQ_API_KEY"] = groq_key
+
+
+def update_tracxn_config(
+    access_token: Optional[str] = None,
+    base_url: Optional[str] = None,
+    auth_header: Optional[str] = None,
+    mock_mode: Optional[bool] = None,
+) -> None:
+    """Update Tracxn API settings at runtime (called from frontend settings)."""
+    global settings
+    if access_token:
+        settings.TRACXN_ACCESS_TOKEN = access_token
+        os.environ["TRACXN_ACCESS_TOKEN"] = access_token
+    if base_url:
+        settings.TRACXN_BASE_URL = base_url
+    if auth_header:
+        settings.TRACXN_AUTH_HEADER = auth_header
+    if mock_mode is not None:
+        settings.TRACXN_MOCK_MODE = mock_mode
