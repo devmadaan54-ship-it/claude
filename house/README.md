@@ -5,10 +5,28 @@ that can be read, discussed and changed one step at a time.
 
 | File | What it is |
 |---|---|
-| `model.yaml` | **Source of truth.** Every room, wall, door, window, stair and fixture on all 4 floors, with coordinates in feet. Changes are made here. |
-| `render.py` | Draws `model.yaml` as `plan.html` (`python3 house/render.py`). |
-| `plan.html` | The drawing to look at after each change. Tabs per floor, plus toggles for a 1 ft grid, element ids and a "ghost" of the floor below. |
+| `model.yaml` | **The house as it exists.** Every room, wall, door, window, stair and fixture on all 4 floors, with coordinates in feet. Only corrected, never redesigned. |
+| `plan.html` | Drawing of `model.yaml`. |
+| `design_v1.yaml` | **Design iteration 1 (Vastu changes)**, written as a list of changes on top of `model.yaml`: what is removed, modified and added, plus a change log with the reason and the structural note for each change. |
+| `design_v1.html` | Drawing of design v1. Includes the change log, the Vastu 3x3 grid, a table of which zone each WC, stair, lift and entrance falls in, and a toggle that shows the existing walls underneath. New walls are teal. |
+| `render.py` | Builds all the HTML files: `python3 house/render.py`. |
 | `source/17C_original.pdf` | The original drawing, kept for reference. |
+
+## How iterations work
+
+Each design round is a new `design_vN.yaml` with `base:` pointing at the
+previous one (v1 starts from `model.yaml`). It lists only what changes:
+
+```yaml
+base: design_v1.yaml
+remove: [gf.w.some_wall]
+modify: {gf.kitchen_new: {box: [1.25, 1.15, 17.22, 12.18]}}
+add: {ground: {walls: [...], rooms: [...]}}
+changes: [{what: ..., why: ..., structure: ...}]
+```
+
+So every version stays readable on its own, and you can always see exactly
+what moved between rounds.
 
 ## How the model works
 
@@ -42,6 +60,15 @@ that can be read, discussed and changed one step at a time.
 - From the stair a door leads down 18" to a landing and an open **Terrace** 17'-9" x 16'-9", drawn over the ground-floor parking zone.
 
 **Terrace** (330.89 sq ft built up, 2,079.54 sq ft open). This is the open roof with a **stair room** (ceiling 7'-9"), a **Pantry** 6'-10" x 5'-9" and a **Toilet** 6'-10" x 4'-3" in one block above the stair core. An **MS (steel) structure** shades the north-east part along the east parapet. A second pergola with a column is at the south-east corner.
+
+## Vastu zoning
+
+The 3x3 grid is laid over the whole plot (82'-5" x 47'). With that grid the
+small ground floor toilet by the stair and the first floor tub bathroom both
+fall in the centre zone, which is what you saw. The zone names assume drawing
+up = East. The compass on the sheets is turned about 24 degrees, so each zone
+name is approximate. `design_v1.html` lists the zone of every WC, stair, lift,
+hob and entrance on each floor.
 
 ## Things I marked as uncertain
 

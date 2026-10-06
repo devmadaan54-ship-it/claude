@@ -53,6 +53,26 @@ meta:
     split levels: parking +18", entrance porch +42", main floor +60",
     rear stair landing +24".
 
+vastu:
+  # 3x3 grid (9 zones) laid over the whole plot. With this grid the ground
+  # floor toilet next to the stair and the first floor toilet with the tub fall
+  # in the centre zone.
+  grid_box: [-7.00, 0.00, 75.40, 47.00]
+  cells:
+    - [NE, E, SE]
+    - [N, Centre, S]
+    - [NW, W, SW]
+  note: >
+    Vastu 3x3 grid over the whole plot. Zone names assume drawing up = East.
+    The compass on the sheets is turned about 24 deg (East points up and a
+    little to the left), so each named zone is really about 24 deg off.
+  avoid:
+    WC: [Centre, NE, SW]
+    Stair: [Centre, NE, N, E]
+    Lift: [Centre, NE]
+    Cooking (hob): [NE, Centre, SW]
+    Entrance door: [SW]
+
 floors:
 
   # =========================================================================
@@ -319,6 +339,8 @@ floors:
     fixtures:
       - {id: gf.f.porch_col1, type: round_column, center: [59.90, 2.20], radius: 0.55}
       - {id: gf.f.porch_col2, type: round_column, center: [59.90, 10.00], radius: 0.55}
+      - {id: gf.f.parking_col1, type: round_column, center: [25.80, 44.40], radius: 0.55, note: probably carries the first-floor terrace slab over the parking}
+      - {id: gf.f.parking_col2, type: round_column, center: [39.20, 44.40], radius: 0.55, note: probably carries the first-floor terrace slab over the parking}
       - {id: gf.f.beam_arch, type: beam, box: [34.75, 2.33, 36.00, 11.32], note: arch opening Dining-Drawing, beam over}
       - {id: gf.f.beam_porch, type: beam, box: [55.50, 17.87, 58.40, 19.00], note: opening with beam over}
       - {id: gf.f.cb, type: cupboard, box: [16.89, 9.40, 18.46, 11.50], label: C.B.}

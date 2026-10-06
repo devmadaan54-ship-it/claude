@@ -1,0 +1,453 @@
+# Design v1: Vastu changes
+#
+# A patch on model.yaml (the house as it exists). render.py applies it and
+# draws design_v1.html. Everything added here is drawn in teal.
+#
+# Brief from the owner:
+#   1. Move the main staircase (all floors) to the covered porch next to the office.
+#   2. A small staircase in the dining area (here: the only way to the basement).
+#   3. Merge the ground floor kitchen and bedroom into one bedroom.
+#   4. Kitchen goes where the master bedroom is.
+#   5. Vastu 3x3 zoning: get the WCs out of the centre zone.
+#   6. Add a lift next to the new stair.
+#   7. The old stair location becomes a grand entrance.
+#   Keep it realistic for a load-bearing building.
+#
+# Assumptions used for sizing (to confirm):
+#   ground (main floor +60") to first floor: 11'-0" floor to floor
+#   basement floor to ground floor: about 9'-3"
+#   home lift: 5'-6" x 5'-6" clear shaft (fits a 6 person car), pit about 4'
+
+base: model.yaml
+title: "Design v1: Vastu changes"
+
+changes:
+  - what: Main stair moved to the covered porch beside the office, as a new stair + lift tower serving ground, first floor and terrace.
+    why: Takes the heavy stair out of the centre zone (Brahmasthan). The South zone is a good Vastu place for stairs and a lift.
+    structure: >
+      Built as its own RCC frame on new footings, outside the original
+      load-bearing walls. The two existing porch pillars stay: the bottom one
+      becomes the end of the stair's central spine wall. Two 4'-3" flights
+      with 9 treads of 10" each, 10 risers of 6.6" per flight, 3'-6" landings.
+      The core sticks out about 1'-6" into the lawn and 4' into the parking.
+  - what: Home lift in the lawn, right next to the stair landing (5'-6" x 5'-6" clear shaft), stops at ground, first floor and terrace.
+    why: Opens straight onto the stair landing on every floor. Sits in the South zone.
+    structure: >
+      6" RCC shaft walls on a raft with a pit about 4' deep. A machine-room-less
+      lift needs an overrun of about 11' above the terrace landing. It does not
+      reach the basement, because the basement is only under the north half of
+      the house.
+  - what: The covered entrance landing in front of the main door is enclosed as a Stair & Lift Lobby (floor raised to +60"), with a door from the front porch.
+    why: Keeps the stair inside the house. The old main door now opens from the house into this lobby.
+    structure: 9" brick walls on new strip footings, with a new roof slab at first floor level over the lobby.
+  - what: The old stair hall (and the small toilet beside it) becomes the Grand Foyer, with a new 5'-0" double main door in the west wall facing the parking.
+    why: >
+      Owner's brief. The foyer is open space in the centre zone, which Vastu
+      likes. The door is in the 4th/5th division (pada) of the west side counted
+      from the south-west corner (Pushpadanta/Varuna), which is good.
+    structure: >
+      The stairwell openings in the ground floor slab (over the basement) and
+      the first floor slab are filled with new RCC slab panels, carried on the
+      existing stair walls plus one new beam each. The new door replaces the old
+      rear door and window in the same wall, under one new RCC lintel. The
+      glazed partition between the stair and dining is removed (not structural).
+  - what: Entrance porch with 6 steps (7" risers) from the parking (+18") up to the foyer (+60").
+    why: Gives the grand entrance an approach. It sits under the existing first floor terrace slab, which acts as its canopy.
+    structure: Steps on a new plinth. This uses up the covered parking under the first floor terrace; cars move to the open parking either side.
+  - what: Ground floor toilet next to the old stair becomes a shoe and coat closet. A new powder room (WC + basin) goes in the office's corner, entered from the stair landing.
+    why: That toilet sat in the centre zone. The new WC is in the South zone. It is not under the stair, which Vastu also avoids.
+    structure: 4.5" brick partitions on the existing floor. Needs an exhaust fan (no outside wall). The office loses about 20 sq ft and keeps its corner window.
+  - what: Kitchen moved into the old M. Bedroom (16'-0" x 11'-0"). A new 3'-0" doorway links it to the dining room. The toilet door into this room is closed.
+    why: >
+      Owner's brief. Inside the room the sink is in its NE corner and the hob
+      in its SE corner, so you cook facing East. A toilet must not open into a
+      kitchen.
+    structure: The doorway is cut in the 15" load-bearing wall under the first floor bedroom wall, so it needs an RCC lintel and short-term propping while it is cut.
+  - what: Ground floor kitchen and bedroom merged into one Bedroom (24'-11" x 10'-5"). It now uses the old jack-and-jill toilet as its attached bath.
+    why: Owner's brief.
+    structure: >
+      The wall removed is a 6" partition and is not load-bearing. The first
+      floor wall above sits on an existing 9" deep beam, which stays as a
+      dropped band in the ceiling. The old kitchen door is bricked up.
+  - what: Small dog-leg stair (two 3'-0" flights) from the south side of the dining area down to the basement hall.
+    why: Owner's brief. With the main stair gone, this is now the way into the basement.
+    structure: >
+      New 6'-4" x 8'-11" opening in the ground floor slab, between the
+      basement's outer wall and its existing ceiling beam. Needs one new RCC
+      trimmer beam on the open side. No first floor wall stands over it (the
+      living room is open above).
+  - what: "Basement: old stair removed. Its alcove becomes a store under the new foyer."
+    structure: Slab over it as described above. The basement walls are unchanged.
+  - what: "First floor: old stairwell slabbed over and turned into a Family Lounge off the living room. A new corridor runs from it to the new stair landing."
+    why: Keeps the centre zone open. The corridor replaces the top part of the old tub bathroom.
+    structure: >
+      The corridor passes through the 9" wall between lounge and old bath (new
+      3'-5" opening with an RCC lintel; this wall stands over a ground floor
+      wall). It also passes through the old bath's outer 6" partition, which is
+      shortened.
+  - what: "First floor: the tub bathroom (centre zone) is taken out. A new attached bath for Bedroom 3 goes in the bedroom's south-west corner, with its WC in the South zone. The old bath area becomes a Utility / Laundry."
+    why: Moves the WC out of the centre. The utility reuses the old sunken floor and drains.
+    structure: >
+      4.5" partitions inside Bedroom 3. The new bath has no sunken slab, so it
+      needs a 6" raised floor. Its drain drops down the outside of the lobby wall
+      below.
+  - what: "First floor: rear balcony replaced by the stair core, the corridor and a small sit-out. Bedroom 3's door to that balcony is closed."
+    structure: The balcony slab over the new core is rebuilt as part of the core (landings and flights).
+  - what: Jack-and-jill toilets on both floors keep their place, but the WC moves to the lower end of each room.
+    why: The top end of those rooms falls in the NE zone, where Vastu treats a WC as the worst defect. The lower end is in the North zone.
+    structure: Re-plumbing inside the same room. No structural change.
+  - what: "Terrace: old stair room demolished and its opening slabbed. New stair room and lift overrun over the new core. Pantry and terrace toilet kept for now."
+    why: Keeps the roof over the centre zone open. Removing the stair room also takes load off the roof.
+    structure: Pantry west wall stays as a solid outside wall.
+  - what: "Not changed: your green sofa sketch and yellow marks on the office walls are still only notes (meaning not confirmed yet)."
+
+floor_notes:
+  basement: >
+    Same Theater and Hall. Access is now by a small dog-leg stair coming down
+    from the dining room into the top-right corner of the hall. The old stair
+    is gone. Its alcove is a store and the area above is the new grand foyer.
+  ground: >
+    New grand entrance on the west (parking) side leads into a foyer where
+    the old stair was. Kitchen in the old master bedroom, next to the dining
+    room. Kitchen and bedroom merged into one long bedroom with the old
+    jack-and-jill toilet attached. A small stair goes down from the dining
+    room to the basement. The stair and lift tower stands on the old covered
+    porch next to the office, reached through an enclosed lobby by the old
+    main door.
+  first: >
+    The new stair and lift land in the old rear balcony. A corridor leads from
+    them to a family lounge where the old stair was, open to the living room.
+    Bedroom 3 gets a new attached bath in its south-west corner. The old tub
+    bathroom becomes a utility / laundry.
+  terrace: >
+    The new stair room and lift overrun sit over the new core. The old stair
+    room is demolished and its opening slabbed. The pantry and the terrace
+    toilet are kept.
+
+remove:
+  # --- basement
+  - b.stair
+  # --- ground floor
+  - gf.stair
+  - gf.spiral
+  - gf.master_bedroom
+  - gf.kitchen
+  - gf.stair_hall
+  - gf.toilet2
+  - gf.car_porch
+  - gf.entrance_landing
+  - gf.w.bed_kitchen
+  - gf.w.stair_top
+  - gf.o.toilet1_door_a
+  - gf.o.kitchen_door
+  - gf.o.rear_door
+  - gf.o.stair_win
+  - gf.o.office_win_s
+  - gf.f.k_sink
+  - gf.f.k_counter
+  - gf.f.k_hob
+  - gf.f.wc2
+  - gf.f.basin2
+  # --- first floor
+  - ff.stair
+  - ff.stair_hall
+  - ff.toilet3
+  - ff.balcony_rear
+  - ff.f.basin3
+  - ff.f.wc3
+  - ff.f.tub3
+  - ff.f.shower3
+  - ff.f.lattice1
+  - ff.f.lattice2
+  - ff.f.beam_rear
+  - ff.w.rear_pillar_n
+  - ff.w.rear_pillar_s
+  - ff.o.toilet3_door
+  - ff.o.bed3_rear_door
+  # --- terrace
+  - t.stair
+  - t.stair_room
+  - t.w.stair_top
+  - t.w.stair_left
+  - t.w.stair_bottom
+
+modify:
+  # --- ground floor
+  gf.bedroom:
+    label: 24'-11" x 10'-5"
+    note: old kitchen + bedroom merged; 9" beam drop stays over the old wall line; attached toilet = old jack-and-jill toilet
+  gf.dining:
+    label_pos: [22.80, 7.20]
+    note: basement stair now takes its south-east corner
+  gf.office:
+    label_pos: [45.20, 26.30]
+    note: loses its north-east corner to the powder room
+  gf.o.main_door:
+    note: now an internal door from the foyer into the Stair & Lift Lobby
+  gf.o.toilet2_door:
+    note: closet door
+  gf.o.office_side_door:
+    span: [19.60, 22.10]
+    opens: left
+    lintel: existing
+    note: powder room door from the stair landing
+  gf.o.office_win_w:
+    span: [49.43, 52.84]
+  gf.f.wc1:
+    box: [1.45, 15.90, 3.25, 17.85]
+    note: moved from the NE end of the toilet to its North end
+  gf.f.shower1:
+    box: [1.45, 12.80, 3.65, 14.70]
+  # --- first floor
+  ff.w.toilet3_east:
+    box: [48.97, 22.30, 49.46, 29.84]
+    note: shortened so the corridor can pass
+  ff.o.stair_door_out:
+    note: lounge door to the -18" landing and the open terrace (2 steps down)
+  ff.f.wc1:
+    box: [1.20, 15.90, 3.00, 17.90]
+    note: moved from the NE end of the toilet to its North end
+  ff.f.shower1:
+    box: [1.20, 12.50, 3.40, 14.40]
+  # --- terrace
+  t.w.stair_pantry:
+    note: now the pantry's solid outside wall
+
+add_openings:
+  gf.w.west_stair:
+    - {id: gf.o.grand_door, type: double_door, span: [32.00, 37.00], opens: up, entrance: true, lintel: new RCC lintel, note: "GRAND ENTRANCE, 5'-0\" double door"}
+    - {id: gf.o.grand_side_win, type: window, span: [27.40, 31.00], sill: 2'-6", note: side light beside the grand door}
+  gf.w.mbed_dining:
+    - {id: gf.o.kitchen_dining_door, type: door, span: [3.80, 6.80], opens: left, lintel: new RCC lintel, note: kitchen to dining}
+  ff.w.stair_toilet3:
+    - {id: ff.o.lounge_corridor, type: opening, span: [18.91, 22.30], lintel: new RCC lintel, note: lounge to new corridor}
+
+add:
+  # =========================================================================
+  basement:
+    rooms:
+      - id: b.store
+        name: Store
+        box: [34.04, 17.88, 37.23, 28.29]
+        note: old stair alcove, slab over it now
+    walls:
+      - id: b.w.store_wall
+        kind: partition
+        box: [33.66, 17.88, 34.04, 28.29]
+        openings:
+          - {id: b.o.store_door, type: door, span: [21.00, 23.80], opens: right}
+    stairs:
+      - id: b.stair_dining
+        box: [27.30, 1.30, 33.66, 10.13]
+        label: UP TO DINING
+        label_pos: [30.48, 12.40]
+        landings: [[27.30, 1.30, 33.66, 4.30]]
+        flights:
+          - {box: [27.30, 4.30, 30.30, 10.13], rise: up}
+          - {box: [30.60, 4.30, 33.66, 10.13], rise: down}
+
+  # =========================================================================
+  ground:
+    rooms:
+      - id: gf.kitchen_new
+        name: Kitchen
+        label: 16'-0" x 11'-0"
+        box: [1.25, 1.15, 17.22, 12.18]
+        ceiling: 10'-6"
+        label_pos: [9.20, 7.20]
+        note: sink in the NE corner, hob in the SE corner (cook faces East), fridge NW; door to lobby + new door to dining
+      - id: gf.grand_foyer
+        name: Grand Foyer
+        label: 11'-4" x 11'-3"
+        box: [26.69, 17.87, 38.01, 29.13]
+        ffl: +60"
+        label_pos: [31.00, 23.60]
+      - id: gf.closet
+        name: Closet
+        box: [38.60, 19.00, 41.91, 28.80]
+        note: shoe & coat closet (was a toilet)
+      - id: gf.powder
+        name: Powder
+        label: 4'-6" x 4'-6"
+        box: [48.30, 19.00, 52.84, 23.50]
+      - id: gf.stair_lobby
+        name: Stair & Lift Lobby
+        label: 9'-0" x 6'-1"
+        box: [55.50, 11.75, 64.51, 17.87]
+        ffl: +60"
+        note: enclosed old entrance landing; 3 steps up from the front porch
+      - id: gf.stair_core
+        name: Stair
+        box: [54.09, 19.00, 64.51, 33.60]
+      - id: gf.grand_porch
+        name: Entrance Porch
+        box: [29.50, 30.05, 39.50, 33.05]
+        ffl: +60"
+        kind: outdoor_covered
+        note: under the existing first floor terrace slab
+    walls:
+      # basement stair guard rails (dining)
+      - {id: gf.w.bstair_rail_l, kind: railing, box: [27.00, 1.15, 27.30, 10.43]}
+      - {id: gf.w.bstair_rail_b, kind: railing, box: [27.30, 10.13, 30.45, 10.43]}
+      - {id: gf.w.bstair_rail_r, kind: railing, box: [33.66, 1.15, 33.96, 10.13]}
+      # powder room partitions
+      - {id: gf.w.powder_left, kind: partition, box: [47.92, 19.00, 48.30, 23.88]}
+      - {id: gf.w.powder_bottom, kind: partition, box: [48.30, 23.50, 52.84, 23.88]}
+      # lobby
+      - id: gf.w.lobby_top
+        box: [55.50, 11.00, 64.51, 11.75]
+        openings:
+          - {id: gf.o.lobby_porch_door, type: door, span: [57.00, 60.50], opens: down, entrance: true, note: from the front porch (3 steps up inside)}
+      # stair + lift core
+      - id: gf.w.core_east
+        box: [64.51, 11.00, 65.00, 34.10]
+        openings:
+          - {id: gf.o.lobby_win, type: window, span: [12.50, 16.50], sill: 2'-6"}
+          - {id: gf.o.lift_door_g, type: lift_door, span: [19.60, 22.40], note: lift door}
+      - {id: gf.w.core_south, box: [53.59, 33.60, 65.00, 34.10]}
+      - {id: gf.w.core_west, box: [53.59, 30.05, 54.09, 34.10]}
+      - {id: gf.w.core_spine, box: [58.40, 22.60, 60.20, 28.97], note: new RCC spine wall; meets the existing porch pillar}
+      - {id: gf.w.lift_n, box: [65.00, 18.00, 71.00, 18.50]}
+      - {id: gf.w.lift_s, box: [65.00, 24.00, 71.00, 24.50]}
+      - {id: gf.w.lift_e, box: [70.50, 18.50, 71.00, 24.00]}
+    stairs:
+      - id: gf.stair_main
+        box: [54.09, 19.00, 64.51, 33.60]
+        label: UP TO FIRST FLOOR AND TERRACE
+        label_pos: [59.30, 20.40]
+        landings: [[54.09, 19.00, 64.51, 22.60], [54.09, 30.10, 64.51, 33.60]]
+        flights:
+          - {box: [54.09, 22.60, 58.40, 30.10], rise: down}
+          - {box: [60.20, 22.60, 64.51, 30.10], rise: up}
+      - id: gf.stair_basement
+        box: [27.30, 1.30, 33.66, 10.13]
+        label: DN TO BASEMENT
+        label_pos: [30.48, 11.30]
+        landings: [[27.30, 1.30, 33.66, 4.30]]
+        flights:
+          - {box: [27.30, 4.30, 30.30, 10.13], rise: up}
+          - {box: [30.60, 4.30, 33.66, 10.13], rise: down}
+    fixtures:
+      - {id: gf.f.kn_counter, type: counter, box: [1.25, 1.15, 17.22, 3.15]}
+      - {id: gf.f.kn_sink, type: sink, box: [2.20, 1.35, 4.60, 2.95]}
+      - {id: gf.f.kn_hob, type: hob, box: [13.80, 1.35, 16.60, 2.95]}
+      - {id: gf.f.kn_fridge, type: fridge, box: [1.35, 9.70, 3.70, 12.05]}
+      - {id: gf.f.bed_wardrobe, type: wardrobe, label: wardrobe / dressing, box: [24.20, 19.06, 26.20, 27.00]}
+      - {id: gf.f.bed_beam, type: beam, box: [16.90, 19.06, 17.60, 28.80], note: existing 9in deep beam stays (carries first floor wall)}
+      - {id: gf.f.pw_wc, type: wc, box: [48.40, 21.60, 50.30, 23.45]}
+      - {id: gf.f.pw_basin, type: basin, box: [48.40, 19.10, 49.80, 20.40]}
+      - {id: gf.f.lift, type: lift, box: [65.00, 18.50, 70.50, 24.00]}
+      - {id: gf.f.grand_steps, type: steps, rise: up, tread: 1.0, box: [29.50, 33.05, 39.50, 38.05], note: 6 risers of 7in}
+
+  # =========================================================================
+  first:
+    rooms:
+      - id: ff.lounge
+        name: Family Lounge
+        label: 11'-4" x 10'-3"
+        box: [26.86, 18.91, 38.19, 29.17]
+        note: old stairwell slabbed over; opens to the living room
+      - id: ff.corridor
+        name: Corridor
+        label: 3'-10" wide
+        box: [38.68, 18.47, 54.09, 22.30]
+      - id: ff.utility
+        name: Utility / Laundry
+        label: 10'-4" x 6'-6"
+        box: [38.68, 22.68, 48.97, 29.17]
+        note: old tub bathroom; reuses its sunken floor and drains
+      - id: ff.sitout
+        name: Sit-out
+        box: [49.46, 22.68, 53.59, 29.84]
+        kind: outdoor_covered
+      - id: ff.bath3
+        name: Bath
+        label: 6'-1" x 6'-6"
+        box: [48.33, 11.50, 54.41, 17.98]
+        note: new attached bath for Bedroom 3; raised floor
+      - id: ff.stair_core
+        name: Stair
+        box: [54.09, 18.47, 64.51, 33.60]
+      - id: ff.lobby_roof
+        name: Lobby roof
+        box: [55.29, 11.30, 64.51, 17.98]
+        kind: outdoor
+        note: new roof slab over the ground floor lobby (planters, no access)
+    walls:
+      - id: ff.w.utility_top
+        kind: partition
+        box: [38.68, 22.30, 48.97, 22.68]
+        openings:
+          - {id: ff.o.utility_door, type: door, span: [43.00, 45.60], opens: down}
+      - id: ff.w.sitout_top
+        kind: partition
+        box: [49.46, 22.30, 53.59, 22.68]
+        openings:
+          - {id: ff.o.sitout_door, type: glazed, span: [49.90, 53.20], note: glazed door to the sit-out}
+      - {id: ff.w.bath3_top, kind: partition, box: [47.95, 11.12, 54.41, 11.50]}
+      - id: ff.w.bath3_left
+        kind: partition
+        box: [47.95, 11.50, 48.33, 17.98]
+        openings:
+          - {id: ff.o.bath3_door, type: door, span: [14.80, 17.30], opens: right}
+      - {id: ff.w.core_top, box: [55.29, 17.98, 65.00, 18.47]}
+      - id: ff.w.core_east
+        box: [64.51, 18.47, 65.00, 34.10]
+        openings:
+          - {id: ff.o.lift_door_f, type: lift_door, span: [19.60, 22.40], note: lift door}
+      - {id: ff.w.core_south, box: [53.59, 33.60, 65.00, 34.10]}
+      - {id: ff.w.core_west, box: [53.59, 22.60, 54.09, 34.10]}
+      - {id: ff.w.core_spine, box: [58.40, 22.60, 60.20, 30.05]}
+      - {id: ff.w.lift_n, box: [65.00, 18.00, 71.00, 18.50]}
+      - {id: ff.w.lift_s, box: [65.00, 24.00, 71.00, 24.50]}
+      - {id: ff.w.lift_e, box: [70.50, 18.50, 71.00, 24.00]}
+    stairs:
+      - id: ff.stair_main
+        box: [54.09, 18.47, 64.51, 33.60]
+        label: UP TO TERRACE / DN TO GROUND
+        label_pos: [59.30, 19.80]
+        landings: [[54.09, 18.47, 64.51, 22.60], [54.09, 30.10, 64.51, 33.60]]
+        flights:
+          - {box: [54.09, 22.60, 58.40, 30.10], rise: down}
+          - {box: [60.20, 22.60, 64.51, 30.10], rise: up}
+    fixtures:
+      - {id: ff.f.lift, type: lift, box: [65.00, 18.50, 70.50, 24.00]}
+      - {id: ff.f.b3_wc, type: wc, box: [52.30, 15.95, 54.20, 17.85]}
+      - {id: ff.f.b3_basin, type: basin, box: [48.50, 11.70, 50.00, 13.00]}
+      - {id: ff.f.b3_shower, type: shower, box: [51.40, 11.60, 54.30, 14.00]}
+      - {id: ff.f.washer, type: washer, box: [39.00, 26.90, 41.30, 29.00]}
+      - {id: ff.f.util_sink, type: sink, box: [42.00, 27.60, 44.40, 29.10]}
+
+  # =========================================================================
+  terrace:
+    rooms:
+      - id: t.stair_core
+        name: Stair Room
+        box: [54.09, 19.00, 64.51, 33.60]
+        ceiling: 7'-9"
+    walls:
+      - {id: t.w.core_top, box: [53.59, 18.50, 65.00, 19.00]}
+      - id: t.w.core_west
+        box: [53.59, 19.00, 54.09, 34.10]
+        openings:
+          - {id: t.o.core_door, type: door, span: [19.30, 22.40], opens: left, note: stair room door onto the terrace}
+      - id: t.w.core_east
+        box: [64.51, 19.00, 65.00, 34.10]
+        openings:
+          - {id: t.o.lift_door_t, type: lift_door, span: [19.60, 22.40], note: lift door}
+      - {id: t.w.core_south, box: [53.59, 33.60, 65.00, 34.10]}
+      - {id: t.w.core_spine, box: [58.40, 22.60, 60.20, 30.05]}
+      - {id: t.w.lift_n, box: [65.00, 18.00, 71.00, 18.50]}
+      - {id: t.w.lift_s, box: [65.00, 24.00, 71.00, 24.50]}
+      - {id: t.w.lift_e, box: [70.50, 18.50, 71.00, 24.00]}
+    stairs:
+      - id: t.stair_main
+        box: [54.09, 19.00, 64.51, 33.60]
+        label: DN TO FIRST FLOOR
+        label_pos: [59.30, 20.40]
+        landings: [[54.09, 19.00, 64.51, 22.60], [54.09, 30.10, 64.51, 33.60]]
+        flights:
+          - {box: [54.09, 22.60, 58.40, 30.10], rise: down}
+          - {box: [60.20, 22.60, 64.51, 30.10], rise: up}
+    fixtures:
+      - {id: t.f.lift, type: lift, label: LIFT, note: machine-room-less lift overrun above, box: [65.00, 18.50, 70.50, 24.00]}
