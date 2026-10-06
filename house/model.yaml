@@ -1,0 +1,630 @@
+# 17 Chandra Path - house model (source of truth)
+#
+# Transcribed from house/source/17C_original.pdf
+# (Cadmax "Existing Residence Layout", Jaipur, Project AR/2024/DEC/01, dated 10/12/24).
+#
+# ---------------------------------------------------------------------------
+# CONVENTIONS
+# ---------------------------------------------------------------------------
+# Units      : feet (decimal). 16'-6" is written 16.5. Original ft-in labels from
+#              the drawing are kept as strings in `label` fields.
+# Frame      : one shared frame for every floor, so floors stack on each other.
+#              Origin (0,0) = outer top-left corner of the ground floor house walls.
+#              +x goes right on the drawing, +y goes down on the drawing.
+# Directions : "up/down/left/right" always mean drawing directions.
+#              Per the compass on the sheets (rotated ~15-20 deg):
+#                drawing up    = EAST  (rear boundary, y = 0)
+#                drawing right = SOUTH (front lawn / porch side)
+#                drawing down  = WEST  (parking + gates side)
+#                drawing left  = NORTH (store & basement entry strip)
+# box        : [x1, y1, x2, y2]  (top-left and bottom-right corners)
+# rooms      : box = clear interior (inside faces of walls), approximate to ~0.3 ft
+# walls      : box = full wall footprint. Openings are cut out of their wall.
+# openings   : span = [from, to] measured along the wall's long axis
+#              (x-range for horizontal walls, y-range for vertical walls).
+#              type: door | double_door | window | ventilator | opening | glazed
+#              opens: side the door leaf swings into (up/down/left/right).
+# sill/lintel: heights from the drawing ("B.B." = lintel at bottom of beam).
+# confidence : the drawing is dimensioned room-by-room, not with a full
+#              structural grid, so positions are measured off the drawing scale.
+#              Room sizes match the written dimensions; wall positions are
+#              accurate to about +/- 4 inches. The terrace sheet is the least
+#              precise (about +/- 2 ft against the floors below).
+# ---------------------------------------------------------------------------
+
+meta:
+  name: 17 Chandra Path
+  location: Jaipur, Rajasthan
+  source: house/source/17C_original.pdf
+  drawn_by: Cadmax Consultancy (P) Ltd., detailed by Yogesh Choudhary
+  project_no: AR/2024/DEC/01
+  drawing_date: 2024-12-10
+  plot:
+    size_label: 82'-5" x 47'-0" (left side 47'-1")
+    area_sqft: 3820.73
+  areas_sqft:
+    basement_built_up: 1080.76
+    ground_built_up: 2398.38
+    first_built_up: 2117.72
+    terrace_built_up: 330.89
+    terrace_open: 2079.54
+  levels_note: >
+    FFL = finished floor level relative to the site datum. Ground floor has
+    split levels: parking +18", entrance porch +42", main floor +60",
+    rear stair landing +24".
+
+floors:
+
+  # =========================================================================
+  basement:
+    title: Basement
+    ceiling: 8'-6"
+    note: >
+      Sits under the left (north) part of the ground floor: below the master
+      bedroom, toilet, bedroom, dining and kitchen. Reached by the internal
+      stair (same stair core as the ground floor). One open volume split by a
+      line of 2 columns + a light partition into Theater and Hall.
+    rooms:
+      - id: b.theater
+        name: Theater
+        label: 15'-8" x 26'-8"
+        box: [1.22, 1.30, 16.55, 27.72]
+      - id: b.hall
+        name: Hall
+        label: 17'-0" x 26'-8"
+        box: [16.70, 1.30, 33.66, 27.72]
+        ceiling: 8'-6"
+    stairs:
+      - id: b.stair
+        box: [29.50, 17.88, 37.23, 28.29]
+        label: UP TO GROUND FLOOR
+        flights: two flights + landing; arrow points up toward ground floor
+    walls:
+      - id: b.w.east
+        box: [0.00, 0.00, 34.95, 1.30]
+      - id: b.w.north
+        box: [0.00, 0.00, 1.22, 29.02]
+        openings:
+          - {id: b.o.win_north, type: window, span: [20.00, 26.37], sill: 5'-0", lintel: 8'-0", note: high window toward side strip}
+      - id: b.w.south
+        box: [33.66, 0.00, 34.95, 17.88]
+      - id: b.w.stair_top
+        box: [33.66, 16.63, 38.48, 17.88]
+      - id: b.w.stair_south
+        box: [37.23, 16.63, 38.48, 29.02]
+      - id: b.w.west
+        box: [0.00, 27.72, 29.50, 29.02]
+        openings:
+          - {id: b.o.win_west, type: window, span: [2.73, 15.42], sill: 5'-4", lintel: 8'-0", note: high window toward parking}
+      - id: b.w.stair_west
+        box: [29.50, 28.29, 38.48, 29.02]
+      - id: b.w.partition
+        kind: partition
+        box: [16.55, 1.30, 16.70, 27.72]
+        note: light partition between theater and hall (thin line on drawing)
+        openings:
+          - {id: b.o.theater_door, type: door, span: [17.88, 21.40], opens: right}
+    fixtures:
+      - {id: b.col1, type: column, box: [16.60, 10.00, 17.90, 11.30]}
+      - {id: b.col2, type: column, box: [16.60, 16.55, 17.90, 17.88]}
+      - {id: b.beam1, type: beam, box: [1.22, 10.20, 33.66, 11.30], note: beam hidden in ceiling}
+      - {id: b.beam2, type: beam, box: [1.22, 16.80, 33.66, 17.88], note: beam hidden in ceiling}
+
+  # =========================================================================
+  ground:
+    title: Ground Floor
+    note: >
+      Main floor at FFL +60". Two bedrooms on the left (north) share a
+      jack-and-jill toilet off a 5'-4" lobby. Dining (centre) opens into the
+      Drawing room (right) through a wide arch. Kitchen, split-level stair
+      core, a small toilet and an office line the bottom (west) side. Main
+      entrance is a double door from the front porch (south) into the foyer
+      strip of the Drawing room.
+    site:
+      plot:
+        box: [-7.00, 0.00, 75.40, 47.00]
+        note: left (north) boundary is slightly skewed, 47'-1" long; right side 47'-0"
+      zones:
+        - {id: gf.z.side_strip, name: Store & Basement Entry, box: [-7.00, 0.00, 0.00, 30.05], note: 7'-0" strip along the north wall}
+        - {id: gf.z.parking, name: Parking Area, box: [0.00, 30.05, 63.20, 45.80], ffl: +18"}
+        - {id: gf.z.front_lawn, name: Front Lawn, box: [63.40, 0.90, 74.50, 30.00]}
+      boundary_walls:
+        - id: gf.bw.west
+          box: [-7.00, 45.80, 75.40, 47.00]
+          openings:
+            - {id: gf.o.gate1, type: gate, span: [-4.30, 6.30], note: gate near store strip, ~10'-7"}
+            - {id: gf.o.gate2, type: gate, span: [60.00, 70.50], note: gate near car porch, ~10'-6"}
+          note: boundary corner at bottom-right is rounded
+    rooms:
+      - id: gf.master_bedroom
+        name: M. Bedroom
+        label: 16'-0" x 11'-0"
+        box: [1.25, 1.15, 17.22, 12.18]
+        ceiling: 10'-6"
+      - id: gf.toilet1
+        name: Toilet
+        label: 10'-3" x 5'-3"
+        box: [1.25, 12.67, 11.48, 17.92]
+        note: jack-and-jill toilet, doors to M. Bedroom (above) and Bedroom (below)
+      - id: gf.lobby
+        name: Lobby
+        label: 5'-4" wide
+        box: [12.40, 12.56, 18.46, 17.87]
+        note: corridor serving M. Bedroom, Bedroom and Kitchen; opens into Dining
+      - id: gf.bedroom
+        name: Bedroom
+        label: 14'-4" x 10'-5"
+        box: [1.25, 18.41, 15.54, 28.80]
+        ceiling: 10'-6"
+      - id: gf.kitchen
+        name: Kitchen
+        label: 10'-2" x 9'-9"
+        box: [16.03, 19.06, 26.20, 28.80]
+        ceiling: 10'-6"
+      - id: gf.dining
+        name: Dining Area
+        label: 15'-9" x 16'-10"
+        box: [18.46, 1.15, 34.75, 17.87]
+        ceiling: 9'-5"
+      - id: gf.drawing
+        name: Drawing Area
+        label: 18'-10" x 16'-10"
+        box: [36.00, 1.15, 54.25, 17.87]
+        ceiling: 10'-11"
+        note: lower strip (y 12.6-17.9) acts as entrance foyer; beam hidden in ceiling along y ~12.5
+      - id: gf.stair_hall
+        name: Stair
+        box: [26.69, 18.40, 38.01, 29.13]
+        note: >
+          split-level hub. Top-left landing at FFL +60" (main floor), bottom-left
+          landing at FFL +24" with rear door to parking. Steps between the two
+          landings on the left; flights UP to first floor and DN to basement.
+      - id: gf.toilet2
+        name: Toilet
+        label: "3'-4\" x 9'-? (illegible)"
+        box: [38.60, 19.00, 41.91, 28.80]
+      - id: gf.office
+        name: Office
+        label: 10'-4" x 9'-10"
+        box: [42.50, 19.00, 52.84, 28.80]
+        ceiling: 11'-11"
+      - id: gf.front_porch
+        name: Front Porch
+        box: [55.50, 0.00, 62.30, 11.00]
+        ceiling: 10'-6"
+        kind: outdoor_covered
+      - id: gf.entrance_landing
+        name: Entrance Landing
+        box: [55.50, 11.00, 62.30, 17.87]
+        ffl: +42"
+        kind: outdoor_covered
+      - id: gf.car_porch
+        name: Covered Porch
+        box: [54.09, 17.87, 63.20, 30.05]
+        ceiling: 8'-3"
+        kind: outdoor_covered
+    stairs:
+      - id: gf.stair
+        box: [29.90, 18.80, 37.40, 29.10]
+        label: UP TO FIRST FLOOR / DN TO BASEMENT FLOOR
+        flights: >
+          upper flight (y 18.8-22.1, 3'-4" wide) runs right = UP to first floor;
+          lower flight (y 25.8-29.1, 3'-4" wide) runs right = DN to basement;
+          10'-0" overall. Steps at left (x 26.7-29.9, y 22-25.8) link the
+          +60" and +24" landings.
+      - id: gf.spiral
+        type: spiral
+        center: [63.85, 29.13]
+        radius: 3.9
+        note: external spiral stair at edge of the covered porch, up to first floor rear balcony
+    walls:
+      # --- outer walls
+      - id: gf.w.east
+        box: [0.00, 0.00, 55.50, 1.15]
+      - id: gf.w.north
+        box: [0.00, 0.00, 1.25, 30.05]
+        openings:
+          - {id: gf.o.mbed_win, type: window, span: [4.28, 9.26], sill: 2'-8", lintel: 6'-7"}
+          - {id: gf.o.toilet1_vent, type: ventilator, span: [14.08, 16.57], sill: 4'-3", lintel: 6'-2"}
+          - {id: gf.o.bed_win_n, type: window, span: [25.50, 28.80], sill: 2'-5", lintel: 6'-7", note: corner window with gf.o.bed_win_w}
+      - id: gf.w.west_a
+        box: [0.00, 28.80, 26.69, 30.05]
+        openings:
+          - {id: gf.o.bed_win_w, type: window, span: [1.25, 4.55], sill: 2'-5", lintel: 6'-7"}
+          - {id: gf.o.kitchen_win, type: window, span: [18.62, 23.55], lintel: 6'-6"}
+      - id: gf.w.west_stair
+        box: [26.69, 29.13, 38.60, 30.05]
+        openings:
+          - {id: gf.o.rear_door, type: door, span: [26.69, 29.90], opens: up, note: rear door from +24" landing to parking}
+          - {id: gf.o.stair_win, type: window, span: [29.90, 34.00], sill: 3'-0", lintel: 5'-6"}
+      - id: gf.w.west_b
+        box: [38.60, 28.80, 49.43, 30.05]
+        openings:
+          - {id: gf.o.toilet2_vent, type: ventilator, span: [38.90, 40.61], sill: 5'-3", lintel: "8'-? (illegible)"}
+      - id: gf.w.office_sw
+        box: [49.43, 28.80, 54.09, 30.05]
+        openings:
+          - {id: gf.o.office_win_w, type: window, span: [49.43, 54.09], sill: 3'-2", lintel: 8'-2", note: corner window}
+      - id: gf.w.office_east
+        box: [52.84, 19.00, 54.09, 28.80]
+        openings:
+          - {id: gf.o.office_side_door, type: door, span: [19.00, 22.63], opens: left, lintel: "8'-? (illegible)", note: office door to covered porch}
+          - {id: gf.o.office_win_s, type: window, span: [25.45, 28.80], sill: 3'-2", lintel: 8'-2", note: corner window}
+      - id: gf.w.south_drawing
+        box: [54.25, 0.00, 55.50, 17.87]
+        openings:
+          - {id: gf.o.drawing_win, type: window, span: [2.06, 10.29], sill: 2'-5", lintel: B.B.}
+          - {id: gf.o.main_door, type: double_door, span: [12.29, 17.87], opens: left, lintel: B.B., note: MAIN ENTRANCE from porch (+42")}
+      # --- interior walls
+      - id: gf.w.mbed_dining
+        box: [17.22, 1.15, 18.46, 8.88]
+      - id: gf.w.cb_pier
+        box: [15.65, 8.88, 18.46, 12.56]
+        note: thick pier with C.B. (cupboard) niche opening toward dining/lobby, lintel 6'-6"
+      - id: gf.w.toilet1_top
+        box: [1.25, 12.18, 12.40, 12.67]
+        openings:
+          - {id: gf.o.toilet1_door_a, type: door, span: [6.50, 8.93], opens: down, lintel: 6'-7", note: from M. Bedroom}
+      - id: gf.w.mbed_lobby
+        box: [12.40, 12.18, 15.65, 12.67]
+        openings:
+          - {id: gf.o.mbed_door, type: door, span: [12.40, 15.65], opens: up, lintel: 6'-7"}
+      - id: gf.w.toilet1_east
+        box: [11.48, 12.18, 12.40, 18.41]
+      - id: gf.w.toilet1_bottom
+        box: [1.25, 17.92, 12.40, 18.41]
+        openings:
+          - {id: gf.o.toilet1_door_b, type: door, span: [6.50, 8.93], opens: up, lintel: 6'-7", note: from Bedroom}
+      - id: gf.w.bed_lobby
+        box: [12.40, 17.87, 15.54, 18.41]
+        openings:
+          - {id: gf.o.bed_door, type: door, span: [12.40, 15.54], opens: down, lintel: 6'-7"}
+      - id: gf.w.kitchen_top
+        box: [15.54, 17.87, 26.69, 19.06]
+        openings:
+          - {id: gf.o.kitchen_door, type: door, span: [18.35, 21.25], opens: down, lintel: 6'-7"}
+      - id: gf.w.bed_kitchen
+        box: [15.54, 19.06, 16.03, 28.80]
+      - id: gf.w.kitchen_stair
+        box: [26.20, 19.06, 26.69, 28.80]
+      - id: gf.w.stair_top
+        box: [26.69, 17.87, 34.90, 18.40]
+        openings:
+          - {id: gf.o.stair_entry, type: opening, span: [26.69, 29.90], note: entry to stair from main floor (+60")}
+          - {id: gf.o.stair_glazing, type: glazed, span: [29.90, 34.90], note: glazed / railing panel facing dining}
+      - id: gf.w.stair_core
+        box: [34.90, 17.87, 38.60, 19.11]
+      - id: gf.w.stair_toilet2
+        box: [38.01, 19.11, 38.60, 29.13]
+      - id: gf.w.toilet2_top
+        box: [38.60, 17.87, 42.50, 19.00]
+        openings:
+          - {id: gf.o.toilet2_door, type: door, span: [38.60, 41.10], opens: down}
+      - id: gf.w.toilet2_office
+        box: [41.91, 19.00, 42.50, 28.80]
+      - id: gf.w.office_top
+        box: [42.50, 17.87, 55.50, 19.00]
+        openings:
+          - {id: gf.o.office_door, type: door, span: [42.50, 45.50], opens: down, note: from foyer}
+      # --- piers / columns
+      - id: gf.w.arch_pier
+        box: [34.75, 1.15, 36.00, 2.33]
+        note: wide arch from here to gf.w.arch_column links Dining and Drawing (beam over)
+      - id: gf.w.arch_column
+        box: [34.75, 11.32, 36.00, 12.56]
+      - id: gf.w.porch_pillar_n
+        box: [58.40, 17.87, 60.20, 19.00]
+      - id: gf.w.porch_pillar_s
+        box: [58.40, 28.97, 60.20, 30.05]
+    fixtures:
+      - {id: gf.f.porch_col1, type: round_column, center: [59.90, 2.20], radius: 0.55}
+      - {id: gf.f.porch_col2, type: round_column, center: [59.90, 10.00], radius: 0.55}
+      - {id: gf.f.beam_arch, type: beam, box: [34.75, 2.33, 36.00, 11.32], note: arch opening Dining-Drawing, beam over}
+      - {id: gf.f.beam_porch, type: beam, box: [55.50, 17.87, 58.40, 19.00], note: opening with beam over}
+      - {id: gf.f.cb, type: cupboard, box: [16.89, 9.40, 18.46, 11.50], label: C.B.}
+      - {id: gf.f.wc1, type: wc, box: [4.40, 12.70, 6.00, 15.00]}
+      - {id: gf.f.basin1, type: basin, box: [10.40, 14.20, 11.40, 15.80]}
+      - {id: gf.f.shower1, type: shower, box: [2.00, 16.80, 3.20, 17.90]}
+      - {id: gf.f.k_sink, type: sink, box: [19.80, 19.30, 21.80, 20.80]}
+      - {id: gf.f.k_counter, type: counter, box: [16.03, 19.06, 23.90, 26.20], note: L counter along top and right of kitchen (drawn approximately)}
+      - {id: gf.f.k_hob, type: hob, box: [19.40, 26.60, 22.20, 28.80]}
+      - {id: gf.f.wc2, type: wc, box: [39.20, 26.00, 40.80, 28.60]}
+      - {id: gf.f.basin2, type: basin, box: [38.70, 19.80, 40.20, 21.20]}
+    annotations:
+      # hand marks the owner drew on the PDF (not part of the architect's drawing)
+      - id: gf.a.sofa_sketch
+        type: freehand
+        color: green
+        note: hand-drawn U-shaped sofa / sectional in the Drawing Area against the east (top) wall
+        points: [[39.4, 1.7], [50.0, 1.2], [51.4, 4.2], [48.0, 4.6], [47.0, 2.6], [42.6, 2.6], [42.3, 4.9], [39.2, 5.0], [39.4, 1.7]]
+      - id: gf.a.yellow_office_top
+        type: highlight
+        color: yellow
+        note: scribble over the office top wall (gf.w.office_top, x 45-55.5)
+        box: [45.00, 17.60, 55.50, 19.20]
+      - id: gf.a.yellow_office_bottom
+        type: highlight
+        color: yellow
+        note: scribble over the office bottom (west) wall (gf.w.west_b, x 43-50)
+        box: [43.00, 28.50, 50.30, 31.00]
+
+  # =========================================================================
+  first:
+    title: First Floor
+    note: >
+      Three bedrooms, living, kitchen, two toilets. Left (north) side has a
+      3'-6" balcony running the full depth. Living sits over the ground floor
+      dining; Bedroom 3 over the drawing room. Stair core continues up to the
+      terrace. Rear (south-west) balcony with pergola reached from Bedroom 3
+      and the external spiral stair. An open terrace (17'-9" x 16'-9") lies
+      beyond the stair, over the ground-floor parking zone.
+    rooms:
+      - id: ff.balcony_n
+        name: Balcony
+        label: 3'-6" wide
+        box: [-3.46, 0.82, 0.00, 32.78]
+        kind: outdoor_covered
+      - id: ff.bedroom1
+        name: Bedroom 1
+        label: 17'-0" x 11'-1"
+        box: [0.88, 0.82, 17.79, 11.85]
+        ceiling: 10'-0"
+      - id: ff.toilet1
+        name: Toilet
+        label: 10'-7.5" x 5'-8"
+        box: [0.88, 12.39, 11.52, 17.98]
+        ceiling: 9'-0"
+        note: jack-and-jill between Bedroom 1 and Bedroom 2
+      - id: ff.lobby
+        name: Lobby
+        box: [12.40, 12.39, 18.68, 17.98]
+        note: sunk depth 7"; opens into Living
+      - id: ff.bedroom2
+        name: Bedroom 2
+        label: 17'-0" x 13'-10"
+        box: [0.88, 18.47, 17.79, 32.29]
+        ceiling: 10'-0"
+      - id: ff.kitchen
+        name: Kitchen
+        label: 8'-3" x 13'-5.5"
+        box: [18.29, 18.91, 26.52, 32.37]
+        ceiling: 10'-0"
+      - id: ff.living
+        name: Living Area
+        label: 18'-4" x 17'-3"
+        box: [18.68, 0.82, 36.91, 17.98]
+        ceiling: 9'-6"
+      - id: ff.bedroom3
+        name: Bedroom 3
+        label: 15'-10" x 17'-3"
+        box: [37.45, 0.82, 54.41, 17.98]
+        ceiling: 9'-8"
+      - id: ff.stair_hall
+        name: Stair
+        box: [26.86, 18.91, 38.19, 29.17]
+      - id: ff.toilet3
+        name: Toilet
+        label: 10'-4" x 10'-8"
+        box: [38.68, 18.47, 48.97, 29.17]
+        note: attached to Bedroom 3, has a bathtub
+      - id: ff.balcony_utility
+        name: Balcony
+        label: 2'-9" wide
+        box: [40.50, 29.84, 49.46, 32.60]
+        kind: outdoor_covered
+      - id: ff.balcony_rear
+        name: Balcony
+        label: 14'-3" x 15'-6.5"
+        box: [49.46, 17.98, 63.74, 33.56]
+        ceiling: 9'-0"
+        kind: outdoor_covered
+        note: parapet 2'-6"; pergola/lattice along its outer edges
+      - id: ff.balcony_front
+        name: Balcony
+        label: 6'-0" x 11'-4"
+        box: [55.29, 0.00, 61.29, 11.30]
+        ceiling: 9'-0"
+        kind: outdoor_covered
+        note: parapet 2'-6", two round columns
+      - id: ff.landing
+        name: Landing
+        box: [26.86, 29.84, 33.74, 34.00]
+        ffl: -18" (below first floor)
+        kind: outdoor
+      - id: ff.terrace
+        name: Terrace
+        label: 17'-9" x 16'-9"
+        box: [26.54, 30.50, 44.29, 47.30]
+        kind: outdoor
+        note: open, parapet 2'-6"
+    stairs:
+      - id: ff.stair
+        box: [30.14, 18.91, 37.90, 29.17]
+        label: UP TO TERRACE FLOOR / DN TO GROUND FLOOR
+    walls:
+      # --- outer
+      - id: ff.w.east
+        box: [-3.46, 0.00, 55.29, 0.82]
+      - id: ff.w.north
+        box: [0.00, 0.82, 0.88, 32.78]
+        openings:
+          - {id: ff.o.bed1_win, type: window, span: [4.30, 9.20], sill: 2'-4", lintel: B.B.}
+          - {id: ff.o.bed1_bal_door, type: door, span: [9.20, 11.85], opens: right, note: to north balcony}
+          - {id: ff.o.toilet1_vent, type: ventilator, span: [13.70, 16.50], sill: 4'-2", lintel: B.B.}
+          - {id: ff.o.bed2_bay, type: window, span: [18.47, 24.40], note: bay / window seat projecting into balcony (red outline x -3.2..0)}
+          - {id: ff.o.bed2_win_n, type: window, span: [25.50, 29.00], sill: 2'-4", lintel: B.B.}
+          - {id: ff.o.bed2_bal_door, type: door, span: [29.90, 32.29], opens: right, note: to north balcony}
+      - id: ff.w.west_bed2
+        box: [0.00, 32.29, 18.29, 32.78]
+        openings:
+          - {id: ff.o.bed2_win_w1, type: window, span: [0.88, 4.36], sill: 2'-4", lintel: B.B.}
+          - {id: ff.o.bed2_win_w2, type: window, span: [12.40, 15.88], sill: 2'-4", lintel: B.B.}
+      - id: ff.w.west_kitchen
+        box: [18.29, 32.37, 26.86, 32.78]
+        openings:
+          - {id: ff.o.kitchen_win, type: window, span: [18.64, 26.44], sill: 3'-6", lintel: B.B.}
+      - id: ff.w.south
+        box: [54.41, 0.00, 55.29, 18.90]
+        openings:
+          - {id: ff.o.bed3_win1, type: window, span: [1.80, 4.00], sill: 2'-4", lintel: B.B.}
+          - {id: ff.o.bed3_bal_door, type: door, span: [4.10, 7.40], opens: right, note: to front balcony}
+          - {id: ff.o.bed3_win2, type: window, span: [7.50, 9.70], sill: 2'-4", lintel: B.B.}
+          - {id: ff.o.bed3_win3, type: window, span: [11.80, 16.75], sill: 2'-4", lintel: B.B.}
+      # --- interior
+      - id: ff.w.bed1_living
+        box: [17.79, 0.82, 18.68, 12.34]
+      - id: ff.w.toilet1_top
+        box: [0.88, 11.85, 12.40, 12.39]
+        openings:
+          - {id: ff.o.toilet1_door_a, type: door, span: [6.54, 9.04], opens: down, lintel: 6'-9"}
+      - id: ff.w.bed1_lobby
+        box: [12.40, 11.85, 17.79, 12.39]
+        openings:
+          - {id: ff.o.bed1_door, type: door, span: [12.40, 15.64], opens: up, lintel: 6'-9"}
+      - id: ff.w.toilet1_east
+        box: [11.52, 11.85, 12.40, 18.47]
+      - id: ff.w.toilet1_bottom
+        box: [0.88, 17.98, 12.40, 18.47]
+        openings:
+          - {id: ff.o.toilet1_door_b, type: door, span: [6.54, 9.04], opens: up, lintel: 6'-9"}
+      - id: ff.w.bed2_lobby
+        box: [12.40, 17.98, 17.79, 18.47]
+        openings:
+          - {id: ff.o.bed2_door, type: door, span: [12.40, 15.94], opens: down, lintel: 6'-9"}
+      - id: ff.w.bed2_kitchen
+        box: [17.79, 17.98, 18.29, 32.78]
+      - id: ff.w.kitchen_top
+        box: [18.29, 17.98, 26.86, 18.91]
+        openings:
+          - {id: ff.o.kitchen_door, type: door, span: [23.24, 26.14], opens: down, lintel: 6'-9"}
+      - id: ff.w.kitchen_stair
+        box: [26.52, 18.91, 26.86, 32.37]
+      - id: ff.w.stair_top
+        box: [26.86, 17.98, 38.19, 18.91]
+        openings:
+          - {id: ff.o.stair_entry, type: opening, span: [26.86, 30.14], note: entry from living}
+          - {id: ff.o.stair_win_top, type: window, span: [30.14, 33.94], sill: 2'-4", lintel: B.B., note: internal window facing living}
+      - id: ff.w.stair_bottom
+        box: [26.86, 29.17, 38.19, 29.84]
+        openings:
+          - {id: ff.o.stair_door_out, type: door, span: [26.86, 30.14], opens: up, note: to landing at FFL -18" and the terrace}
+          - {id: ff.o.stair_win_bot, type: window, span: [30.14, 33.94], sill: 3'-3", lintel: B.B.}
+      - id: ff.w.stair_toilet3
+        box: [38.19, 18.47, 38.68, 29.84]
+      - id: ff.w.living_bed3
+        box: [36.91, 0.82, 37.45, 12.54]
+        note: Bedroom 3 has a wardrobe along this wall (x 37.45-39.14, y 0.8-11.7)
+      - id: ff.w.bed3_jog
+        box: [36.91, 11.70, 39.14, 12.54]
+      - id: ff.w.bed3_stub
+        box: [38.14, 12.54, 38.80, 14.60]
+      - id: ff.w.bed3_entry
+        box: [38.14, 14.60, 38.80, 17.98]
+        openings:
+          - {id: ff.o.bed3_door, type: door, span: [14.60, 17.98], opens: right, lintel: 6'-9"}
+      - id: ff.w.bed3_bottom
+        box: [38.19, 17.98, 49.46, 18.47]
+        openings:
+          - {id: ff.o.toilet3_door, type: door, span: [41.74, 44.04], opens: down, lintel: 6'-9", note: Bedroom 3 to its toilet}
+      - id: ff.w.toilet3_east
+        box: [48.97, 18.47, 49.46, 29.84]
+      - id: ff.w.toilet3_bottom
+        box: [38.68, 29.17, 49.46, 29.84]
+        openings:
+          - {id: ff.o.toilet3_vent, type: ventilator, span: [38.68, 48.97], sill: 6'-9", lintel: B.B.}
+      - id: ff.w.bed3_rear
+        box: [49.46, 17.98, 54.41, 18.47]
+        openings:
+          - {id: ff.o.bed3_rear_door, type: double_door, span: [49.64, 54.41], opens: up, lintel: 6'-9", note: to rear balcony}
+      - id: ff.w.rear_pillar_n
+        box: [57.94, 17.98, 59.64, 19.20]
+      - id: ff.w.rear_pillar_s
+        box: [57.94, 29.10, 59.64, 30.20]
+    fixtures:
+      - {id: ff.f.front_col1, type: round_column, center: [59.94, 1.50], radius: 0.5}
+      - {id: ff.f.front_col2, type: round_column, center: [59.94, 9.80], radius: 0.5}
+      - {id: ff.f.beam_rear, type: beam, box: [55.29, 17.98, 57.94, 19.20], note: opening with beam over}
+      - {id: ff.f.lattice1, type: lattice, box: [59.64, 18.40, 63.90, 30.00], note: pergola / planter grill}
+      - {id: ff.f.lattice2, type: lattice, box: [49.46, 30.10, 58.50, 33.60], note: pergola / planter grill}
+      - {id: ff.f.bed3_wardrobe, type: wardrobe, box: [37.45, 0.82, 39.14, 11.70]}
+      - {id: ff.f.bed2_unit, type: wardrobe, box: [0.88, 19.70, 1.90, 23.40], note: built-in unit by the bay}
+      - {id: ff.f.wc1, type: wc, box: [4.60, 12.45, 6.20, 14.80]}
+      - {id: ff.f.basin1, type: basin, box: [10.40, 14.20, 11.40, 15.80]}
+      - {id: ff.f.shower1, type: shower, box: [2.20, 16.80, 3.40, 17.90]}
+      - {id: ff.f.k_hob, type: hob, box: [18.40, 23.90, 20.20, 26.20]}
+      - {id: ff.f.k_sink, type: sink, box: [21.60, 30.40, 23.90, 32.00]}
+      - {id: ff.f.basin3, type: basin, box: [38.80, 19.20, 40.20, 21.20]}
+      - {id: ff.f.wc3, type: wc, box: [38.80, 22.50, 41.20, 24.30]}
+      - {id: ff.f.tub3, type: tub, box: [38.68, 25.60, 46.20, 29.17]}
+      - {id: ff.f.shower3, type: shower, box: [46.80, 28.00, 47.80, 29.10]}
+
+  # =========================================================================
+  terrace:
+    title: Terrace
+    note: >
+      Open roof over the first floor with a stair room (mumty), a pantry and
+      a small toilet. An MS (steel) structure covers the north-east part along
+      the east parapet and a second pergola sits at the east-south corner.
+      This sheet is drawn less precisely than the others (about +/- 2 ft).
+    roof_outline:
+      box: [-3.46, 0.00, 57.54, 35.40]
+      note: parapet 2'-6"; east parapet 2'-8" with piers
+    rooms:
+      - id: t.stair_room
+        name: Stair Room
+        box: [28.16, 18.78, 39.95, 30.26]
+        ceiling: 7'-9"
+      - id: t.pantry
+        name: Pantry
+        label: 6'-10" x 5'-9"
+        box: [40.27, 19.36, 47.39, 25.32]
+      - id: t.toilet
+        name: Toilet
+        label: 6'-10" x 4'-3"
+        box: [40.27, 25.77, 47.39, 30.13]
+    stairs:
+      - id: t.stair
+        box: [28.16, 18.78, 39.95, 30.26]
+        label: DN TO FIRST FLOOR
+    walls:
+      - id: t.w.parapet_east
+        kind: parapet
+        box: [-3.46, 0.00, 57.54, 0.83]
+      - id: t.w.parapet_north
+        kind: parapet
+        box: [-3.46, 0.00, -3.08, 35.40]
+      - id: t.w.stair_top
+        box: [27.39, 18.01, 40.27, 18.78]
+        openings:
+          - {id: t.o.stair_door, type: door, span: [28.16, 31.14], opens: down, note: stair room door onto terrace}
+          - {id: t.o.stair_win_top, type: window, span: [31.14, 35.40], sill: 2'-3", lintel: 6'-9"}
+      - id: t.w.stair_left
+        box: [27.77, 18.78, 28.16, 31.15]
+      - id: t.w.stair_bottom
+        box: [27.39, 30.26, 40.27, 31.15]
+        openings:
+          - {id: t.o.stair_win_bot, type: window, span: [28.16, 35.44], sill: 1'-2", lintel: B.B.}
+      - id: t.w.stair_pantry
+        box: [39.95, 18.78, 40.27, 30.26]
+        note: drawn with red lines (glazed?)
+      - id: t.w.pantry_top
+        box: [40.27, 18.78, 47.77, 19.36]
+        openings:
+          - {id: t.o.pantry_win, type: window, span: [42.26, 45.21], sill: 3'-1", lintel: 6'-9"}
+      - id: t.w.pantry_toilet
+        box: [40.27, 25.32, 47.39, 25.77]
+      - id: t.w.block_east
+        box: [47.39, 18.78, 47.77, 30.64]
+        openings:
+          - {id: t.o.pantry_door, type: door, span: [19.36, 22.12], opens: left, lintel: 6'-9"}
+          - {id: t.o.toilet_door, type: door, span: [27.40, 30.13], opens: left, lintel: 7'-0"}
+      - id: t.w.toilet_bottom
+        box: [40.27, 30.13, 47.77, 30.64]
+        openings:
+          - {id: t.o.toilet_vent, type: ventilator, span: [43.80, 45.40], sill: 5'-2", lintel: 7'-0"}
+    fixtures:
+      - {id: t.f.ms_structure, type: pergola, box: [-1.06, 0.90, 24.30, 8.25], label: MS STRUCTURE}
+      - {id: t.f.pergola_se, type: pergola, box: [47.44, 0.90, 57.14, 7.50]}
+      - {id: t.f.col_se, type: round_column, center: [57.14, 10.10], radius: 0.6}
+      - {id: t.f.wc, type: wc, box: [40.60, 26.00, 42.20, 28.40]}
+      - {id: t.f.p_sink, type: sink, box: [44.00, 23.60, 45.40, 25.20]}
